@@ -46,12 +46,16 @@ function lineOption(
   }
 }
 
-export default function ServiceStatsPage() {
-  const location = useLocation()
-  const [params] = useSearchParams()
-  const isWin = location.pathname.includes('winStats')
-  const pod = params.get('podName') || ''
-
+/** 容器监控内容（供页面 / 操作对话框复用）。 */
+export function ServiceStatsContent({
+  pod,
+  isWin,
+  back = false,
+}: {
+  pod: string
+  isWin: boolean
+  back?: boolean
+}) {
   const [points, setPoints] = useState<Point[]>([])
   const [intervalSec, setIntervalSec] = useState(5)
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
@@ -133,7 +137,7 @@ export default function ServiceStatsPage() {
     <div className="space-y-4">
       <PageHeader
         title={`容器监控：${pod}`}
-        back
+        back={back}
         extra={
           <Select value={String(intervalSec)} onValueChange={(v) => setIntervalSec(Number(v))}>
             <SelectTrigger className="w-32">
@@ -180,4 +184,12 @@ export default function ServiceStatsPage() {
       </div>
     </div>
   )
+}
+
+export default function ServiceStatsPage() {
+  const location = useLocation()
+  const [params] = useSearchParams()
+  const isWin = location.pathname.includes('winStats')
+  const pod = params.get('podName') || ''
+  return <ServiceStatsContent pod={pod} isWin={isWin} back />
 }

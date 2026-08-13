@@ -25,7 +25,7 @@ function getInitials(name?: string) {
   return trimmed.slice(0, 1).toUpperCase()
 }
 
-export function UserMenu() {
+export function UserMenu({ compact = false }: { compact?: boolean }) {
   const navigate = useNavigate()
   const { user, setUser, storageKey } = useUser()
   const [pwdOpen, setPwdOpen] = useState(false)
@@ -54,7 +54,7 @@ export function UserMenu() {
                 {getInitials(displayName)}
               </AvatarFallback>
             </Avatar>
-            <span className="hidden max-w-32 truncate text-sm font-medium md:inline">
+            <span className={cn('hidden max-w-32 truncate text-sm font-medium', !compact && 'md:inline')}>
               {displayName}
             </span>
           </Button>

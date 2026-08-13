@@ -24,10 +24,8 @@ import {
 import { PageHeader } from '@/components/common/PageHeader'
 import { containerExec } from '@/lib/api/service-api'
 
-export default function ServiceConsolePage() {
-  const [params] = useSearchParams()
-  const pod = params.get('podName') || ''
-
+/** 控制台内容（供页面 / 操作对话框复用）。 */
+export function ServiceConsoleContent({ pod, back = false }: { pod: string; back?: boolean }) {
   const [cmd, setCmd] = useState('/bin/bash')
   const [tty, setTty] = useState(false)
   const [user, setUser] = useState('')
@@ -115,7 +113,7 @@ export default function ServiceConsolePage() {
     <div className="space-y-4">
       <PageHeader
         title={`控制台：${pod}`}
-        back
+        back={back}
         extra={
           connected && (
             <Button variant="destructive" onClick={disconnect}>
@@ -180,4 +178,10 @@ export default function ServiceConsolePage() {
       )}
     </div>
   )
+}
+
+export default function ServiceConsolePage() {
+  const [params] = useSearchParams()
+  const pod = params.get('podName') || ''
+  return <ServiceConsoleContent pod={pod} back />
 }

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useAtomValue } from 'jotai'
 import { toast } from 'sonner'
 import {
+  ChartLine,
   ChevronDown,
   Download,
   FileCode,
@@ -12,8 +13,10 @@ import {
   Plus,
   RefreshCw,
   RotateCcw,
+  ScanSearch,
   Search,
   Square,
+  Terminal,
   UploadCloud,
   Wrench,
 } from 'lucide-react'
@@ -45,6 +48,7 @@ import { StatusBadge } from '@/components/common/StatusBadge'
 import { DataTable, type Column } from '@/components/common/DataTable'
 import { UploadDialog } from '@/components/common/UploadDialog'
 import { ProgressDialog } from '@/components/common/ProgressDialog'
+import { ServiceActionDialog, type ServiceAction } from '@/components/service/ServiceActionDialog'
 import { serverInfoAtom, newVersionsAtom, findRelease, getPackageUrl, getUrls } from '@/stores/platform'
 import {
   listServices,
@@ -75,6 +79,7 @@ export default function ServiceListPage() {
   const [offlineTarget, setOfflineTarget] = useState<ServiceItem | null>(null)
   const [upgradeTarget, setUpgradeTarget] = useState<ServiceItem | null>(null)
   const [upgradeId, setUpgradeId] = useState<string | null>(null)
+  const [action, setAction] = useState<ServiceAction | null>(null)
 
   const load = useCallback(async () => {
     setLoading(true)
@@ -250,7 +255,7 @@ export default function ServiceListPage() {
       pinned: 'right',
       render: (r) => (
         <div className="flex items-center gap-1">
-          <Button variant="ghost" size="sm" className="h-7 px-2" onClick={() => navigate(`/app/model/Service/${r.name}/edit`)}>
+          <Button variant="ghost" size="sm" className="h-7 px-2" onClick={() => setAction({ type: 'edit', service: r })}>
             <Pencil className="mr-1 size-3.5" />
             修改
           </Button>
@@ -258,7 +263,7 @@ export default function ServiceListPage() {
             variant="ghost"
             size="sm"
             className="h-7 px-2"
-            onClick={() => navigate(`/app/model/Service/log?podName=${r.id ?? r.name}`)}
+            onClick={() => setAction({ type: 'log', service: r })}
           >
             日志
           </Button>
@@ -279,28 +284,24 @@ export default function ServiceListPage() {
                 离线升级
               </DropdownMenuItem>
               {!isWin && (
-                <DropdownMenuItem
-                  onClick={() => navigate(`/app/model/Service/stats?podName=${r.id ?? r.name}`)}
-                >
+                <DropdownMenuItem onClick={() => setAction({ type: 'stats', service: r })}>
+                  <ChartLine className="mr-2 size-4" />
                   图表
                 </DropdownMenuItem>
               )}
               {isWin && (
-                <DropdownMenuItem
-                  onClick={() => navigate(`/app/model/Service/winStats?podName=${r.id ?? r.name}`)}
-                >
+                <DropdownMenuItem onClick={() => setAction({ type: 'stats', service: r })}>
+                  <ChartLine className="mr-2 size-4" />
                   图表
                 </DropdownMenuItem>
               )}
-              <DropdownMenuItem
-                onClick={() => navigate(`/app/model/Service/inspect?podName=${r.id ?? r.name}`)}
-              >
+              <DropdownMenuItem onClick={() => setAction({ type: 'inspect', service: r })}>
+                <ScanSearch className="mr-2 size-4" />
                 检查
               </DropdownMenuItem>
               {!isWin && !isK8s && (
-                <DropdownMenuItem
-                  onClick={() => navigate(`/app/model/Service/console?podName=${r.id ?? r.name}`)}
-                >
+                <DropdownMenuItem onClick={() => setAction({ type: 'console', service: r })}>
+                  <Terminal className="mr-2 size-4" />
                   控制台
                 </DropdownMenuItem>
               )}
@@ -491,6 +492,15 @@ export default function ServiceListPage() {
         title={`在线升级 ${upgradeTarget?.name ?? ''}`}
         installId={upgradeId}
         onSuccess={() => load()}
+      />
+
+      {/* 操作对话框：修改 / 日志 / 图表 / 检查 / 控制台 */}
+      <ServiceActionDialog
+        open={action !== null}
+        onOpenChange={(o) => !o && setAction(null)}
+        action={action}
+        isWin={isWin}
+        onSuccess={load}
       />
 
       {/* 删除确认 */}

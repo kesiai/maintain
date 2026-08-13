@@ -9,9 +9,8 @@ import { Card, CardContent } from '@/components/ui/card'
 import { PageHeader } from '@/components/common/PageHeader'
 import { containerInspect } from '@/lib/api/service-api'
 
-export default function ServiceInspectPage() {
-  const [params] = useSearchParams()
-  const pod = params.get('podName') || ''
+/** 容器检查内容（供页面 / 操作对话框复用）。 */
+export function ServiceInspectContent({ pod, back = false }: { pod: string; back?: boolean }) {
   const [data, setData] = useState<any>(null)
   const [loading, setLoading] = useState(true)
   const [view, setView] = useState<'tree' | 'doc'>('tree')
@@ -36,7 +35,7 @@ export default function ServiceInspectPage() {
     <div className="space-y-4">
       <PageHeader
         title={`容器检查：${pod}`}
-        back
+        back={back}
         extra={
           <Button variant="outline" size="icon" onClick={load} disabled={loading} aria-label="刷新">
             <RefreshCw className={loading ? 'size-4 animate-spin' : 'size-4'} />
@@ -66,6 +65,12 @@ export default function ServiceInspectPage() {
       </Card>
     </div>
   )
+}
+
+export default function ServiceInspectPage() {
+  const [params] = useSearchParams()
+  const pod = params.get('podName') || ''
+  return <ServiceInspectContent pod={pod} back />
 }
 
 function TreeView({ data }: { data: any }) {

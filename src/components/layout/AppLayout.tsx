@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
-import { Outlet, NavLink, useLocation } from 'react-router-dom'
-import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { Link, Outlet, NavLink, useLocation } from 'react-router-dom'
+import { ChevronLeft, ChevronRight, Wrench } from 'lucide-react'
 
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
@@ -132,13 +132,17 @@ export default function AppLayout() {
           collapsed ? SIDEBAR_COLLAPSED : SIDEBAR_EXPANDED,
         )}
       >
-        {/* 品牌区 */}
-        <div className={cn('flex h-14 shrink-0 items-center gap-2 border-b px-3', collapsed && 'justify-center px-0')}>
-          <div className="flex size-8 shrink-0 items-center justify-center rounded-md bg-primary font-bold text-primary-foreground">
-            运
+        {/* 品牌区：点击返回首页 */}
+        <Link
+          to="/app/dashboard"
+          title="返回首页"
+          className={cn('flex h-14 shrink-0 items-center gap-2 border-b px-3', collapsed && 'justify-center px-0')}
+        >
+          <div className="flex size-8 shrink-0 items-center justify-center rounded-md bg-primary text-primary-foreground">
+            <Wrench className="size-4" />
           </div>
           {!collapsed && <span className="truncate text-sm font-semibold">运维管理平台</span>}
-        </div>
+        </Link>
 
         {/* 菜单 */}
         <ScrollArea className="flex-1 px-2 py-3">
@@ -153,6 +157,19 @@ export default function AppLayout() {
             ))}
           </nav>
         </ScrollArea>
+
+        {/* 侧边栏底部：当前页面 + 主题 + 用户 */}
+        <div className={cn('shrink-0 border-t px-3 py-3', collapsed && 'px-2')}>
+          {!collapsed && (
+            <p className="mb-2 truncate text-xs text-muted-foreground">
+              {currentBreadcrumb(location.pathname)}
+            </p>
+          )}
+          <div className={cn('flex items-center gap-1', collapsed && 'flex-col gap-2')}>
+            <ThemeToggle />
+            <UserMenu compact={collapsed} />
+          </div>
+        </div>
 
         {/* 折叠开关 */}
         <div className="flex h-12 shrink-0 items-center justify-center border-t">
@@ -169,19 +186,6 @@ export default function AppLayout() {
 
       {/* 主区域 */}
       <div className="flex min-w-0 flex-1 flex-col">
-        {/* 顶部导航栏 */}
-        <header className="sticky top-0 z-50 flex h-14 shrink-0 items-center gap-2 border-b bg-background/95 px-4 backdrop-blur supports-backdrop-filter:bg-background/60">
-          <div className="flex min-w-0 items-center gap-2">
-            <span className="truncate text-sm font-medium text-muted-foreground">
-              {currentBreadcrumb(location.pathname)}
-            </span>
-          </div>
-          <div className="ml-auto flex items-center gap-1">
-            <ThemeToggle />
-            <UserMenu />
-          </div>
-        </header>
-
         {/* 内容区 */}
         <main className="flex-1 overflow-auto">
           <div className="container mx-auto p-6">

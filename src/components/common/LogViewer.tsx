@@ -32,10 +32,12 @@ interface LogViewerProps {
   exportName?: string
   /** 是否显示高级过滤（timestamps/since/tail）；win 端仅显示 refresh */
   showAdvanced?: boolean
+  /** 是否显示返回按钮 */
+  back?: boolean
 }
 
 /** 通用日志查看器：原始文本 + 自动刷新 + 关键字高亮 + 导出 */
-export function LogViewer({ title, fetchLogs, exportLogs, exportName = 'log.zip', showAdvanced = true }: LogViewerProps) {
+export function LogViewer({ title, fetchLogs, exportLogs, exportName = 'log.zip', showAdvanced = true, back = false }: LogViewerProps) {
   const [text, setText] = useState('')
   const [loading, setLoading] = useState(false)
   const [timestamps, setTimestamps] = useState(false)
@@ -121,6 +123,7 @@ export function LogViewer({ title, fetchLogs, exportLogs, exportName = 'log.zip'
     <div className="space-y-4">
       <PageHeader
         title={title}
+        back={back}
         extra={
           <>
             {exportLogs && (
