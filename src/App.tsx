@@ -1,0 +1,99 @@
+import { Suspense, lazy, useEffect } from 'react'
+import { Navigate, Route, Routes, Outlet } from 'react-router-dom'
+import { useUser } from '@kesi/client'
+
+import { Skeleton } from '@/components/ui/skeleton'
+import AppLayout from '@/components/layout/AppLayout'
+import LoginPage from '@/pages/auth/LoginPage'
+
+const DashboardPage = lazy(() => import('@/pages/dashboard/DashboardPage'))
+const ResourceStatisticsPage = lazy(() => import('@/pages/dashboard/ResourceStatisticsPage'))
+const ServiceListPage = lazy(() => import('@/pages/service/ServiceListPage'))
+const EditServicePage = lazy(() => import('@/pages/service/EditServicePage'))
+const ServiceLogPage = lazy(() => import('@/pages/service/ServiceLogPage'))
+const ServiceStatsPage = lazy(() => import('@/pages/service/ServiceStatsPage'))
+const ServiceInspectPage = lazy(() => import('@/pages/service/ServiceInspectPage'))
+const ServiceConsolePage = lazy(() => import('@/pages/service/ServiceConsolePage'))
+const ServiceDeployPage = lazy(() => import('@/pages/service/ServiceDeployPage'))
+const ModularListPage = lazy(() => import('@/pages/modular/ModularListPage'))
+const OperationLogPage = lazy(() => import('@/pages/logs/OperationLogPage'))
+const OpsLogPage = lazy(() => import('@/pages/logs/OpsLogPage'))
+const Pm2LogPage = lazy(() => import('@/pages/logs/Pm2LogPage'))
+const RemoteControlPage = lazy(() => import('@/pages/remote/RemoteControlPage'))
+const ServiceDiagnosisPage = lazy(() => import('@/pages/serviceDiagnosis/ServiceDiagnosisPage'))
+const ProjectConfigPage = lazy(() => import('@/pages/sys/ProjectConfigPage'))
+const ChangePasswordPage = lazy(() => import('@/pages/auth/ChangePasswordPage'))
+
+/** 应用启动：恢复登录态、移除启动加载动画 */
+function Bootstrap() {
+  const { loadUser } = useUser()
+  useEffect(() => {
+    loadUser()
+    const loader = document.getElementById('loader-wrapper')
+    if (loader) {
+      loader.style.transition = 'opacity 0.3s'
+      loader.style.opacity = '0'
+      setTimeout(() => loader.remove(), 350)
+    }
+  }, [loadUser])
+  return null
+}
+
+/** 未登录跳转登录页 */
+function ProtectedRoute() {
+  const { user } = useUser()
+  if (!user?.token) {
+    return <Navigate to="/login" replace />
+  }
+  return <Outlet />
+}
+
+function PageFallback() {
+  return (
+    <div className="space-y-3 p-6">
+      <Skeleton className="h-8 w-48" />
+      <Skeleton className="h-64 w-full" />
+    </div>
+  )
+}
+
+export default function App() {
+  return (
+    <>
+      <Bootstrap />
+      <Suspense fallback={<PageFallback />}>
+        <Routes>
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/" element={<Navigate to="/app/dashboard" replace />} />
+
+          <Route element={<ProtectedRoute />}>
+            <Route path="/app" element={<AppLayout />}>
+              <Route index element={<Navigate to="/app/dashboard" replace />} />
+              <Route path="dashboard" element={<DashboardPage />} />
+              <Route path="resourceStatistics" element={<ResourceStatisticsPage />} />
+              <Route path="model/Service/list" element={<ServiceListPage />} />
+              <Route path="model/Service/add" element={<EditServicePage />} />
+              <Route path="model/Service/:name/edit" element={<EditServicePage />} />
+              <Route path="model/Service/log" element={<ServiceLogPage />} />
+              <Route path="model/Service/stats" element={<ServiceStatsPage />} />
+              <Route path="model/Service/winStats" element={<ServiceStatsPage />} />
+              <Route path="model/Service/inspect" element={<ServiceInspectPage />} />
+              <Route path="model/Service/console" element={<ServiceConsolePage />} />
+              <Route path="model/Service/depolyment" element={<ServiceDeployPage />} />
+              <Route path="model/Modular/list" element={<ModularListPage />} />
+              <Route path="model/Log/list" element={<OperationLogPage />} />
+              <Route path="log/operation" element={<OpsLogPage />} />
+              <Route path="log/pm2" element={<Pm2LogPage />} />
+              <Route path="model/RemoteControl/list" element={<RemoteControlPage />} />
+              <Route path="serviceDiagnosis" element={<ServiceDiagnosisPage />} />
+              <Route path="sys/project" element={<ProjectConfigPage />} />
+              <Route path="changePassword" element={<ChangePasswordPage />} />
+            </Route>
+          </Route>
+
+          <Route path="*" element={<Navigate to="/app/dashboard" replace />} />
+        </Routes>
+      </Suspense>
+    </>
+  )
+}

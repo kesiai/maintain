@@ -1,0 +1,11 @@
+node_modules
+build
+dist
+package.tgz
+*.log
+.DS_Store
+node_modules/.tmp
+old
+package-lock.json
+yarn.lock
+.env
