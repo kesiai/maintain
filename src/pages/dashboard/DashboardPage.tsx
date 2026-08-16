@@ -88,7 +88,6 @@ export default function DashboardPage() {
     () => logs.filter((l) => l.group === 'server' || l.group === 'driver'),
     [logs],
   )
-  const moduleLogs = useMemo(() => logs.filter((l) => l.group === 'front'), [logs])
 
   const [upgrading, setUpgrading] = useState(false)
   const [upgradeOpen, setUpgradeOpen] = useState(false)
@@ -171,7 +170,7 @@ export default function DashboardPage() {
         }
       />
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-4 sm:grid-cols-2">
         <Link to="/app/model/Service/list" className="block">
           <Card className="transition-shadow hover:shadow-md">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -180,17 +179,6 @@ export default function DashboardPage() {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{loading ? '…' : services.length}</div>
-            </CardContent>
-          </Card>
-        </Link>
-        <Link to="/app/model/Modular/list" className="block">
-          <Card className="transition-shadow hover:shadow-md">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">模块总数</CardTitle>
-              <Box className="size-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{loading ? '…' : modulars.length}</div>
             </CardContent>
           </Card>
         </Link>
@@ -220,9 +208,8 @@ export default function DashboardPage() {
           <CardHeader>
             <CardTitle>更新日志</CardTitle>
           </CardHeader>
-          <CardContent className="grid gap-4 md:grid-cols-2">
-            <LogTable title="服务更新日志" logs={serviceLogs} loading={loading} />
-            <LogTable title="模块更新日志" logs={moduleLogs} loading={loading} />
+          <CardContent>
+            <LogTable logs={serviceLogs} loading={loading} />
           </CardContent>
         </Card>
       </div>
@@ -244,7 +231,7 @@ export default function DashboardPage() {
   )
 }
 
-function LogTable({ title, logs, loading }: { title: string; logs: UpdateLogItem[]; loading: boolean }) {
+function LogTable({ logs, loading }: { logs: UpdateLogItem[]; loading: boolean }) {
   const columns: Column<UpdateLogItem>[] = [
     { key: 'name', title: '名称' },
     {
@@ -257,17 +244,14 @@ function LogTable({ title, logs, loading }: { title: string; logs: UpdateLogItem
     { key: 'version', title: '版本' },
   ]
   return (
-    <div>
-      <h3 className="mb-2 text-sm font-semibold">{title}</h3>
-      <div className="max-h-72 overflow-hidden rounded-md border">
-        <DataTable
-          columns={columns}
-          data={logs}
-          rowKey={(l) => `${l.name}-${l.version}-${l.time ?? ''}-${l.msg ?? ''}`}
-          loading={loading}
-          emptyText="暂无更新日志"
-        />
-      </div>
+    <div className="max-h-72 overflow-hidden rounded-md border">
+      <DataTable
+        columns={columns}
+        data={logs}
+        rowKey={(l) => `${l.name}-${l.version}-${l.time ?? ''}-${l.msg ?? ''}`}
+        loading={loading}
+        emptyText="暂无更新日志"
+      />
     </div>
   )
 }

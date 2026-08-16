@@ -10,7 +10,15 @@ export default function OpsLogPage() {
   const serverInfo = useAtomValue(serverInfoAtom)
   const path = serverInfo?.serverType === 'windows' ? 'win/logs/operation' : 'docker/containers/operationLogs/info'
 
-  const fetchLogs = useMemo(() => (p: LogQuery) => rawLogs(path, { tail: p.tail, since: p.since }), [path])
+  const fetchLogs = useMemo(
+    () => (p: LogQuery) =>
+      rawLogs(path, {
+        timestamps: p.timestamps != null ? String(p.timestamps) : undefined,
+        tail: p.tail,
+        since: p.since,
+      }),
+    [path],
+  )
 
-  return <LogViewer title="运维日志" fetchLogs={fetchLogs} />
+  return <LogViewer title="运维日志" fetchLogs={fetchLogs} boxClassName="min-h-[420px] h-[calc(100vh-230px)]" />
 }

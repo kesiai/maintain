@@ -17,7 +17,9 @@ export async function queryOpsLogs(
   filter: { order?: Record<string, 'ASC' | 'DESC'>; skip?: number; limit?: number; fields?: string[]; [key: string]: any },
   where?: Record<string, any>,
 ): Promise<{ items: OpsLogItem[]; total: number }> {
-  const { items, total } = await opsLogAPI.query(filter, where, true)
+  // createAPI 的 where 需以数组形式传入（内部按 Object.values 展开），否则字段名层会被丢弃
+  const wheres = { where }
+  const { items, total } = await opsLogAPI.query(filter, wheres, true)
   return { items: items as OpsLogItem[], total }
 }
 

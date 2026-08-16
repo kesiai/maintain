@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 
 import { Dialog, DialogContent } from '@/components/ui/dialog'
@@ -41,12 +42,24 @@ export function ServiceActionDialog({
   const service = action?.service
   const pod = service ? String(service.id ?? service.name ?? '') : ''
   const title = action && service ? `${ACTION_TITLES[action.type]}：${service.name ?? service.id ?? ''}` : ''
+  // 控制台已连接时，阻止 ESC / 点击外部误关对话框（ESC 应交给终端，如 vim/htop）
+  const [consoleConnected, setConsoleConnected] = useState(false)
+
+  useEffect(() => {
+    if (!open) setConsoleConnected(false)
+  }, [open])
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
         className="flex max-h-[85vh] flex-col overflow-hidden p-0 sm:max-w-[80vw]"
         style={{ maxWidth: '80vw' }}
+        onEscapeKeyDown={(e) => {
+          if (consoleConnected) e.preventDefault()
+        }}
+        onPointerDownOutside={(e) => {
+          if (consoleConnected) e.preventDefault()
+        }}
       >
         <div key={action ? `${action.type}-${pod}` : 'none'} className="min-h-0 flex-1 overflow-y-auto">
           <div className="p-6 pr-14">
@@ -69,7 +82,9 @@ export function ServiceActionDialog({
             {action?.type === 'log' && pod && <ServiceLogContent pod={pod} />}
             {action?.type === 'stats' && pod && <ServiceStatsContent pod={pod} isWin={isWin} />}
             {action?.type === 'inspect' && pod && <ServiceInspectContent pod={pod} />}
-            {action?.type === 'console' && pod && <ServiceConsoleContent pod={pod} />}
+            {action?.type === 'console' && pod && (
+              <ServiceConsoleContent pod={pod} onConnectedChange={setConsoleConnected} />
+            )}
           </div>
         </div>
       </DialogContent>

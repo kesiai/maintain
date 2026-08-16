@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { toast } from 'sonner'
 import { Download, Pause, Play, RefreshCw, Search, X } from 'lucide-react'
 
+import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -34,10 +35,20 @@ interface LogViewerProps {
   showAdvanced?: boolean
   /** 是否显示返回按钮 */
   back?: boolean
+  /** 日志框高度 / 样式类，默认 h-[420px] */
+  boxClassName?: string
 }
 
 /** 通用日志查看器：原始文本 + 自动刷新 + 关键字高亮 + 导出 */
-export function LogViewer({ title, fetchLogs, exportLogs, exportName = 'log.zip', showAdvanced = true, back = false }: LogViewerProps) {
+export function LogViewer({
+  title,
+  fetchLogs,
+  exportLogs,
+  exportName = 'log.zip',
+  showAdvanced = true,
+  back = false,
+  boxClassName = 'h-[420px]',
+}: LogViewerProps) {
   const [text, setText] = useState('')
   const [loading, setLoading] = useState(false)
   const [timestamps, setTimestamps] = useState(false)
@@ -200,7 +211,10 @@ export function LogViewer({ title, fetchLogs, exportLogs, exportName = 'log.zip'
 
           <div
             ref={boxRef}
-            className="h-[420px] overflow-auto rounded-md bg-black p-3 font-mono text-xs leading-5 text-green-400"
+            className={cn(
+              'overflow-auto rounded-md bg-black p-3 font-mono text-xs leading-5 text-green-400',
+              boxClassName,
+            )}
           >
             {loading && text === '' ? (
               <div className="text-muted-foreground">加载中...</div>

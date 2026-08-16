@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Link, Outlet, NavLink, useLocation } from 'react-router-dom'
+import { useAtomValue } from 'jotai'
 import { ChevronLeft, ChevronRight, Wrench } from 'lucide-react'
 
 import { cn } from '@/lib/utils'
@@ -14,7 +15,7 @@ import {
 import { ThemeToggle } from '@/components/theme-toggle'
 import { UserMenu } from '@/components/layout/UserMenu'
 import { menuConfig, type MenuItem } from '@/data/menu'
-import { bootstrapPlatform } from '@/stores/platform'
+import { bootstrapPlatform, serverInfoAtom } from '@/stores/platform'
 
 const SIDEBAR_EXPANDED = 'w-64'
 const SIDEBAR_COLLAPSED = 'w-16'
@@ -108,12 +109,30 @@ export default function AppLayout() {
   const [ready, setReady] = useState(false)
   const [collapsed, setCollapsed] = useState(false)
   const location = useLocation()
+  const serverInfo = useAtomValue(serverInfoAtom)
 
   // 启动时加载平台信息（serverInfo + 版本仓库），决定服务资源路径
   useEffect(() => {
     bootstrapPlatform().finally(() => setReady(true))
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  // 菜单按平台过滤（与旧版 MainMenu 一致：服务管理日志仅 Windows 显示）
+  const serverType = serverInfo?.serverType
+  const menus = useMemo(
+    () =>
+      menuConfig.map((item) =>
+        item.children?.some((c) => c.platform)
+          ? {
+              ...item,
+              children: item.children.filter(
+                (c) => !c.platform || (serverType != null && c.platform.includes(serverType)),
+              ),
+            }
+          : item,
+      ),
+    [serverType],
+  )
 
   if (!ready) {
     return (
@@ -147,7 +166,7 @@ export default function AppLayout() {
         {/* 菜单 */}
         <ScrollArea className="flex-1 px-2 py-3">
           <nav className="flex flex-col gap-1">
-            {menuConfig.map((item) => (
+            {menus.map((item) => (
               <NavGroup
                 key={item.title}
                 item={item}
@@ -162,7 +181,7 @@ export default function AppLayout() {
         <div className={cn('shrink-0 border-t px-3 py-3', collapsed && 'px-2')}>
           {!collapsed && (
             <p className="mb-2 truncate text-xs text-muted-foreground">
-              {currentBreadcrumb(location.pathname)}
+              {currentBreadcrumb(location.pathname, menus)}
             </p>
           )}
           <div className={cn('flex items-center gap-1', collapsed && 'flex-col gap-2')}>
@@ -198,8 +217,8 @@ export default function AppLayout() {
 }
 
 /** 根据当前路径找到菜单标题（用于顶栏面包屑） */
-function currentBreadcrumb(pathname: string): string {
-  for (const item of menuConfig) {
+function currentBreadcrumb(pathname: string, items: MenuItem[] = menuConfig): string {
+  for (const item of items) {
     if (item.path === pathname) return item.title
     for (const child of item.children ?? []) {
       if (child.path === pathname) return `${item.title} / ${child.title}`

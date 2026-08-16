@@ -57,6 +57,8 @@ interface DataTableProps<T> {
     current?: number
     total?: number
     onPageChange?: (page: number) => void
+    /** 服务端分页时每页行数变化回调（一般配合回到第一页） */
+    onPageSizeChange?: (size: number) => void
   }
   emptyText?: ReactNode
   onRowClick?: (row: T) => void
@@ -86,7 +88,8 @@ export function DataTable<T extends RowData>({
 
   const controlled = pagination?.current !== undefined
   // 未传 pagination 时显示全部（分页 size 给到数据长度，避免默认 10 条截断）
-  const pageSize = pagination?.pageSize ?? (pagination ? pageState.pageSize : Math.max(data.length, 1))
+  // 传入 pagination 时以内部 state 为准（初始值来自 pagination.pageSize），保证 Rows per page 可选
+  const pageSize = pagination ? pageState.pageSize : Math.max(data.length, 1)
   const pageCount = pagination
     ? Math.max(1, Math.ceil((pagination.total ?? data.length) / pageSize))
     : 1
@@ -175,7 +178,14 @@ export function DataTable<T extends RowData>({
     onPaginationChange: (updater) => {
       const next = resolveUpdater(updater, tableRef.current.state.pagination)
       if (controlled) {
-        pagination?.onPageChange?.(next.pageIndex + 1)
+        // 每页行数变化：同步内部 size、通知父组件并回到第一页
+        if (next.pageSize !== tableRef.current.state.pagination.pageSize) {
+          setPageState((prev) => ({ ...prev, pageSize: next.pageSize }))
+          pagination?.onPageSizeChange?.(next.pageSize)
+          pagination?.onPageChange?.(1)
+        } else {
+          pagination?.onPageChange?.(next.pageIndex + 1)
+        }
       } else {
         setPageState(next)
       }

@@ -15,13 +15,11 @@ const ServiceStatsPage = lazy(() => import('@/pages/service/ServiceStatsPage'))
 const ServiceInspectPage = lazy(() => import('@/pages/service/ServiceInspectPage'))
 const ServiceConsolePage = lazy(() => import('@/pages/service/ServiceConsolePage'))
 const ServiceDeployPage = lazy(() => import('@/pages/service/ServiceDeployPage'))
-const ModularListPage = lazy(() => import('@/pages/modular/ModularListPage'))
 const OperationLogPage = lazy(() => import('@/pages/logs/OperationLogPage'))
 const OpsLogPage = lazy(() => import('@/pages/logs/OpsLogPage'))
 const Pm2LogPage = lazy(() => import('@/pages/logs/Pm2LogPage'))
 const RemoteControlPage = lazy(() => import('@/pages/remote/RemoteControlPage'))
 const ServiceDiagnosisPage = lazy(() => import('@/pages/serviceDiagnosis/ServiceDiagnosisPage'))
-const ProjectConfigPage = lazy(() => import('@/pages/sys/ProjectConfigPage'))
 const ChangePasswordPage = lazy(() => import('@/pages/auth/ChangePasswordPage'))
 
 /** 应用启动：恢复登录态、移除启动加载动画 */
@@ -80,13 +78,11 @@ export default function App() {
               <Route path="model/Service/inspect" element={<ServiceInspectPage />} />
               <Route path="model/Service/console" element={<ServiceConsolePage />} />
               <Route path="model/Service/depolyment" element={<ServiceDeployPage />} />
-              <Route path="model/Modular/list" element={<ModularListPage />} />
               <Route path="model/Log/list" element={<OperationLogPage />} />
               <Route path="log/operation" element={<OpsLogPage />} />
               <Route path="log/pm2" element={<Pm2LogPage />} />
               <Route path="model/RemoteControl/list" element={<RemoteControlPage />} />
               <Route path="serviceDiagnosis" element={<ServiceDiagnosisPage />} />
-              <Route path="sys/project" element={<ProjectConfigPage />} />
               <Route path="changePassword" element={<ChangePasswordPage />} />
             </Route>
           </Route>

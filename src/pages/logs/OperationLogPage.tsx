@@ -65,7 +65,7 @@ export default function OperationLogPage() {
   const [types, setTypes] = useState<string[]>([])
   const [detail, setDetail] = useState<OpsLogItem | null>(null)
 
-  const pageSize = 10
+  const [pageSize, setPageSize] = useState(10)
 
   const load = useCallback(async () => {
     setLoading(true)
@@ -93,7 +93,7 @@ export default function OperationLogPage() {
     } finally {
       setLoading(false)
     }
-  }, [page, search, type, range])
+  }, [page, pageSize, search, type, range])
 
   useEffect(() => {
     load()
@@ -177,6 +177,7 @@ export default function OperationLogPage() {
     {
       key: 'message',
       title: '操作内容',
+      width: 360,
       render: (r) => <span className="line-clamp-1 text-muted-foreground">{r.message || r.msg || '-'}</span>,
     },
     {
@@ -189,6 +190,7 @@ export default function OperationLogPage() {
       key: 'actions',
       title: '操作',
       width: 90,
+      pinned: 'right',
       render: (r) => (
         <Button variant="ghost" size="sm" className="h-7 px-2" onClick={() => setDetail(r)}>
           <Eye className="mr-1 size-3.5" />
@@ -258,6 +260,10 @@ export default function OperationLogPage() {
               current: page,
               total,
               onPageChange: setPage,
+              onPageSizeChange: (size) => {
+                setPageSize(size)
+                setPage(1)
+              },
             }}
           />
         </TabsContent>
