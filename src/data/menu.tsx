@@ -1,5 +1,5 @@
 import type { LucideIcon } from 'lucide-react'
-import { Box, FileText, Gauge, Radio, Stethoscope } from 'lucide-react'
+import { Box, FileText, Gauge, MonitorUp, Radio, Stethoscope } from 'lucide-react'
 
 export interface MenuItem {
   title: string
@@ -13,6 +13,7 @@ export interface MenuItem {
 /** 侧边栏菜单（与旧版路由保持一致） */
 export const menuConfig: MenuItem[] = [
   { title: '服务管理', path: '/app/model/Service/list', icon: Box },
+  { title: '前端管理', path: '/app/front', icon: MonitorUp },
   { title: '资源统计', path: '/app/resourceStatistics', icon: Gauge },
   { title: '服务诊断', path: '/app/serviceDiagnosis', icon: Stethoscope },
   {

@@ -20,6 +20,7 @@ const OpsLogPage = lazy(() => import('@/pages/logs/OpsLogPage'))
 const Pm2LogPage = lazy(() => import('@/pages/logs/Pm2LogPage'))
 const RemoteControlPage = lazy(() => import('@/pages/remote/RemoteControlPage'))
 const ServiceDiagnosisPage = lazy(() => import('@/pages/serviceDiagnosis/ServiceDiagnosisPage'))
+const FrontManagePage = lazy(() => import('@/pages/front/FrontManagePage'))
 const ChangePasswordPage = lazy(() => import('@/pages/auth/ChangePasswordPage'))
 
 /** 应用启动：恢复登录态、移除启动加载动画 */
@@ -83,6 +84,7 @@ export default function App() {
               <Route path="log/pm2" element={<Pm2LogPage />} />
               <Route path="model/RemoteControl/list" element={<RemoteControlPage />} />
               <Route path="serviceDiagnosis" element={<ServiceDiagnosisPage />} />
+              <Route path="front" element={<FrontManagePage />} />
               <Route path="changePassword" element={<ChangePasswordPage />} />
             </Route>
           </Route>

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useUser } from '@kesi/client'
 import { toast } from 'sonner'
 import { Eye, EyeOff, Loader2, Lock, LogIn, User } from 'lucide-react'
@@ -26,7 +26,15 @@ function normalizeUser(res: Record<string, any>, username: string) {
 
 export default function LoginPage() {
   const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
   const { setUser, storageKey } = useUser()
+
+  // 登录后跳转地址：优先取拦截器写入的 redirect 来源参数（仅允许站内相对路径），
+  // 否则回到默认首页。参考 authInterceptor.ts 的 buildLoginUrl。
+  const getLoginRedirect = (): string => {
+    const redirect = searchParams.get('redirect')
+    return redirect && redirect.startsWith('/') ? redirect : '/app/dashboard'
+  }
 
   // 记住我：回填上次登录的用户名
   const [username, setUsername] = useState(() => {
@@ -71,7 +79,7 @@ export default function LoginPage() {
       setUser(user)
       localStorage.setItem(storageKey, JSON.stringify(user))
 
-      navigate('/app/dashboard', { replace: true })
+      navigate(getLoginRedirect(), { replace: true })
       toast.success('登录成功')
     } catch (err: any) {
       toast.error(err?.json?.message || err?.json?._error || '登录失败，请重试')
@@ -106,7 +114,7 @@ export default function LoginPage() {
             <div className="absolute -bottom-14 -left-8 size-24 rounded-full bg-white/10 blur-2xl" />
             <div className="relative flex flex-col items-center">
               <div className="mb-5 flex size-16 items-center justify-center rounded-2xl bg-white/20 font-bold text-3xl shadow-lg ring-1 ring-white/30 backdrop-blur">
-                运
+                <img src="/logo.svg" alt="Logo" className="size-10" />
               </div>
               <h1 className="mb-1 text-2xl font-bold tracking-tight sm:text-3xl">运维管理平台</h1>
               <p className="text-sm text-blue-100">服务 · 模块 · 容器一站式运维</p>
@@ -141,13 +149,6 @@ export default function LoginPage() {
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
                   <Label htmlFor="password">密码</Label>
-                  <button
-                    type="button"
-                    onClick={() => toast.info('请联系平台管理员重置密码')}
-                    className="text-xs text-muted-foreground transition-colors hover:text-foreground"
-                  >
-                    忘记密码？
-                  </button>
                 </div>
                 <div className="relative">
                   <Lock className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
