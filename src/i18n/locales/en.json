@@ -264,6 +264,7 @@
     "等待重试": "Waiting to Retry",
     "类型": "Type",
     "系统平台": "System Platform",
+    "系统管理": "System Management",
     "系统跟随": "Follow System",
     "缓存": "Cache",
     "编辑服务": "Edit Service",
@@ -374,6 +375,8 @@
     "选择文件": "Select File",
     "重启": "Restart",
     "重新探测": "Probe Again",
-    "外观": "Appearance"
+    "外观": "Appearance",
+    "语言 / Language": "Language / 语言",
+    "选择界面显示语言": "Select the interface display language"
   }
 }

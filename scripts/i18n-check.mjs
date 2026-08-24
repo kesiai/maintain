@@ -73,8 +73,8 @@ for (const lf of locales) {
 }
 console.log(`[key] 源码 t() 共 ${allKeys.size} 条`)
 
-// 有意保留的 CJK（非 UI 文案）：双语标签、语言缩写、头像占位字等
-const ALLOWED_RESIDUE = ['语言 / Language', "'简'", "'运'"]
+// 有意保留的 CJK（非 UI 文案）：语言缩写、头像占位字等
+const ALLOWED_RESIDUE = ["'简'", "'运'"]
 
 // 3) 残留硬编码中文检查
 let residue = []

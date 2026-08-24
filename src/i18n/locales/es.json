@@ -264,6 +264,7 @@
     "等待重试": "Esperando reintento",
     "类型": "Tipo",
     "系统平台": "Plataforma del sistema",
+    "系统管理": "Gestión del sistema",
     "系统跟随": "Seguir al sistema",
     "缓存": "Caché",
     "编辑服务": "Editar servicio",
@@ -374,6 +375,8 @@
     "选择文件": "Seleccionar archivo",
     "重启": "Reiniciar",
     "重新探测": "Volver a probar",
-    "外观": "Apariencia"
+    "外观": "Apariencia",
+    "语言 / Language": "Idioma / Language",
+    "选择界面显示语言": "Seleccione el idioma de la interfaz"
   }
 }

@@ -103,8 +103,8 @@ export default function LoginPage() {
         <div className="absolute left-1/2 top-1/2 size-96 -translate-x-1/2 -translate-y-1/2 rounded-full bg-cyan-400/10 blur-3xl dark:bg-cyan-600/10" />
       </div>
 
-      {/* 语言 + 主题切换 */}
-      <div className="absolute right-4 top-4 z-10 flex items-center gap-2">
+      {/* 语言 + 主题切换（逻辑定位，RTL 时自动镜像到左侧） */}
+      <div className="absolute end-4 top-4 z-10 flex items-center gap-2">
         <LanguageSwitcher />
         <ThemeToggle />
       </div>

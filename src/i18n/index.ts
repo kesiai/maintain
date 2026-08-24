@@ -81,9 +81,10 @@ void i18n.use(initReactI18next).init({
   },
 })
 
-// 同步 html lang（切换语言时由 useLocale 再次更新）
+// 同步 html lang 与 dir（切换语言时由 useLocale 再次更新；ar 等 RTL 语言 dir=rtl）
 if (typeof document !== 'undefined') {
   document.documentElement.lang = initialLang
+  document.documentElement.dir = i18n.dir(initialLang)
 }
 
 export default i18n

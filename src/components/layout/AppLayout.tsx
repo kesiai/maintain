@@ -23,6 +23,7 @@ import {
 import { UserMenu } from '@/components/layout/UserMenu'
 import { menuConfig, type MenuItem } from '@/data/menu'
 import { bootstrapPlatform, serverInfoAtom } from '@/stores/platform'
+import { useLocale } from '@/i18n/useLocale'
 
 /** 单个菜单项链接（shadcn SidebarMenuButton 模式） */
 function MenuLink({ item, currentPath }: { item: MenuItem; currentPath: string }) {
@@ -47,6 +48,9 @@ export default function AppLayout() {
   const location = useLocation()
   const serverInfo = useAtomValue(serverInfoAtom)
   const { t } = useTranslation()
+  const { locale } = useLocale()
+  // RTL（阿拉伯语）时侧边栏镜像到右侧
+  const side = locale === 'ar' ? 'right' : 'left'
 
   // 启动时加载平台信息（serverInfo + 版本仓库），决定服务资源路径
   useEffect(() => {
@@ -81,18 +85,20 @@ export default function AppLayout() {
 
   return (
     <SidebarProvider>
-      <Sidebar collapsible="icon">
+      <Sidebar side={side} collapsible="icon">
         {/* 品牌区：点击返回首页（保持原有结构） */}
         <SidebarHeader>
           <Link
             to="/app/dashboard"
             title={t('返回首页')}
-            className="flex h-14 shrink-0 items-center gap-2 border-b px-3"
+            className="flex h-14 shrink-0 items-center gap-2 border-b px-3 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0"
           >
             <div className="flex size-8 shrink-0 items-center justify-center rounded-md bg-primary text-primary-foreground">
               <Wrench className="size-4" />
             </div>
-            <span className="truncate text-sm font-semibold">{t('运维管理平台')}</span>
+            <span className="truncate text-md font-semibold group-data-[collapsible=icon]:hidden">
+              {t('运维管理平台')}
+            </span>
           </Link>
         </SidebarHeader>
 
@@ -109,11 +115,9 @@ export default function AppLayout() {
                 </SidebarMenu>
               </SidebarGroup>
             ) : (
-              <SidebarGroup key={item.title}>
-                <SidebarMenu>
-                  <MenuLink item={item} currentPath={location.pathname} />
-                </SidebarMenu>
-              </SidebarGroup>
+              <SidebarMenu>
+                <MenuLink item={item} currentPath={location.pathname} />
+              </SidebarMenu>
             ),
           )}
         </SidebarContent>
@@ -127,7 +131,7 @@ export default function AppLayout() {
       </Sidebar>
 
       <SidebarInset className="overflow-auto">
-        {/* 移动端侧栏开关（浮动在内容左上角） */}
+        {/* 移动端侧栏开关（浮动在内容左上角；RTL 时自动镜像到右侧） */}
         <SidebarTrigger className="md:hidden fixed top-3 z-40 ltr:left-3 rtl:right-3" />
         {/* 内容区 */}
         <div className="flex min-h-full flex-col p-6">

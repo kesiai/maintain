@@ -290,6 +290,7 @@
     "等待重试": "Warten auf Wiederholung",
     "类型": "Typ",
     "系统平台": "Systemplattform",
+    "系统管理": "Systemverwaltung",
     "系统跟随": "System folgen",
     "缓存": "Cache",
     "编辑服务": "Dienst bearbeiten",
@@ -374,6 +375,8 @@
     "验证密钥（vkey）": "Verifizierungsschlüssel (vkey)",
     "高级添加": "Erweiterte Hinzufügung",
     "默认网络名": "Standard-Netzwerkname",
-    "外观": "Erscheinungsbild"
+    "外观": "Erscheinungsbild",
+    "语言 / Language": "Sprache / Language",
+    "选择界面显示语言": "Sprache der Oberfläche wählen"
   }
 }

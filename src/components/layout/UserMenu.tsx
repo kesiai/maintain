@@ -4,7 +4,6 @@ import { useUser } from '@kesi/client'
 import { ChevronsUpDown, KeyRound, Languages, LogOut, Monitor, Moon, Sun } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 
-import { cn } from '@/lib/utils'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import {
   DropdownMenu,
@@ -23,7 +22,7 @@ import {
 import { useTheme } from '@/components/theme-provider'
 import { logout as apiLogout } from '@/lib/api/auth-api'
 import { ChangePasswordDialog } from '@/components/layout/ChangePasswordDialog'
-import { useLocale } from '@/i18n/useLocale'
+import { LanguageSwitcher } from '@/components/layout/LanguageSwitcher'
 
 /** 主题项（值即 i18n key） */
 const THEME_ITEMS = [
@@ -43,16 +42,16 @@ function getInitials(name?: string) {
 /**
  * 用户菜单（NavUser 模式，对齐 kesi AppSidebar 的 UserMenu）
  * - 触发器：头像 + 名称 + 副标题 + ChevronsUpDown（折叠态自动收缩为图标）
- * - 菜单：修改密码 / 外观（亮色·暗色·系统跟随）/ 语言（11 种）/ 退出登录
+ * - 菜单：修改密码 / 外观（亮色·暗色·系统跟随）/ 语言（弹出对话框）/ 退出登录
  */
 export function UserMenu() {
   const navigate = useNavigate()
   const { user, setUser, storageKey } = useUser()
   const { t } = useTranslation()
   const { theme, setTheme } = useTheme()
-  const { locale, changeLocale, locales } = useLocale()
   const { isMobile } = useSidebar()
   const [pwdOpen, setPwdOpen] = useState(false)
+  const [langOpen, setLangOpen] = useState(false)
 
   const displayName = user?.username || user?.name || t('用户')
   const subtitle = user?.email || t('运维管理平台')
@@ -134,24 +133,11 @@ export function UserMenu() {
               })}
               <DropdownMenuSeparator />
 
-              {/* 语言 */}
-              <DropdownMenuLabel className="text-xs text-muted-foreground">
-                <span className="flex items-center gap-2">
-                  <Languages className="size-4" />
-                  语言 / Language
-                </span>
-              </DropdownMenuLabel>
-              {locales.map((l) => (
-                <DropdownMenuItem
-                  key={l.code}
-                  className={cn('gap-2', locale === l.code && 'text-primary')}
-                  onClick={() => changeLocale(l.code)}
-                >
-                  <span className="w-6 text-xs">{l.code === 'zh-CN' ? '简' : l.code.slice(0, 2).toUpperCase()}</span>
-                  {l.label}
-                  {locale === l.code && <span className="ml-auto text-xs text-primary">✓</span>}
-                </DropdownMenuItem>
-              ))}
+              {/* 语言：打开语言对话框 */}
+              <DropdownMenuItem onClick={() => setLangOpen(true)} className="gap-2">
+                <Languages className="size-4 text-muted-foreground" />
+                <span>{t('语言 / Language')}</span>
+              </DropdownMenuItem>
               <DropdownMenuSeparator />
 
               {/* 退出登录 */}
@@ -163,6 +149,9 @@ export function UserMenu() {
           </DropdownMenu>
         </SidebarMenuItem>
       </SidebarMenu>
+
+      {/* 语言对话框（由菜单「语言」触发） */}
+      <LanguageSwitcher open={langOpen} onOpenChange={setLangOpen} hideTrigger />
 
       {/* 修改密码对话框 */}
       <ChangePasswordDialog open={pwdOpen} onOpenChange={setPwdOpen} />

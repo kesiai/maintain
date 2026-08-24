@@ -264,6 +264,7 @@
     "等待重试": "En attente de nouvelle tentative",
     "类型": "Type",
     "系统平台": "Plateforme système",
+    "系统管理": "Gestion du système",
     "系统跟随": "Suivre le système",
     "缓存": "Cache",
     "编辑服务": "Modifier le service",
@@ -374,6 +375,8 @@
     "选择文件": "Sélectionner un fichier",
     "重启": "Redémarrer",
     "重新探测": "Relancer la détection",
-    "外观": "Apparence"
+    "外观": "Apparence",
+    "语言 / Language": "Langue / Language",
+    "选择界面显示语言": "Choisissez la langue de l'interface"
   }
 }
