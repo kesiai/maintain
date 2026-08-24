@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 import { MonitorUp, Rocket, ServerCog } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
@@ -105,22 +106,23 @@ function FrontProgressDialog({
   id: string
   onClose: () => void
 }) {
+  const { t } = useTranslation()
   const { stage, progress, error } = useFrontInstallPoll(id)
-  const title = TARGETS.find((t) => t.key === target)?.title ?? '前端升级'
+  const title = t(TARGETS.find((tg) => tg.key === target)?.title ?? '前端升级')
 
   useEffect(() => {
     if (stage === 'done') {
-      toast.success('升级完成')
-      const t = setTimeout(onClose, 800)
-      return () => clearTimeout(t)
+      toast.success(t('升级完成'))
+      const timer = setTimeout(onClose, 800)
+      return () => clearTimeout(timer)
     }
-  }, [stage, onClose])
+  }, [stage, onClose, t])
 
   useEffect(() => {
     if (stage === 'error') {
-      toast.error(error || '升级失败')
+      toast.error(error || t('升级失败'))
     }
-  }, [stage, error])
+  }, [stage, error, t])
 
   const isDone = stage === 'done'
   const isError = stage === 'error'
@@ -130,12 +132,12 @@ function FrontProgressDialog({
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
-          <DialogDescription>正在处理安装任务，请稍候...</DialogDescription>
+          <DialogDescription>{t('正在处理安装任务，请稍候...')}</DialogDescription>
         </DialogHeader>
         <div className="space-y-1.5">
           <div className="flex items-center justify-between text-sm">
             <span className={cn(isError && 'text-destructive', isDone && 'text-emerald-600')}>
-              {isDone ? '已完成' : isError ? '升级失败' : '正在安装'}
+              {isDone ? t('已完成') : isError ? t('升级失败') : t('正在安装')}
             </span>
             <span className="text-muted-foreground">{progress}%</span>
           </div>
@@ -151,6 +153,7 @@ function FrontProgressDialog({
 }
 
 export default function FrontManagePage() {
+  const { t } = useTranslation()
   /** 正在选择的升级目标（null = 未打开文件选择弹窗） */
   const [picker, setPicker] = useState<FrontTarget | null>(null)
   /** 正在执行的升级任务（id 用于轮询进度） */
@@ -159,7 +162,7 @@ export default function FrontManagePage() {
 
   const handleUpload = async (target: FrontTarget, file: File) => {
     if (!isSupportedArchive(file.name)) {
-      toast.error('请选择 .zip 或 .tar.gz 格式的压缩包')
+      toast.error(t('请选择 .zip 或 .tar.gz 格式的压缩包'))
       return
     }
     setSubmitting(true)
@@ -167,13 +170,13 @@ export default function FrontManagePage() {
       const res = await offlineInstallFront(file, target === 'ops')
       const id = res?.id
       if (!id) {
-        toast.error('升级失败：未获取到安装任务')
+        toast.error(t('升级失败：未获取到安装任务'))
         return
       }
       setUpgrade({ target, id })
       setPicker(null)
     } catch (e: any) {
-      toast.error(e?.json?._error || e?.message || '升级失败')
+      toast.error(e?.json?._error || e?.message || t('升级失败'))
     } finally {
       setSubmitting(false)
     }
@@ -181,29 +184,29 @@ export default function FrontManagePage() {
 
   return (
     <div className="space-y-4">
-      <PageHeader title="前端管理" subtitle="上传前端升级包，升级管理平台 / 运维平台前端" />
+      <PageHeader title={t('前端管理')} subtitle={t('上传前端升级包，升级管理平台 / 运维平台前端')} />
 
       <div className="grid gap-4 md:grid-cols-2">
-        {TARGETS.map((t) => (
-          <Card key={t.key} className="transition-shadow hover:shadow-md">
+        {TARGETS.map((tg) => (
+          <Card key={tg.key} className="transition-shadow hover:shadow-md">
             <CardHeader className="flex flex-row items-center gap-3 space-y-0 pb-2">
               <div
                 className={cn(
                   'flex size-10 shrink-0 items-center justify-center rounded-lg bg-linear-to-br text-white shadow-sm',
-                  t.gradient,
+                  tg.gradient,
                 )}
               >
-                <t.icon className="size-5" />
+                <tg.icon className="size-5" />
               </div>
               <div className="space-y-0.5">
-                <CardTitle className="text-base">{t.title}</CardTitle>
-                <CardDescription>{t.desc}</CardDescription>
+                <CardTitle className="text-base">{t(tg.title)}</CardTitle>
+                <CardDescription>{t(tg.desc)}</CardDescription>
               </div>
             </CardHeader>
             <CardContent>
-              <Button className="w-full" onClick={() => setPicker(t.key)}>
+              <Button className="w-full" onClick={() => setPicker(tg.key)}>
                 <Rocket className="mr-1 size-4" />
-                选择升级包
+                {t('选择升级包')}
               </Button>
             </CardContent>
           </Card>
@@ -215,13 +218,13 @@ export default function FrontManagePage() {
         <DialogContent className="sm:max-w-sm">
           <DialogHeader>
             <DialogTitle>
-              {picker ? TARGETS.find((t) => t.key === picker)?.title : '前端升级'}
+              {picker ? t(TARGETS.find((tg) => tg.key === picker)?.title ?? '前端升级') : t('前端升级')}
             </DialogTitle>
-            <DialogDescription>请选择前端升级包文件（支持 .zip / .tar.gz）</DialogDescription>
+            <DialogDescription>{t('请选择前端升级包文件（支持 .zip / .tar.gz）')}</DialogDescription>
           </DialogHeader>
           <div className="flex justify-center py-2">
             <UploadFileButton
-              label="选择文件并上传"
+              label={t('选择文件并上传')}
               accept=".zip,.tar.gz,.gz"
               disabled={submitting}
               onUpload={(file) => {

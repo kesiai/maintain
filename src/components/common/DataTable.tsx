@@ -1,4 +1,5 @@
 import { useMemo, useRef, useState, type ReactNode } from 'react'
+import { useTranslation } from 'react-i18next'
 import {
   useTable,
   type CellContext,
@@ -78,9 +79,10 @@ export function DataTable<T extends RowData>({
   loading = false,
   selection,
   pagination,
-  emptyText = '暂无数据',
+  emptyText,
   onRowClick,
 }: DataTableProps<T>) {
+  const { t } = useTranslation()
   const [pageState, setPageState] = useState<PaginationState>({
     pageIndex: 0,
     pageSize: pagination?.pageSize || 20,
@@ -210,7 +212,7 @@ export function DataTable<T extends RowData>({
       recordCount={pagination?.total ?? data.length}
       isLoading={loading}
       onRowClick={onRowClick as (row: RowData) => void}
-      emptyMessage={emptyText}
+      emptyMessage={emptyText ?? t('暂无数据')}
       tableLayout={{
         // 有固定列时开启列固定（sticky 定位由 columnsPinnable 控制），否则关闭
         columnsPinnable: columns.some((c) => c.pinned),

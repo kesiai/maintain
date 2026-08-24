@@ -3,6 +3,7 @@ import { useSearchParams } from 'react-router-dom'
 import { getConfig } from '@kesi/client'
 import { toast } from 'sonner'
 import { AlertTriangle, PlugZap } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { Terminal } from '@xterm/xterm'
 import { FitAddon } from '@xterm/addon-fit'
 import { AttachAddon } from '@xterm/addon-attach'
@@ -40,6 +41,7 @@ export function ServiceConsoleContent({
   const [connecting, setConnecting] = useState(false)
   const [connected, setConnected] = useState(false)
   const [cmd0, setCmd0] = useState('')
+  const { t } = useTranslation()
 
   const termRef = useRef<HTMLDivElement>(null)
   const wsRef = useRef<WebSocket | null>(null)
@@ -87,11 +89,11 @@ export function ServiceConsoleContent({
   const connect = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!pod) {
-      toast.warning('缺少 podName 参数')
+      toast.warning(t('缺少 podName 参数'))
       return
     }
     if (!cmd || !user) {
-      toast.info('请填写命令和用户')
+      toast.info(t('请填写命令和用户'))
       return
     }
     setConnecting(true)
@@ -119,21 +121,25 @@ export function ServiceConsoleContent({
       }
       ws.onerror = () => {
         errorShownRef.current = true
-        toast.error('WebSocket 连接失败')
+        toast.error(t('WebSocket 连接失败'))
         setConnecting(false)
       }
       ws.onclose = (ev) => {
         // 已连接后意外断开：给出错误码 / 原因提示
         if (!intentionalCloseRef.current && !errorShownRef.current) {
           const reason = ev?.reason?.trim()
-          toast.error(reason ? `连接已断开：${reason}` : `连接已断开（错误码 ${ev?.code ?? '未知'}）`)
+          toast.error(
+            reason
+              ? t('连接已断开：{{reason}}', { reason })
+              : t('连接已断开（错误码 {{code}}）', { code: ev?.code ?? t('未知') }),
+          )
         }
         setConnected(false)
         setConnecting(false)
       }
     } catch (e: any) {
       setConnecting(false)
-      toast.error(e?.json?._error || e?.message || '连接失败')
+      toast.error(e?.json?._error || e?.message || t('连接失败'))
     }
   }
 
@@ -146,20 +152,19 @@ export function ServiceConsoleContent({
 
   return (
     <div className="space-y-4">
-      <PageHeader title={`控制台：${pod}`} back={back} />
+      <PageHeader title={t('控制台：{{pod}}', { pod })} back={back} />
 
       {connected && (
         <div className="flex items-center justify-between gap-3 rounded-lg border bg-muted/40 px-4 py-2.5">
           <div className="flex min-w-0 items-center gap-2 text-sm">
             <AlertTriangle className="size-4 shrink-0 text-amber-500" />
             <span className="truncate">
-              用户 <span className="font-medium">{user}</span> 正在使用{' '}
-              <span className="font-medium">{cmd0}</span> 命令
+              {t('用户 {{user}} 正在使用 {{cmd}} 命令', { user, cmd: cmd0 })}
             </span>
           </div>
           <Button variant="destructive" size="sm" onClick={disconnect}>
             <PlugZap className="mr-1 size-4" />
-            断开连接
+            {t('断开连接')}
           </Button>
         </div>
       )}
@@ -167,10 +172,10 @@ export function ServiceConsoleContent({
       {!connected ? (
         <form onSubmit={connect} className="flex items-end gap-3">
           <div className="min-w-0 flex-1 space-y-1.5">
-            <Label className="text-sm">命令</Label>
+            <Label className="text-sm">{t('命令')}</Label>
             <Select value={cmd} onValueChange={setCmd} open={selectOpen} onOpenChange={setSelectOpen}>
               <SelectTrigger className="w-full">
-                <SelectValue placeholder="请选择命令" />
+                <SelectValue placeholder={t('请选择命令')} />
               </SelectTrigger>
               <SelectContent>
                 {PRESET_COMMANDS.map((c) => (
@@ -181,7 +186,7 @@ export function ServiceConsoleContent({
                 {cmd && !PRESET_COMMANDS.includes(cmd) && <SelectItem value={cmd}>{cmd}</SelectItem>}
                 <div className="border-t p-2">
                   <Input
-                    placeholder="自定义命令，输入后回车"
+                    placeholder={t('自定义命令，输入后回车')}
                     defaultValue=""
                     onKeyDown={(e) => {
                       if (e.key === 'Enter') {
@@ -197,11 +202,11 @@ export function ServiceConsoleContent({
             </Select>
           </div>
           <div className="w-64 space-y-1.5">
-            <Label className="text-sm">用户</Label>
+            <Label className="text-sm">{t('用户')}</Label>
             <Input value={user} onChange={(e) => setUser(e.target.value)} placeholder="root" />
           </div>
           <Button type="submit" className="shrink-0" disabled={connecting}>
-            {connecting ? '连接中...' : '连接'}
+            {connecting ? t('连接中...') : t('连接')}
           </Button>
         </form>
       ) : (

@@ -1,4 +1,5 @@
 import { createAPI, getConfig } from '@kesi/client'
+import i18n from '@/i18n'
 
 /** createAPI().fetch 的返回结构（{ json, data, status, headers }） */
 export type ApiFetchResponse = Awaited<ReturnType<typeof apiClient.fetch>>
@@ -47,7 +48,7 @@ export function errorMessage(err: unknown): string {
     message?: string
   }
   const json = Array.isArray(e?.json) ? e.json[0] : e?.json
-  return json?._error ?? json?.message ?? e?.message ?? '请求失败，请稍后重试'
+  return json?._error ?? json?.message ?? e?.message ?? i18n.t('请求失败，请稍后重试')
 }
 
 /**

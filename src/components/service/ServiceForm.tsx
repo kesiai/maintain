@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 import { Plus, Trash2 } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -48,6 +49,7 @@ export function ServiceForm({
   submitText: string
   onSubmit: (payload: Record<string, any>) => Promise<void>
 }) {
+  const { t } = useTranslation()
   const [name, setName] = useState('')
   const [image, setImage] = useState('')
   const [service, setService] = useState('None')
@@ -100,7 +102,7 @@ export function ServiceForm({
     e.preventDefault()
     if (isWin) {
       if (!name || !command) {
-        toast.info('请填写应用名称和命令')
+        toast.info(t('请填写应用名称和命令'))
         return
       }
       setSaving(true)
@@ -113,7 +115,7 @@ export function ServiceForm({
           startAuto,
         })
       } catch (err: any) {
-        toast.error(err?.json?._error || err?.message || '保存失败')
+        toast.error(err?.json?._error || err?.message || t('保存失败'))
       } finally {
         setSaving(false)
       }
@@ -121,11 +123,11 @@ export function ServiceForm({
     }
 
     if (!name || !image) {
-      toast.info('请填写应用名称和容器镜像')
+      toast.info(t('请填写应用名称和容器镜像'))
       return
     }
     if (service !== 'None' && !path) {
-      toast.info('请填写接口统一路径')
+      toast.info(t('请填写接口统一路径'))
       return
     }
 
@@ -148,32 +150,32 @@ export function ServiceForm({
     try {
       await onSubmit(payload)
     } catch (err: any) {
-      toast.error(err?.json?._error || err?.message || '保存失败')
+      toast.error(err?.json?._error || err?.message || t('保存失败'))
     } finally {
       setSaving(false)
     }
   }
 
-  const envName = (i: number) => `环境变量 ${i + 1}`
+  const envName = (i: number) => t('环境变量 {{index}}', { index: i + 1 })
 
   return (
     <Card>
       <CardContent className="pt-6">
         <form onSubmit={handleSubmit} className="max-w-2xl space-y-5">
           {!initial && (
-            <Field label="应用名称" required description="具有此值的 app 标签将添加到部署的 Deployment 和 Service">
-              <Input value={name} onChange={(e) => setName(e.target.value)} placeholder="请输入应用名称" />
+            <Field label={t('应用名称')} required description={t('具有此值的 app 标签将添加到部署的 Deployment 和 Service')}>
+              <Input value={name} onChange={(e) => setName(e.target.value)} placeholder={t('请输入应用名称')} />
             </Field>
           )}
 
           {!isWin && (
-            <Field label="容器镜像" required description="格式 xxx:xxx">
-              <Input value={image} onChange={(e) => setImage(e.target.value)} placeholder="镜像名:标签" />
+            <Field label={t('容器镜像')} required description={t('格式 xxx:xxx')}>
+              <Input value={image} onChange={(e) => setImage(e.target.value)} placeholder={t('镜像名:标签')} />
             </Field>
           )}
 
           {!isWin && (
-            <Field label="Service 类型">
+            <Field label={t('Service 类型')}>
               <Select value={service} onValueChange={setService}>
                 <SelectTrigger className="w-full">
                   <SelectValue />
@@ -188,26 +190,26 @@ export function ServiceForm({
           )}
 
           {!isWin && service !== 'None' && (
-            <Field label="接口统一路径" required>
+            <Field label={t('接口统一路径')} required>
               <Input value={path} onChange={(e) => setPath(e.target.value)} placeholder="/api/xxx" />
             </Field>
           )}
 
           {isWin ? (
             <>
-              <Field label="目录">
-                <Input value={directory} onChange={(e) => setDirectory(e.target.value)} placeholder="工作目录" />
+              <Field label={t('目录')}>
+                <Input value={directory} onChange={(e) => setDirectory(e.target.value)} placeholder={t('工作目录')} />
               </Field>
-              <Field label="失败重试次数" description="-1 表示持续不停重试">
+              <Field label={t('失败重试次数')} description={t('-1 表示持续不停重试')}>
                 <Input type="number" value={startRetries} onChange={(e) => setStartRetries(e.target.value)} />
               </Field>
-              <Field label="自动启动">
+              <Field label={t('自动启动')}>
                 <Switch checked={startAuto} onCheckedChange={setStartAuto} />
               </Field>
             </>
           ) : (
             <>
-              <Field label="运行命令" description="每行一条命令">
+              <Field label={t('运行命令')} description={t('每行一条命令')}>
                 <Textarea
                   rows={3}
                   value={command}
@@ -215,22 +217,22 @@ export function ServiceForm({
                   placeholder="/bin/bash&#10;-c"
                 />
               </Field>
-              <Field label="网络">
-                <Input value={networks} onChange={(e) => setNetworks(e.target.value)} placeholder="默认网络名" />
+              <Field label={t('网络')}>
+                <Input value={networks} onChange={(e) => setNetworks(e.target.value)} placeholder={t('默认网络名')} />
               </Field>
-              <Field label="特权模式">
+              <Field label={t('特权模式')}>
                 <Switch checked={privileged} onCheckedChange={setPrivileged} />
               </Field>
 
               <ArrayField
-                label="环境变量"
+                label={t('环境变量')}
                 items={environment}
                 onChange={setEnvironment}
-                addLabel="添加环境变量"
+                addLabel={t('添加环境变量')}
                 render={(item, i) => (
                   <>
                     <Input
-                      placeholder="名称"
+                      placeholder={t('名称')}
                       value={item.name}
                       onChange={(e) => {
                         const next = [...environment]
@@ -239,7 +241,7 @@ export function ServiceForm({
                       }}
                     />
                     <Input
-                      placeholder="值"
+                      placeholder={t('值')}
                       value={item.value}
                       onChange={(e) => {
                         const next = [...environment]
@@ -253,10 +255,10 @@ export function ServiceForm({
               />
 
               <ArrayField
-                label="标签"
+                label={t('标签')}
                 items={labels}
                 onChange={setLabels}
-                addLabel="添加标签"
+                addLabel={t('添加标签')}
                 render={(item, i) => (
                   <>
                     <Input
@@ -283,10 +285,10 @@ export function ServiceForm({
               />
 
               <ArrayField
-                label="端口"
+                label={t('端口')}
                 items={ports}
                 onChange={setPorts}
-                addLabel="添加端口"
+                addLabel={t('添加端口')}
                 render={(item, i) => (
                   <>
                     <Input
@@ -329,10 +331,10 @@ export function ServiceForm({
               />
 
               <ArrayField
-                label="数据卷"
+                label={t('数据卷')}
                 items={volumes}
                 onChange={setVolumes}
-                addLabel="添加数据卷"
+                addLabel={t('添加数据卷')}
                 render={(item, i) => (
                   <>
                     <Input
@@ -379,7 +381,7 @@ export function ServiceForm({
 
           <div className="flex gap-2">
             <Button type="submit" disabled={saving}>
-              {saving ? '保存中...' : submitText}
+              {saving ? t('保存中...') : submitText}
             </Button>
           </div>
         </form>

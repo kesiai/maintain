@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
+import { useTranslation } from 'react-i18next'
 
 import { Dialog, DialogContent } from '@/components/ui/dialog'
 import { PageHeader } from '@/components/common/PageHeader'
@@ -17,6 +18,7 @@ export interface ServiceAction {
   service: ServiceItem
 }
 
+/** 操作标题（值即 i18n key，渲染处 t()） */
 const ACTION_TITLES: Record<ServiceActionType, string> = {
   edit: '编辑服务',
   log: '服务日志',
@@ -39,9 +41,10 @@ export function ServiceActionDialog({
   isWin: boolean
   onSuccess?: () => void
 }) {
+  const { t } = useTranslation()
   const service = action?.service
   const pod = service ? String(service.id ?? service.name ?? '') : ''
-  const title = action && service ? `${ACTION_TITLES[action.type]}：${service.name ?? service.id ?? ''}` : ''
+  const title = action && service ? `${t(ACTION_TITLES[action.type])}：${service.name ?? service.id ?? ''}` : ''
   // 控制台已连接时，阻止 ESC / 点击外部误关对话框（ESC 应交给终端，如 vim/htop）
   const [consoleConnected, setConsoleConnected] = useState(false)
 
@@ -68,11 +71,11 @@ export function ServiceActionDialog({
                 <PageHeader title={title} />
                 <ServiceForm
                   isWin={isWin}
-                  submitText="保存"
+                  submitText={t('保存')}
                   initial={service}
                   onSubmit={async (payload) => {
                     await updateService(String(service.name ?? ''), payload)
-                    toast.success('修改服务成功')
+                    toast.success(t('修改服务成功'))
                     onOpenChange(false)
                     onSuccess?.()
                   }}

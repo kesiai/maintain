@@ -3,6 +3,7 @@ import { getDefaultStore } from 'jotai'
 const store = getDefaultStore()
 import { apiClient, asJson, asArray, rawFetch } from './client'
 import { serverInfoAtom, getUrls, getServiceResource } from '@/stores/platform'
+import i18n from '@/i18n'
 
 /** 服务条目（docker compose / k8s / win service） */
 export interface ServiceItem {
@@ -110,7 +111,7 @@ export async function saveYml(text: string): Promise<void> {
   })
   if (!res.ok) {
     const msg = await res.text().catch(() => '')
-    throw new Error(msg || '保存失败')
+    throw new Error(msg || i18n.t('保存失败'))
   }
 }
 

@@ -3,12 +3,14 @@ import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useUser } from '@kesi/client'
 import { toast } from 'sonner'
 import { Eye, EyeOff, Loader2, Lock, LogIn, User } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Checkbox } from '@/components/ui/checkbox'
 import { ThemeToggle } from '@/components/theme-toggle'
+import { LanguageSwitcher } from '@/components/layout/LanguageSwitcher'
 import { login, type LoginParams } from '@/lib/api/auth-api'
 
 const LS_USERNAME = 'kesi-login-username'
@@ -28,6 +30,7 @@ export default function LoginPage() {
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const { setUser, storageKey } = useUser()
+  const { t } = useTranslation()
 
   // 登录后跳转地址：优先取拦截器写入的 redirect 来源参数（仅允许站内相对路径），
   // 否则回到默认首页。参考 authInterceptor.ts 的 buildLoginUrl。
@@ -59,7 +62,7 @@ export default function LoginPage() {
     e.preventDefault()
     const name = username.trim()
     if (!name || !password) {
-      toast.info('请输入用户名和密码')
+      toast.info(t('请输入用户名和密码'))
       return
     }
 
@@ -80,9 +83,9 @@ export default function LoginPage() {
       localStorage.setItem(storageKey, JSON.stringify(user))
 
       navigate(getLoginRedirect(), { replace: true })
-      toast.success('登录成功')
+      toast.success(t('登录成功'))
     } catch (err: any) {
-      toast.error(err?.json?.message || err?.json?._error || '登录失败，请重试')
+      toast.error(err?.json?.message || err?.json?._error || t('登录失败，请重试'))
     } finally {
       setLoading(false)
     }
@@ -100,8 +103,9 @@ export default function LoginPage() {
         <div className="absolute left-1/2 top-1/2 size-96 -translate-x-1/2 -translate-y-1/2 rounded-full bg-cyan-400/10 blur-3xl dark:bg-cyan-600/10" />
       </div>
 
-      {/* 主题切换 */}
-      <div className="absolute right-4 top-4 z-10">
+      {/* 语言 + 主题切换 */}
+      <div className="absolute right-4 top-4 z-10 flex items-center gap-2">
+        <LanguageSwitcher />
         <ThemeToggle />
       </div>
 
@@ -116,28 +120,28 @@ export default function LoginPage() {
               <div className="mb-5 flex size-16 items-center justify-center rounded-2xl bg-white/20 font-bold text-3xl shadow-lg ring-1 ring-white/30 backdrop-blur">
                 <img src="/logo.svg" alt="Logo" className="size-10" />
               </div>
-              <h1 className="mb-1 text-2xl font-bold tracking-tight sm:text-3xl">运维管理平台</h1>
-              <p className="text-sm text-blue-100">服务 · 模块 · 容器一站式运维</p>
+              <h1 className="mb-1 text-2xl font-bold tracking-tight sm:text-3xl">{t('运维管理平台')}</h1>
+              <p className="text-sm text-blue-100">{t('服务 · 模块 · 容器一站式运维')}</p>
             </div>
           </div>
 
           {/* 表单区 */}
           <div className="p-7 sm:p-9">
             <div className="mb-7">
-              <h2 className="mb-1 text-2xl font-bold tracking-tight">欢迎回来</h2>
-              <p className="text-sm text-muted-foreground">请登录您的账号以继续</p>
+              <h2 className="mb-1 text-2xl font-bold tracking-tight">{t('欢迎回来')}</h2>
+              <p className="text-sm text-muted-foreground">{t('请登录您的账号以继续')}</p>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-5">
               {/* 用户名 */}
               <div className="space-y-2">
-                <Label htmlFor="username">用户名</Label>
+                <Label htmlFor="username">{t('用户名')}</Label>
                 <div className="relative">
                   <User className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
                   <Input
                     id="username"
                     autoComplete="username"
-                    placeholder="请输入用户名"
+                    placeholder={t('请输入用户名')}
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
                     className="h-11 rounded-xl bg-muted/50 pl-10 focus-visible:bg-background"
@@ -148,7 +152,7 @@ export default function LoginPage() {
               {/* 密码 */}
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <Label htmlFor="password">密码</Label>
+                  <Label htmlFor="password">{t('密码')}</Label>
                 </div>
                 <div className="relative">
                   <Lock className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
@@ -156,7 +160,7 @@ export default function LoginPage() {
                     id="password"
                     type={showPassword ? 'text' : 'password'}
                     autoComplete="current-password"
-                    placeholder="请输入密码"
+                    placeholder={t('请输入密码')}
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     className="h-11 rounded-xl bg-muted/50 pl-10 pr-10 focus-visible:bg-background"
@@ -166,7 +170,7 @@ export default function LoginPage() {
                     tabIndex={-1}
                     onClick={() => setShowPassword((v) => !v)}
                     className="absolute inset-y-0 right-0 flex items-center pr-3 text-muted-foreground transition-colors hover:text-foreground"
-                    aria-label={showPassword ? '隐藏密码' : '显示密码'}
+                    aria-label={showPassword ? t('隐藏密码') : t('显示密码')}
                   >
                     {showPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
                   </button>
@@ -178,9 +182,9 @@ export default function LoginPage() {
                 <Checkbox
                   checked={remember}
                   onCheckedChange={(v) => setRemember(v === true)}
-                  aria-label="记住我"
+                  aria-label={t('记住我')}
                 />
-                记住我
+                {t('记住我')}
               </label>
 
               {/* 登录按钮 */}
@@ -192,12 +196,12 @@ export default function LoginPage() {
                 {loading ? (
                   <>
                     <Loader2 className="mr-1.5 size-4 animate-spin" />
-                    登录中...
+                    {t('登录中...')}
                   </>
                 ) : (
                   <>
                     <LogIn className="mr-1.5 size-4" />
-                    登 录
+                    {t('登 录')}
                   </>
                 )}
               </Button>
@@ -207,7 +211,7 @@ export default function LoginPage() {
 
         {/* 底部版权 */}
         <p className="mt-6 text-center text-xs text-muted-foreground">
-          © 2026 运维管理平台 · All rights reserved.
+          © 2026 {t('运维管理平台')} · All rights reserved.
         </p>
       </div>
     </div>

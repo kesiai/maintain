@@ -1,6 +1,8 @@
+import { useTranslation } from 'react-i18next'
+
 import { cn } from '@/lib/utils'
 
-/** 服务状态 → 样式映射（docker/k8s/win 兼容） */
+/** 服务状态 → 样式映射（docker/k8s/win 兼容）；label 即 i18n key（中文原文） */
 const STATE_MAP: Record<string, { label: string; cls: string }> = {
   running: { label: '运行', cls: 'bg-blue-500/10 text-blue-600 border-blue-500/30' },
   exited: { label: '停止', cls: 'bg-zinc-500/10 text-zinc-600 border-zinc-500/30' },
@@ -19,6 +21,7 @@ const STATE_MAP: Record<string, { label: string; cls: string }> = {
 
 export function StatusBadge({ state }: { state?: string }) {
   const s = state || ''
+  const { t } = useTranslation()
   const conf = STATE_MAP[s] || { label: s || '未知', cls: 'bg-muted text-muted-foreground border-border' }
   return (
     <span
@@ -27,7 +30,7 @@ export function StatusBadge({ state }: { state?: string }) {
         conf.cls,
       )}
     >
-      {conf.label}
+      {t(conf.label)}
     </span>
   )
 }

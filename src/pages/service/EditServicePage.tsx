@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { useAtomValue } from 'jotai'
 import { toast } from 'sonner'
 import { UploadCloud } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -20,6 +21,7 @@ import { offlineInstallService } from '@/lib/api/upload-api'
 export default function EditServicePage() {
   const navigate = useNavigate()
   const params = useParams<{ name?: string }>()
+  const { t } = useTranslation()
   const editName = params.name
   const serverInfo = useAtomValue(serverInfoAtom)
   const repos = useAtomValue(newVersionsAtom)
@@ -63,7 +65,7 @@ export default function EditServicePage() {
     const rel = repos.find((r) => r.repo_name === repoName)?.releases?.[0]
     const pkg = getPackageUrl(serverInfo, rel)
     if (!pkg) {
-      toast.warning('无对应服务安装包')
+      toast.warning(t('无对应服务安装包'))
       return
     }
     setInstallingRepo(repoName)
@@ -71,20 +73,20 @@ export default function EditServicePage() {
       const { id } = await onlineInstall(pkg)
       setProgressId(id)
     } catch (e: any) {
-      toast.error(e?.json?._error || e?.message || '安装失败')
+      toast.error(e?.json?._error || e?.message || t('安装失败'))
     }
   }
 
   return (
     <div className="space-y-4">
-      <PageHeader title={editName ? `编辑服务：${editName}` : '添加服务'} back onBack={backToList} />
+      <PageHeader title={editName ? t('编辑服务：{{name}}', { name: editName }) : t('添加服务')} back onBack={backToList} />
 
       {!editName ? (
         <Tabs defaultValue="online">
           <TabsList>
-            <TabsTrigger value="online">在线添加</TabsTrigger>
-            <TabsTrigger value="offline">离线添加</TabsTrigger>
-            <TabsTrigger value="high">高级添加</TabsTrigger>
+            <TabsTrigger value="online">{t('在线添加')}</TabsTrigger>
+            <TabsTrigger value="offline">{t('离线添加')}</TabsTrigger>
+            <TabsTrigger value="high">{t('高级添加')}</TabsTrigger>
           </TabsList>
 
           <TabsContent value="online" className="mt-4">
@@ -93,13 +95,13 @@ export default function EditServicePage() {
                 <div className="mb-4 flex items-center gap-2">
                   <Input
                     className="max-w-xs"
-                    placeholder="搜索服务名称/描述"
+                    placeholder={t('搜索服务名称/描述')}
                     value={onlineSearch}
                     onChange={(e) => setOnlineSearch(e.target.value)}
                   />
                 </div>
                 {onlineCards.length === 0 ? (
-                  <p className="py-10 text-center text-muted-foreground">暂无可用在线服务</p>
+                  <p className="py-10 text-center text-muted-foreground">{t('暂无可用在线服务')}</p>
                 ) : (
                   <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
                     {onlineCards.map((r) => {
@@ -112,12 +114,12 @@ export default function EditServicePage() {
                               <Badge variant="secondary">{rel?.tag_name || '-'}</Badge>
                             </div>
                             <p className="line-clamp-2 min-h-10 text-xs text-muted-foreground">
-                              {rel?.description || '暂无描述'}
+                              {rel?.description || t('暂无描述')}
                             </p>
                             <div className="flex items-center justify-between">
                               <span className="text-xs text-muted-foreground">
                                 {rel?.create_time
-                                  ? `更新于 ${new Date(rel.create_time).toLocaleDateString('zh-CN')}`
+                                  ? t('更新于 {{time}}', { time: new Date(rel.create_time).toLocaleDateString('zh-CN') })
                                   : ''}
                               </span>
                               <Button
@@ -125,7 +127,7 @@ export default function EditServicePage() {
                                 onClick={() => handleOnlineInstall(r.repo_name || '')}
                                 disabled={installingRepo === r.repo_name}
                               >
-                                {installingRepo === r.repo_name ? '安装中...' : '安装'}
+                                {installingRepo === r.repo_name ? t('安装中...') : t('安装')}
                               </Button>
                             </div>
                           </CardContent>
@@ -141,10 +143,10 @@ export default function EditServicePage() {
           <TabsContent value="offline" className="mt-4">
             <Card>
               <CardContent className="flex flex-col items-center gap-3 pt-8 pb-8">
-                <p className="text-sm text-muted-foreground">上传离线安装包（.gz / .zip）</p>
+                <p className="text-sm text-muted-foreground">{t('上传离线安装包（.gz / .zip）')}</p>
                 <Button onClick={() => setUploadOpen(true)}>
                   <UploadCloud className="mr-1 size-4" />
-                  选择文件
+                  {t('选择文件')}
                 </Button>
               </CardContent>
             </Card>
@@ -153,10 +155,10 @@ export default function EditServicePage() {
           <TabsContent value="high" className="mt-4">
             <ServiceForm
               isWin={isWin}
-              submitText="创建"
+              submitText={t('创建')}
               onSubmit={async (payload) => {
                 await createService(payload)
-                toast.success('新增服务成功')
+                toast.success(t('新增服务成功'))
                 backToList()
               }}
             />
@@ -165,11 +167,11 @@ export default function EditServicePage() {
       ) : (
         <ServiceForm
           isWin={isWin}
-          submitText="保存"
+          submitText={t('保存')}
           initial={editing}
           onSubmit={async (payload) => {
             await updateService(editName, payload)
-            toast.success('修改服务成功')
+            toast.success(t('修改服务成功'))
             backToList()
           }}
         />
@@ -178,11 +180,11 @@ export default function EditServicePage() {
       <UploadDialog
         open={uploadOpen}
         onOpenChange={setUploadOpen}
-        title="离线添加服务"
+        title={t('离线添加服务')}
         accept={isWin ? '.zip' : '.gz,.zip'}
         onUpload={async (file) => {
           await offlineInstallService(urls.url4, file)
-          toast.success('离线安装已提交')
+          toast.success(t('离线安装已提交'))
         }}
       />
 
@@ -194,7 +196,7 @@ export default function EditServicePage() {
             setInstallingRepo('')
           }
         }}
-        title="安装进度"
+        title={t('安装进度')}
         installId={progressId}
         onSuccess={() => {}}
       />

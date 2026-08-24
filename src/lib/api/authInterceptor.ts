@@ -31,6 +31,7 @@ import axios from 'axios'
 import type { AxiosInstance, AxiosRequestConfig } from 'axios'
 import { getConfig, setConfig, getHeaders } from '@kesi/client'
 import { toast } from 'sonner'
+import i18n from '@/i18n'
 
 /** 拦截器可读取的响应错误最小结构 */
 interface AuthErrorShape {
@@ -119,7 +120,7 @@ function handleUnauthorized(): void {
   if (handlingUnauthorized) return
   handlingUnauthorized = true
   clearAuthState()
-  toast.error('登录已过期', { description: '请重新登录' })
+  toast.error(i18n.t('登录已过期'), { description: i18n.t('请重新登录') })
   goTo(buildLoginUrl())
   unlock()
 }
@@ -139,7 +140,7 @@ async function handleTokenTimeout(): Promise<void> {
     console.error('[auth] 登出接口调用失败:', e)
   }
   clearAuthState()
-  toast.error('登录已过期', { description: '长时间未操作，请重新登录' })
+  toast.error(i18n.t('登录已过期'), { description: i18n.t('长时间未操作，请重新登录') })
   goTo(buildLoginUrl())
   unlock()
 }
@@ -152,10 +153,10 @@ function handlePasswordChangeRequired(): void {
 /** 403：无权限业务码跳登录，通用 403 弹错误提示 */
 function handleForbidden(codeNum: number, message?: string): void {
   if (FORBIDDEN_CODES.includes(String(codeNum))) {
-    toast.error(message || '无权限访问')
+    toast.error(message || i18n.t('无权限访问'))
     goTo(LOGIN_PATH)
   } else {
-    toast.error(message || '无权限', { description: '您没有执行此操作的权限' })
+    toast.error(message || i18n.t('无权限'), { description: i18n.t('您没有执行此操作的权限') })
   }
 }
 
@@ -191,10 +192,10 @@ function onResponseError(error: unknown): Promise<never> {
     handleForbidden(codeNum, json?.message)
   } else if (status === 406) {
     // maintain 无 /nolicense 页面，降级为错误提示
-    toast.error('授权异常', { description: '请联系管理员检查授权状态' })
+    toast.error(i18n.t('授权异常'), { description: i18n.t('请联系管理员检查授权状态') })
   } else if (status === 417) {
     // maintain 无 /nopermission 页面，降级为错误提示
-    toast.error('无权限访问', { description: '您没有访问该功能的权限' })
+    toast.error(i18n.t('无权限访问'), { description: i18n.t('您没有访问该功能的权限') })
   }
 
   return Promise.reject(error)

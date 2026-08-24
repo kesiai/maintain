@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAtomValue } from 'jotai'
 import { toast } from 'sonner'
+import { useTranslation } from 'react-i18next'
 import {
   ChartLine,
   ChevronDown,
@@ -23,7 +24,6 @@ import {
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Badge } from '@/components/ui/badge'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import {
   DropdownMenu,
@@ -62,6 +62,7 @@ import { uploadDriver, uploadProtocolProxy, uploadDataRelay, uploadImage, offlin
 
 export default function ServiceListPage() {
   const navigate = useNavigate()
+  const { t } = useTranslation()
   const serverInfo = useAtomValue(serverInfoAtom)
   const repos = useAtomValue(newVersionsAtom)
   const urls = getUrls(serverInfo)
@@ -86,11 +87,11 @@ export default function ServiceListPage() {
     try {
       setItems(await listServices())
     } catch (e: any) {
-      toast.error(e?.json?._error || e?.message || '获取服务列表失败')
+      toast.error(e?.json?._error || e?.message || t('获取服务列表失败'))
     } finally {
       setLoading(false)
     }
-  }, [])
+  }, [t])
 
   useEffect(() => {
     load()
@@ -109,7 +110,7 @@ export default function ServiceListPage() {
       toast.success(message)
       load()
     } catch (e: any) {
-      toast.error(e?.json?._error || e?.message || '操作失败')
+      toast.error(e?.json?._error || e?.message || t('操作失败'))
     } finally {
       setBulkLoading(false)
     }
@@ -120,11 +121,11 @@ export default function ServiceListPage() {
     setBulkLoading(true)
     try {
       await Promise.all(selected.map((id) => containerAction(id, action)))
-      toast.success('操作成功')
+      toast.success(t('操作成功'))
       setSelected([])
       load()
     } catch (e: any) {
-      toast.error(e?.json?._error || e?.message || '操作失败')
+      toast.error(e?.json?._error || e?.message || t('操作失败'))
     } finally {
       setBulkLoading(false)
     }
@@ -135,16 +136,16 @@ export default function ServiceListPage() {
     try {
       const blocked = selected.filter((name) => serverInfo?.canNotDeleteServices?.includes(name))
       if (blocked.length > 0) {
-        toast.warning(`${blocked.join(', ')} 服务不可删除`)
+        toast.warning(t('{{names}} 服务不可删除', { names: blocked.join(', ') }))
       }
       const ok = selected.filter((name) => !serverInfo?.canNotDeleteServices?.includes(name))
       await Promise.all(ok.map((name) => removeService(name)))
-      toast.success('删除成功')
+      toast.success(t('删除成功'))
       setSelected([])
       setDeleteOpen(false)
       load()
     } catch (e: any) {
-      toast.error(e?.json?._error || e?.message || '删除失败')
+      toast.error(e?.json?._error || e?.message || t('删除失败'))
     } finally {
       setBulkLoading(false)
     }
@@ -154,14 +155,14 @@ export default function ServiceListPage() {
     const rel = findRelease(repos, item.repo) || findRelease(repos, item.repo, 'server') || findRelease(repos, item.repo, 'driver')
     const pkg = getPackageUrl(serverInfo, rel)
     if (!pkg) {
-      toast.warning('无对应服务安装包')
+      toast.warning(t('无对应服务安装包'))
       return
     }
     try {
       const { id } = await onlineInstall(pkg)
       setUpgradeId(id)
     } catch (e: any) {
-      toast.error(e?.json?._error || e?.message || '升级失败')
+      toast.error(e?.json?._error || e?.message || t('升级失败'))
     }
   }
 
@@ -173,34 +174,34 @@ export default function ServiceListPage() {
   const columns: Column<ServiceItem>[] = [
     {
       key: 'name',
-      title: '服务名称',
+      title: t('服务名称'),
       width: 160,
       render: (r) => <span className="font-medium">{r.name}</span>,
     },
     {
       key: 'state',
-      title: '状态',
+      title: t('状态'),
       width: 100,
       render: (r) => <StatusBadge state={r.state} />,
     },
     {
       key: 'createTime',
-      title: '创建时间',
+      title: t('创建时间'),
       width: 170,
       render: (r) =>
         r.createTime ? new Date(r.createTime * 1000).toLocaleString('zh-CN', { hour12: false }) : '-',
     },
-    { key: 'image', title: '镜像', width: 220, render: (r) => <span className="break-all">{String(r.image ?? '')}</span> },
+    { key: 'image', title: t('镜像'), width: 220, render: (r) => <span className="break-all">{String(r.image ?? '')}</span> },
     {
       key: 'port',
-      title: '发布端口',
+      title: t('发布端口'),
       width: 120,
       render: (r) => <PortCell value={r.port} />,
     },
-    { key: 'version', title: '当前版本', width: 100 },
+    { key: 'version', title: t('当前版本'), width: 100 },
     {
       key: 'dependencies',
-      title: '依赖最低版本',
+      title: t('依赖最低版本'),
       width: 160,
       render: (r) =>
         r.dependencies && r.dependencies.length ? (
@@ -211,7 +212,7 @@ export default function ServiceListPage() {
     },
     {
       key: 'newVersion',
-      title: '最新版本',
+      title: t('最新版本'),
       width: 200,
       render: (r) => {
         const rel =
@@ -228,7 +229,7 @@ export default function ServiceListPage() {
                     <Download className="size-3.5" />
                   </Button>
                 </TooltipTrigger>
-                <TooltipContent>下载最新版</TooltipContent>
+                <TooltipContent>{t('下载最新版')}</TooltipContent>
               </Tooltip>
             )}
             {serverInfo?.online && hasNew && (
@@ -241,7 +242,7 @@ export default function ServiceListPage() {
                   startUpgrade(r)
                 }}
               >
-                在线升级
+                {t('在线升级')}
               </Button>
             )}
           </div>
@@ -250,14 +251,14 @@ export default function ServiceListPage() {
     },
     {
       key: 'actions',
-      title: '操作',
+      title: t('操作'),
       width: 240,
       pinned: 'right',
       render: (r) => (
         <div className="flex items-center gap-1">
           <Button variant="ghost" size="sm" className="h-7 px-2" onClick={() => setAction({ type: 'edit', service: r })}>
             <Pencil className="mr-1 size-3.5" />
-            修改
+            {t('修改')}
           </Button>
           <Button
             variant="ghost"
@@ -265,44 +266,44 @@ export default function ServiceListPage() {
             className="h-7 px-2"
             onClick={() => setAction({ type: 'log', service: r })}
           >
-            日志
+            {t('日志')}
           </Button>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="sm" className="h-7 px-2">
-                更多
+                {t('更多')}
                 <ChevronDown className="ml-1 size-3.5" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuItem onClick={() => openHistory(r)}>
                 <History className="mr-2 size-4" />
-                历史版本
+                {t('历史版本')}
               </DropdownMenuItem>
               <DropdownMenuItem onClick={() => setOfflineTarget(r)}>
                 <UploadCloud className="mr-2 size-4" />
-                离线升级
+                {t('离线升级')}
               </DropdownMenuItem>
               {!isWin && (
                 <DropdownMenuItem onClick={() => setAction({ type: 'stats', service: r })}>
                   <ChartLine className="mr-2 size-4" />
-                  图表
+                  {t('图表')}
                 </DropdownMenuItem>
               )}
               {isWin && (
                 <DropdownMenuItem onClick={() => setAction({ type: 'stats', service: r })}>
                   <ChartLine className="mr-2 size-4" />
-                  图表
+                  {t('图表')}
                 </DropdownMenuItem>
               )}
               <DropdownMenuItem onClick={() => setAction({ type: 'inspect', service: r })}>
                 <ScanSearch className="mr-2 size-4" />
-                检查
+                {t('检查')}
               </DropdownMenuItem>
               {!isWin && !isK8s && (
                 <DropdownMenuItem onClick={() => setAction({ type: 'console', service: r })}>
                   <Terminal className="mr-2 size-4" />
-                  控制台
+                  {t('控制台')}
                 </DropdownMenuItem>
               )}
             </DropdownMenuContent>
@@ -315,45 +316,45 @@ export default function ServiceListPage() {
   return (
     <div className="space-y-4">
       <PageHeader
-        title="服务管理"
+        title={t('服务管理')}
         extra={
           <>
-            <Button variant="outline" size="icon" onClick={load} disabled={loading} aria-label="刷新">
+            <Button variant="outline" size="icon" onClick={load} disabled={loading} aria-label={t('刷新')}>
               <RefreshCw className={loading ? 'size-4 animate-spin' : 'size-4'} />
             </Button>
             <Button
               variant="outline"
               size="icon"
-              onClick={() => runAction('up', '创建并启动全部服务成功')}
+              onClick={() => runAction('up', t('创建并启动全部服务成功'))}
               disabled={bulkLoading}
-              aria-label="创建并启动全部服务"
+              aria-label={t('创建并启动全部服务')}
             >
               <Play className="size-4" />
             </Button>
             <Button
               variant="outline"
               size="icon"
-              onClick={() => runAction('start', '启动全部服务成功')}
+              onClick={() => runAction('start', t('启动全部服务成功'))}
               disabled={bulkLoading}
-              aria-label="启动全部服务"
+              aria-label={t('启动全部服务')}
             >
               <Play className="size-4" />
             </Button>
             <Button
               variant="outline"
               size="icon"
-              onClick={() => runAction('restart', '重启全部服务成功')}
+              onClick={() => runAction('restart', t('重启全部服务成功'))}
               disabled={bulkLoading}
-              aria-label="重启全部服务"
+              aria-label={t('重启全部服务')}
             >
               <RotateCcw className="size-4" />
             </Button>
             <Button
               variant="outline"
               size="icon"
-              onClick={() => runAction('stop', '停止全部服务成功')}
+              onClick={() => runAction('stop', t('停止全部服务成功'))}
               disabled={bulkLoading}
-              aria-label="停止全部服务"
+              aria-label={t('停止全部服务')}
             >
               <Square className="size-4" />
             </Button>
@@ -361,39 +362,39 @@ export default function ServiceListPage() {
               <DropdownMenuTrigger asChild>
                 <Button variant="outline">
                   <Wrench className="mr-1 size-4" />
-                  工具
+                  {t('工具')}
                   <ChevronDown className="ml-1 size-3.5" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-52">
                 <DropdownMenuItem onClick={() => setUploadKind('proxy')}>
                   <UploadCloud className="mr-2 size-4" />
-                  离线上传代理服务
+                  {t('离线上传代理服务')}
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => setUploadKind('relay')}>
                   <UploadCloud className="mr-2 size-4" />
-                  离线上传数据中转协议
+                  {t('离线上传数据中转协议')}
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => setUploadKind('driver')}>
                   <UploadCloud className="mr-2 size-4" />
-                  离线上传驱动
+                  {t('离线上传驱动')}
                 </DropdownMenuItem>
                 {!isK8s && (
                   <DropdownMenuItem onClick={() => navigate('/app/model/Service/depolyment')}>
                     <FileCode className="mr-2 size-4" />
-                    编辑部署文件
+                    {t('编辑部署文件')}
                   </DropdownMenuItem>
                 )}
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={() => setUploadKind('image')}>
                   <UploadCloud className="mr-2 size-4" />
-                  上传镜像
+                  {t('上传镜像')}
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
             <Button onClick={() => navigate('/app/model/Service/add')}>
               <Plus className="mr-1 size-4" />
-              添加服务
+              {t('添加服务')}
             </Button>
           </>
         }
@@ -402,19 +403,19 @@ export default function ServiceListPage() {
       {selected.length > 0 && (
         <div className="flex flex-wrap items-center gap-2 rounded-md border bg-muted/40 px-3 py-2">
           <span className="text-sm text-muted-foreground">
-            已选 <Badge variant="secondary">{selected.length}</Badge> 项
+            {t('已选 {{count}} 项', { count: selected.length })}
           </span>
           <Button size="sm" variant="outline" onClick={() => runContainerAction('start')} disabled={bulkLoading}>
-            开始
+            {t('开始')}
           </Button>
           <Button size="sm" variant="outline" onClick={() => runContainerAction('stop')} disabled={bulkLoading}>
-            停止
+            {t('停止')}
           </Button>
           <Button size="sm" variant="outline" onClick={() => runContainerAction('restart')} disabled={bulkLoading}>
-            重启
+            {t('重启')}
           </Button>
           <Button size="sm" variant="destructive" onClick={() => setDeleteOpen(true)} disabled={bulkLoading}>
-            删除
+            {t('删除')}
           </Button>
         </div>
       )}
@@ -424,13 +425,13 @@ export default function ServiceListPage() {
           <Search className="absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
           <Input
             className="pl-8"
-            placeholder="搜索服务名称"
+            placeholder={t('搜索服务名称')}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
         </div>
         <span className="text-sm text-muted-foreground">
-          共 <span className="font-medium">{filtered.length}</span> 个服务
+          {t('共 {{count}} 个服务', { count: filtered.length })}
         </span>
       </div>
 
@@ -449,13 +450,13 @@ export default function ServiceListPage() {
         onOpenChange={(o) => !o && setUploadKind(null)}
         title={
           uploadKind === 'proxy'
-            ? '离线上传代理服务'
+            ? t('离线上传代理服务')
             : uploadKind === 'relay'
-              ? '离线上传数据中转协议'
+              ? t('离线上传数据中转协议')
               : uploadKind === 'driver'
-                ? '离线上传驱动'
+                ? t('离线上传驱动')
                 : uploadKind === 'image'
-                  ? '上传镜像'
+                  ? t('上传镜像')
                   : ''
         }
         accept={uploadKind === 'image' ? '' : uploadKind === 'driver' && isWin ? '.zip' : '.gz,.zip'}
@@ -471,7 +472,7 @@ export default function ServiceListPage() {
       <UploadDialog
         open={offlineTarget !== null}
         onOpenChange={(o) => !o && setOfflineTarget(null)}
-        title={`离线升级 ${offlineTarget?.name ?? ''}`}
+        title={t('离线升级 {{name}}', { name: offlineTarget?.name ?? '' })}
         accept={isWin ? '.zip' : '.gz,.zip'}
         onUpload={async (file) => {
           if (offlineTarget) {
@@ -489,7 +490,7 @@ export default function ServiceListPage() {
             setUpgradeId(null)
           }
         }}
-        title={`在线升级 ${upgradeTarget?.name ?? ''}`}
+        title={t('在线升级 {{name}}', { name: upgradeTarget?.name ?? '' })}
         installId={upgradeId}
         onSuccess={() => load()}
       />
@@ -507,12 +508,12 @@ export default function ServiceListPage() {
       <AlertDialog open={deleteOpen} onOpenChange={setDeleteOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>确认删除</AlertDialogTitle>
-            <AlertDialogDescription>确认删除选中的服务？此操作不可恢复。</AlertDialogDescription>
+            <AlertDialogTitle>{t('确认删除')}</AlertDialogTitle>
+            <AlertDialogDescription>{t('确认删除选中的服务？此操作不可恢复。')}</AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>取消</AlertDialogCancel>
-            <AlertDialogAction onClick={handleDelete}>确定删除</AlertDialogAction>
+            <AlertDialogCancel>{t('取消')}</AlertDialogCancel>
+            <AlertDialogAction onClick={handleDelete}>{t('确定删除')}</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
@@ -524,6 +525,7 @@ export default function ServiceListPage() {
 function PortCell({ value }: { value?: string }) {
   const [open, setOpen] = useState(false)
   const closeTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
+  const { t } = useTranslation()
 
   const ports = useMemo(() => {
     const v = String(value ?? '').trim()
@@ -569,7 +571,7 @@ function PortCell({ value }: { value?: string }) {
         onMouseLeave={closeHover}
       >
         <div className="space-y-1">
-          <p className="px-1 text-xs text-muted-foreground">发布端口</p>
+          <p className="px-1 text-xs text-muted-foreground">{t('发布端口')}</p>
           {ports.map((p, i) => (
             <p
               key={i}

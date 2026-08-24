@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next'
+
 import { cn } from '@/lib/utils'
 import { Progress } from '@/components/ui/progress'
 import { STAGE_LABEL, type InstallStage } from '@/hooks/use-install-poll'
@@ -14,6 +16,7 @@ export function InstallProgressView({
   className?: string
 }) {
   const isTerminal = stage === 'done' || stage === 'error'
+  const { t } = useTranslation()
   const progress = info
     ? isTerminal
       ? info.run?.progress ?? 0
@@ -26,7 +29,7 @@ export function InstallProgressView({
     <div className={cn('space-y-1.5', className)}>
       <div className="flex items-center justify-between text-sm">
         <span className={cn(error && 'text-destructive', done && 'text-emerald-600')}>
-          {STAGE_LABEL[stage]}
+          {t(STAGE_LABEL[stage])}
         </span>
         <span className="text-muted-foreground">{progress}%</span>
       </div>

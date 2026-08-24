@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { toast } from 'sonner'
 import { Download, Pause, Play, RefreshCw, Search, X } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
@@ -59,6 +60,7 @@ export function LogViewer({
   const [exportOpen, setExportOpen] = useState(false)
   const [exportSince, setExportSince] = useState('')
   const [exportTail, setExportTail] = useState(100)
+  const { t } = useTranslation()
 
   const boxRef = useRef<HTMLDivElement>(null)
 
@@ -70,11 +72,11 @@ export function LogViewer({
       const data = await fetchLogs(params)
       setText(data)
     } catch (e: any) {
-      toast.error(e?.json?._error || e?.message || '获取日志失败')
+      toast.error(e?.json?._error || e?.message || t('获取日志失败'))
     } finally {
       setLoading(false)
     }
-  }, [fetchLogs, timestamps, since, tail])
+  }, [fetchLogs, timestamps, since, tail, t])
 
   useEffect(() => {
     load()
@@ -126,7 +128,7 @@ export function LogViewer({
       URL.revokeObjectURL(a.href)
       setExportOpen(false)
     } catch (e: any) {
-      toast.error(e?.json?._error || e?.message || '导出失败')
+      toast.error(e?.json?._error || e?.message || t('导出失败'))
     }
   }
 
@@ -140,10 +142,10 @@ export function LogViewer({
             {exportLogs && (
               <Button variant="outline" onClick={() => setExportOpen(true)}>
                 <Download className="mr-1 size-4" />
-                导出日志
+                {t('导出日志')}
               </Button>
             )}
-            <Button variant="outline" size="icon" onClick={load} disabled={loading} aria-label="刷新">
+            <Button variant="outline" size="icon" onClick={load} disabled={loading} aria-label={t('刷新')}>
               <RefreshCw className={loading ? 'size-4 animate-spin' : 'size-4'} />
             </Button>
           </>
@@ -158,15 +160,15 @@ export function LogViewer({
                 <div className="flex items-center gap-2">
                   <Switch checked={timestamps} onCheckedChange={setTimestamps} id="ts" />
                   <Label htmlFor="ts" className="text-sm">
-                    显示时间戳
+                    {t('显示时间戳')}
                   </Label>
                 </div>
                 <div className="space-y-1">
-                  <Label className="text-xs text-muted-foreground">起始时间</Label>
+                  <Label className="text-xs text-muted-foreground">{t('起始时间')}</Label>
                   <Input type="datetime-local" value={since} onChange={(e) => setSince(e.target.value)} className="w-52" />
                 </div>
                 <div className="space-y-1">
-                  <Label className="text-xs text-muted-foreground">行数</Label>
+                  <Label className="text-xs text-muted-foreground">{t('行数')}</Label>
                   <Input
                     type="number"
                     value={tail}
@@ -180,7 +182,7 @@ export function LogViewer({
             <div className="flex items-center gap-2">
               <Switch checked={refresh} onCheckedChange={setRefresh} id="refresh" />
               <Label htmlFor="refresh" className="text-sm">
-                自动刷新
+                {t('自动刷新')}
               </Label>
               {refresh ? (
                 <Play className="size-4 text-emerald-600" />
@@ -192,7 +194,7 @@ export function LogViewer({
               <Search className="absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
               <Input
                 className="pl-8 pr-8"
-                placeholder="搜索关键字"
+                placeholder={t('搜索关键字')}
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
               />
@@ -217,9 +219,9 @@ export function LogViewer({
             )}
           >
             {loading && text === '' ? (
-              <div className="text-muted-foreground">加载中...</div>
+              <div className="text-muted-foreground">{t('加载中...')}</div>
             ) : highlighted.length === 0 ? (
-              <div className="text-muted-foreground">暂无日志</div>
+              <div className="text-muted-foreground">{t('暂无日志')}</div>
             ) : (
               highlighted.map((line, i) => renderLine(line, i))
             )}
@@ -230,21 +232,21 @@ export function LogViewer({
       <Dialog open={exportOpen} onOpenChange={setExportOpen}>
         <DialogContent className="sm:max-w-sm">
           <DialogHeader>
-            <DialogTitle>导出日志</DialogTitle>
-            <DialogDescription>设置导出时间范围与行数</DialogDescription>
+            <DialogTitle>{t('导出日志')}</DialogTitle>
+            <DialogDescription>{t('设置导出时间范围与行数')}</DialogDescription>
           </DialogHeader>
           <div className="space-y-3">
             <div className="space-y-1">
-              <Label className="text-sm">起始时间</Label>
+              <Label className="text-sm">{t('起始时间')}</Label>
               <Input type="datetime-local" value={exportSince} onChange={(e) => setExportSince(e.target.value)} />
             </div>
             <div className="space-y-1">
-              <Label className="text-sm">行数</Label>
+              <Label className="text-sm">{t('行数')}</Label>
               <Input type="number" value={exportTail} onChange={(e) => setExportTail(Number(e.target.value))} min={1} />
             </div>
           </div>
           <DialogFooter>
-            <Button onClick={handleExport}>导出</Button>
+            <Button onClick={handleExport}>{t('导出')}</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

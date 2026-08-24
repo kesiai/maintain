@@ -1,0 +1,1716 @@
+{
+  "total": 342,
+  "generatedAt": "2026-08-24T12:46:58.721Z",
+  "strings": [
+    {
+      "text": "刷新",
+      "count": 9,
+      "sample": "src/pages/serviceDiagnosis/ServiceDiagnosisPage.tsx:109"
+    },
+    {
+      "text": "保存失败",
+      "count": 6,
+      "sample": "src/pages/service/ServiceDeployPage.tsx:37"
+    },
+    {
+      "text": "升级失败",
+      "count": 6,
+      "sample": "src/pages/service/ServiceListPage.tsx:164"
+    },
+    {
+      "text": "操作",
+      "count": 4,
+      "sample": "src/pages/serviceDiagnosis/ServiceDiagnosisPage.tsx:73"
+    },
+    {
+      "text": "保存",
+      "count": 4,
+      "sample": "src/pages/service/EditServicePage.tsx:168"
+    },
+    {
+      "text": "内存",
+      "count": 4,
+      "sample": "src/pages/service/ServiceStatsPage.tsx:104"
+    },
+    {
+      "text": "停止",
+      "count": 4,
+      "sample": "src/pages/dashboard/DashboardPage.tsx:79"
+    },
+    {
+      "text": "状态",
+      "count": 3,
+      "sample": "src/pages/serviceDiagnosis/ServiceDiagnosisPage.tsx:52"
+    },
+    {
+      "text": "保存中...",
+      "count": 3,
+      "sample": "src/pages/service/ServiceDeployPage.tsx:55"
+    },
+    {
+      "text": "加载中...",
+      "count": 3,
+      "sample": "src/pages/service/ServiceDeployPage.tsx:63"
+    },
+    {
+      "text": "删除失败",
+      "count": 3,
+      "sample": "src/pages/service/ServiceListPage.tsx:147"
+    },
+    {
+      "text": "内存使用情况",
+      "count": 3,
+      "sample": "src/pages/service/ServiceStatsPage.tsx:104"
+    },
+    {
+      "text": "启动失败",
+      "count": 3,
+      "sample": "src/pages/remote/RemoteControlPage.tsx:83"
+    },
+    {
+      "text": "操作日志",
+      "count": 3,
+      "sample": "src/pages/logs/OperationLogPage.tsx:205"
+    },
+    {
+      "text": "名称",
+      "count": 3,
+      "sample": "src/pages/logs/OperationLogPage.tsx:309"
+    },
+    {
+      "text": "服务管理日志",
+      "count": 3,
+      "sample": "src/pages/logs/Pm2LogPage.tsx:22"
+    },
+    {
+      "text": "未知",
+      "count": 3,
+      "sample": "src/pages/logs/Pm2LogPage.tsx:26"
+    },
+    {
+      "text": "运维管理平台",
+      "count": 3,
+      "sample": "src/pages/auth/LoginPage.tsx:119"
+    },
+    {
+      "text": "获取服务列表失败",
+      "count": 2,
+      "sample": "src/pages/serviceDiagnosis/ServiceDiagnosisPage.tsx:26"
+    },
+    {
+      "text": "服务名称",
+      "count": 2,
+      "sample": "src/pages/serviceDiagnosis/ServiceDiagnosisPage.tsx:46"
+    },
+    {
+      "text": "镜像",
+      "count": 2,
+      "sample": "src/pages/serviceDiagnosis/ServiceDiagnosisPage.tsx:58"
+    },
+    {
+      "text": "创建时间",
+      "count": 2,
+      "sample": "src/pages/serviceDiagnosis/ServiceDiagnosisPage.tsx:66"
+    },
+    {
+      "text": "服务诊断",
+      "count": 2,
+      "sample": "src/pages/serviceDiagnosis/ServiceDiagnosisPage.tsx:106"
+    },
+    {
+      "text": "无对应服务安装包",
+      "count": 2,
+      "sample": "src/pages/service/EditServicePage.tsx:66"
+    },
+    {
+      "text": "安装失败",
+      "count": 2,
+      "sample": "src/pages/service/EditServicePage.tsx:74"
+    },
+    {
+      "text": "修改服务成功",
+      "count": 2,
+      "sample": "src/pages/service/EditServicePage.tsx:172"
+    },
+    {
+      "text": "缺少 podName 参数",
+      "count": 2,
+      "sample": "src/pages/service/ServiceConsolePage.tsx:90"
+    },
+    {
+      "text": "用户",
+      "count": 2,
+      "sample": "src/pages/service/ServiceConsolePage.tsx:200"
+    },
+    {
+      "text": "保存成功",
+      "count": 2,
+      "sample": "src/pages/service/ServiceDeployPage.tsx:35"
+    },
+    {
+      "text": "操作失败",
+      "count": 2,
+      "sample": "src/pages/service/ServiceListPage.tsx:112"
+    },
+    {
+      "text": "删除成功",
+      "count": 2,
+      "sample": "src/pages/service/ServiceListPage.tsx:142"
+    },
+    {
+      "text": "发布端口",
+      "count": 2,
+      "sample": "src/pages/service/ServiceListPage.tsx:196"
+    },
+    {
+      "text": "服务管理",
+      "count": 2,
+      "sample": "src/pages/service/ServiceListPage.tsx:318"
+    },
+    {
+      "text": "确认删除",
+      "count": 2,
+      "sample": "src/pages/service/ServiceListPage.tsx:510"
+    },
+    {
+      "text": "取消",
+      "count": 2,
+      "sample": "src/pages/service/ServiceListPage.tsx:514"
+    },
+    {
+      "text": "确定删除",
+      "count": 2,
+      "sample": "src/pages/service/ServiceListPage.tsx:515"
+    },
+    {
+      "text": "服务日志",
+      "count": 2,
+      "sample": "src/pages/service/ServiceLogPage.tsx:28"
+    },
+    {
+      "text": "缓存",
+      "count": 2,
+      "sample": "src/pages/service/ServiceStatsPage.tsx:110"
+    },
+    {
+      "text": "CPU 使用情况",
+      "count": 2,
+      "sample": "src/pages/service/ServiceStatsPage.tsx:118"
+    },
+    {
+      "text": "网络使用情况",
+      "count": 2,
+      "sample": "src/pages/service/ServiceStatsPage.tsx:125"
+    },
+    {
+      "text": "下载失败",
+      "count": 2,
+      "sample": "src/pages/remote/RemoteControlPage.tsx:112"
+    },
+    {
+      "text": "远程控制",
+      "count": 2,
+      "sample": "src/pages/remote/RemoteControlPage.tsx:130"
+    },
+    {
+      "text": "时间",
+      "count": 2,
+      "sample": "src/pages/logs/OperationLogPage.tsx:158"
+    },
+    {
+      "text": "操作人员",
+      "count": 2,
+      "sample": "src/pages/logs/OperationLogPage.tsx:167"
+    },
+    {
+      "text": "类型",
+      "count": 2,
+      "sample": "src/pages/logs/OperationLogPage.tsx:173"
+    },
+    {
+      "text": "操作内容",
+      "count": 2,
+      "sample": "src/pages/logs/OperationLogPage.tsx:179"
+    },
+    {
+      "text": "全部类型",
+      "count": 2,
+      "sample": "src/pages/logs/OperationLogPage.tsx:229"
+    },
+    {
+      "text": "运维日志",
+      "count": 2,
+      "sample": "src/pages/logs/OpsLogPage.tsx:23"
+    },
+    {
+      "text": "前端升级",
+      "count": 2,
+      "sample": "src/pages/front/FrontManagePage.tsx:109"
+    },
+    {
+      "text": "升级完成",
+      "count": 2,
+      "sample": "src/pages/front/FrontManagePage.tsx:113"
+    },
+    {
+      "text": "正在处理安装任务，请稍候...",
+      "count": 2,
+      "sample": "src/pages/front/FrontManagePage.tsx:133"
+    },
+    {
+      "text": "已完成",
+      "count": 2,
+      "sample": "src/pages/front/FrontManagePage.tsx:138"
+    },
+    {
+      "text": "正在安装",
+      "count": 2,
+      "sample": "src/pages/front/FrontManagePage.tsx:138"
+    },
+    {
+      "text": "前端管理",
+      "count": 2,
+      "sample": "src/pages/front/FrontManagePage.tsx:184"
+    },
+    {
+      "text": "选择文件并上传",
+      "count": 2,
+      "sample": "src/pages/front/FrontManagePage.tsx:224"
+    },
+    {
+      "text": "运行",
+      "count": 2,
+      "sample": "src/pages/dashboard/DashboardPage.tsx:78"
+    },
+    {
+      "text": "资源统计",
+      "count": 2,
+      "sample": "src/pages/dashboard/ResourceStatisticsPage.tsx:248"
+    },
+    {
+      "text": "请填写完整",
+      "count": 2,
+      "sample": "src/pages/auth/ChangePasswordPage.tsx:26"
+    },
+    {
+      "text": "两次输入的新密码不一致",
+      "count": 2,
+      "sample": "src/pages/auth/ChangePasswordPage.tsx:30"
+    },
+    {
+      "text": "新密码长度至少 6 位",
+      "count": 2,
+      "sample": "src/pages/auth/ChangePasswordPage.tsx:34"
+    },
+    {
+      "text": "密码修改成功",
+      "count": 2,
+      "sample": "src/pages/auth/ChangePasswordPage.tsx:40"
+    },
+    {
+      "text": "修改失败",
+      "count": 2,
+      "sample": "src/pages/auth/ChangePasswordPage.tsx:46"
+    },
+    {
+      "text": "修改密码",
+      "count": 2,
+      "sample": "src/pages/auth/ChangePasswordPage.tsx:54"
+    },
+    {
+      "text": "修改后需使用新密码重新登录",
+      "count": 2,
+      "sample": "src/pages/auth/ChangePasswordPage.tsx:61"
+    },
+    {
+      "text": "旧密码",
+      "count": 2,
+      "sample": "src/pages/auth/ChangePasswordPage.tsx:66"
+    },
+    {
+      "text": "请输入旧密码",
+      "count": 2,
+      "sample": "src/pages/auth/ChangePasswordPage.tsx:73"
+    },
+    {
+      "text": "新密码",
+      "count": 2,
+      "sample": "src/pages/auth/ChangePasswordPage.tsx:86"
+    },
+    {
+      "text": "至少 6 位",
+      "count": 2,
+      "sample": "src/pages/auth/ChangePasswordPage.tsx:93"
+    },
+    {
+      "text": "确认新密码",
+      "count": 2,
+      "sample": "src/pages/auth/ChangePasswordPage.tsx:106"
+    },
+    {
+      "text": "再次输入新密码",
+      "count": 2,
+      "sample": "src/pages/auth/ChangePasswordPage.tsx:112"
+    },
+    {
+      "text": "提交中...",
+      "count": 2,
+      "sample": "src/pages/auth/ChangePasswordPage.tsx:116"
+    },
+    {
+      "text": "确认修改",
+      "count": 2,
+      "sample": "src/pages/auth/ChangePasswordPage.tsx:116"
+    },
+    {
+      "text": "登录已过期",
+      "count": 2,
+      "sample": "src/lib/api/authInterceptor.ts:122"
+    },
+    {
+      "text": "无权限访问",
+      "count": 2,
+      "sample": "src/lib/api/authInterceptor.ts:155"
+    },
+    {
+      "text": "停止中",
+      "count": 2,
+      "sample": "src/i18n/enumMaps.ts:12"
+    },
+    {
+      "text": "重启中",
+      "count": 2,
+      "sample": "src/i18n/enumMaps.ts:13"
+    },
+    {
+      "text": "已创建",
+      "count": 2,
+      "sample": "src/i18n/enumMaps.ts:21"
+    },
+    {
+      "text": "正在删除",
+      "count": 2,
+      "sample": "src/i18n/enumMaps.ts:24"
+    },
+    {
+      "text": "主题设置",
+      "count": 2,
+      "sample": "src/components/theme-toggle.tsx:24"
+    },
+    {
+      "text": "运",
+      "count": 2,
+      "sample": "src/components/layout/UserMenu.tsx:22"
+    },
+    {
+      "text": "起始时间",
+      "count": 2,
+      "sample": "src/components/common/LogViewer.tsx:165"
+    },
+    {
+      "text": "行数",
+      "count": 2,
+      "sample": "src/components/common/LogViewer.tsx:169"
+    },
+    {
+      "text": "展示当前未正常运行的服务，便于快速定位问题",
+      "count": 1,
+      "sample": "src/pages/serviceDiagnosis/ServiceDiagnosisPage.tsx:107"
+    },
+    {
+      "text": "个异常服务",
+      "count": 1,
+      "sample": "src/pages/serviceDiagnosis/ServiceDiagnosisPage.tsx:119"
+    },
+    {
+      "text": "所有服务均正常运行",
+      "count": 1,
+      "sample": "src/pages/serviceDiagnosis/ServiceDiagnosisPage.tsx:127"
+    },
+    {
+      "text": "编辑服务：${editName}",
+      "count": 1,
+      "sample": "src/pages/service/EditServicePage.tsx:80"
+    },
+    {
+      "text": "添加服务",
+      "count": 1,
+      "sample": "src/pages/service/EditServicePage.tsx:80"
+    },
+    {
+      "text": "在线添加",
+      "count": 1,
+      "sample": "src/pages/service/EditServicePage.tsx:85"
+    },
+    {
+      "text": "离线添加",
+      "count": 1,
+      "sample": "src/pages/service/EditServicePage.tsx:86"
+    },
+    {
+      "text": "高级添加",
+      "count": 1,
+      "sample": "src/pages/service/EditServicePage.tsx:87"
+    },
+    {
+      "text": "搜索服务名称/描述",
+      "count": 1,
+      "sample": "src/pages/service/EditServicePage.tsx:96"
+    },
+    {
+      "text": "暂无可用在线服务",
+      "count": 1,
+      "sample": "src/pages/service/EditServicePage.tsx:102"
+    },
+    {
+      "text": "暂无描述",
+      "count": 1,
+      "sample": "src/pages/service/EditServicePage.tsx:115"
+    },
+    {
+      "text": "更新于 ${new Date(rel.create_time).toLocaleDateString('zh-CN')}",
+      "count": 1,
+      "sample": "src/pages/service/EditServicePage.tsx:120"
+    },
+    {
+      "text": "安装中...",
+      "count": 1,
+      "sample": "src/pages/service/EditServicePage.tsx:128"
+    },
+    {
+      "text": "安装",
+      "count": 1,
+      "sample": "src/pages/service/EditServicePage.tsx:128"
+    },
+    {
+      "text": "上传离线安装包（.gz / .zip）",
+      "count": 1,
+      "sample": "src/pages/service/EditServicePage.tsx:144"
+    },
+    {
+      "text": "创建",
+      "count": 1,
+      "sample": "src/pages/service/EditServicePage.tsx:156"
+    },
+    {
+      "text": "新增服务成功",
+      "count": 1,
+      "sample": "src/pages/service/EditServicePage.tsx:159"
+    },
+    {
+      "text": "离线添加服务",
+      "count": 1,
+      "sample": "src/pages/service/EditServicePage.tsx:181"
+    },
+    {
+      "text": "离线安装已提交",
+      "count": 1,
+      "sample": "src/pages/service/EditServicePage.tsx:185"
+    },
+    {
+      "text": "安装进度",
+      "count": 1,
+      "sample": "src/pages/service/EditServicePage.tsx:197"
+    },
+    {
+      "text": "请填写命令和用户",
+      "count": 1,
+      "sample": "src/pages/service/ServiceConsolePage.tsx:94"
+    },
+    {
+      "text": "WebSocket 连接失败",
+      "count": 1,
+      "sample": "src/pages/service/ServiceConsolePage.tsx:122"
+    },
+    {
+      "text": "连接已断开：${reason}",
+      "count": 1,
+      "sample": "src/pages/service/ServiceConsolePage.tsx:129"
+    },
+    {
+      "text": "连接已断开（错误码 ${ev?.code ?? '未知'}）",
+      "count": 1,
+      "sample": "src/pages/service/ServiceConsolePage.tsx:129"
+    },
+    {
+      "text": "连接失败",
+      "count": 1,
+      "sample": "src/pages/service/ServiceConsolePage.tsx:136"
+    },
+    {
+      "text": "控制台：${pod}",
+      "count": 1,
+      "sample": "src/pages/service/ServiceConsolePage.tsx:149"
+    },
+    {
+      "text": "命令",
+      "count": 1,
+      "sample": "src/pages/service/ServiceConsolePage.tsx:170"
+    },
+    {
+      "text": "请选择命令",
+      "count": 1,
+      "sample": "src/pages/service/ServiceConsolePage.tsx:173"
+    },
+    {
+      "text": "自定义命令，输入后回车",
+      "count": 1,
+      "sample": "src/pages/service/ServiceConsolePage.tsx:184"
+    },
+    {
+      "text": "连接中...",
+      "count": 1,
+      "sample": "src/pages/service/ServiceConsolePage.tsx:204"
+    },
+    {
+      "text": "连接",
+      "count": 1,
+      "sample": "src/pages/service/ServiceConsolePage.tsx:204"
+    },
+    {
+      "text": "获取部署文件失败",
+      "count": 1,
+      "sample": "src/pages/service/ServiceDeployPage.tsx:21"
+    },
+    {
+      "text": "编辑部署文件",
+      "count": 1,
+      "sample": "src/pages/service/ServiceDeployPage.tsx:46"
+    },
+    {
+      "text": "获取容器信息失败",
+      "count": 1,
+      "sample": "src/pages/service/ServiceInspectPage.tsx:23"
+    },
+    {
+      "text": "容器检查：${pod}",
+      "count": 1,
+      "sample": "src/pages/service/ServiceInspectPage.tsx:37"
+    },
+    {
+      "text": "树状形式",
+      "count": 1,
+      "sample": "src/pages/service/ServiceInspectPage.tsx:50"
+    },
+    {
+      "text": "文档形式",
+      "count": 1,
+      "sample": "src/pages/service/ServiceInspectPage.tsx:51"
+    },
+    {
+      "text": "操作成功",
+      "count": 1,
+      "sample": "src/pages/service/ServiceListPage.tsx:123"
+    },
+    {
+      "text": "${blocked.join(', ')} 服务不可删除",
+      "count": 1,
+      "sample": "src/pages/service/ServiceListPage.tsx:138"
+    },
+    {
+      "text": "当前版本",
+      "count": 1,
+      "sample": "src/pages/service/ServiceListPage.tsx:200"
+    },
+    {
+      "text": "依赖最低版本",
+      "count": 1,
+      "sample": "src/pages/service/ServiceListPage.tsx:203"
+    },
+    {
+      "text": "最新版本",
+      "count": 1,
+      "sample": "src/pages/service/ServiceListPage.tsx:214"
+    },
+    {
+      "text": "下载最新版",
+      "count": 1,
+      "sample": "src/pages/service/ServiceListPage.tsx:231"
+    },
+    {
+      "text": "创建并启动全部服务成功",
+      "count": 1,
+      "sample": "src/pages/service/ServiceListPage.tsx:327"
+    },
+    {
+      "text": "创建并启动全部服务",
+      "count": 1,
+      "sample": "src/pages/service/ServiceListPage.tsx:329"
+    },
+    {
+      "text": "启动全部服务成功",
+      "count": 1,
+      "sample": "src/pages/service/ServiceListPage.tsx:336"
+    },
+    {
+      "text": "启动全部服务",
+      "count": 1,
+      "sample": "src/pages/service/ServiceListPage.tsx:338"
+    },
+    {
+      "text": "重启全部服务成功",
+      "count": 1,
+      "sample": "src/pages/service/ServiceListPage.tsx:345"
+    },
+    {
+      "text": "重启全部服务",
+      "count": 1,
+      "sample": "src/pages/service/ServiceListPage.tsx:347"
+    },
+    {
+      "text": "停止全部服务成功",
+      "count": 1,
+      "sample": "src/pages/service/ServiceListPage.tsx:354"
+    },
+    {
+      "text": "停止全部服务",
+      "count": 1,
+      "sample": "src/pages/service/ServiceListPage.tsx:356"
+    },
+    {
+      "text": "搜索服务名称",
+      "count": 1,
+      "sample": "src/pages/service/ServiceListPage.tsx:427"
+    },
+    {
+      "text": "离线上传代理服务",
+      "count": 1,
+      "sample": "src/pages/service/ServiceListPage.tsx:452"
+    },
+    {
+      "text": "离线上传数据中转协议",
+      "count": 1,
+      "sample": "src/pages/service/ServiceListPage.tsx:454"
+    },
+    {
+      "text": "离线上传驱动",
+      "count": 1,
+      "sample": "src/pages/service/ServiceListPage.tsx:456"
+    },
+    {
+      "text": "上传镜像",
+      "count": 1,
+      "sample": "src/pages/service/ServiceListPage.tsx:458"
+    },
+    {
+      "text": "离线升级 ${offlineTarget?.name ?? ''}",
+      "count": 1,
+      "sample": "src/pages/service/ServiceListPage.tsx:474"
+    },
+    {
+      "text": "在线升级 ${upgradeTarget?.name ?? ''}",
+      "count": 1,
+      "sample": "src/pages/service/ServiceListPage.tsx:492"
+    },
+    {
+      "text": "确认删除选中的服务？此操作不可恢复。",
+      "count": 1,
+      "sample": "src/pages/service/ServiceListPage.tsx:511"
+    },
+    {
+      "text": "容器监控：${pod}",
+      "count": 1,
+      "sample": "src/pages/service/ServiceStatsPage.tsx:139"
+    },
+    {
+      "text": "获取远程控制配置失败",
+      "count": 1,
+      "sample": "src/pages/remote/RemoteControlPage.tsx:50"
+    },
+    {
+      "text": "配置已保存",
+      "count": 1,
+      "sample": "src/pages/remote/RemoteControlPage.tsx:67"
+    },
+    {
+      "text": "远程控制已启动",
+      "count": 1,
+      "sample": "src/pages/remote/RemoteControlPage.tsx:80"
+    },
+    {
+      "text": "远程控制已停止",
+      "count": 1,
+      "sample": "src/pages/remote/RemoteControlPage.tsx:93"
+    },
+    {
+      "text": "停止失败",
+      "count": 1,
+      "sample": "src/pages/remote/RemoteControlPage.tsx:96"
+    },
+    {
+      "text": "网络探测失败",
+      "count": 1,
+      "sample": "src/pages/remote/RemoteControlPage.tsx:121"
+    },
+    {
+      "text": "网络探测：",
+      "count": 1,
+      "sample": "src/pages/remote/RemoteControlPage.tsx:143"
+    },
+    {
+      "text": "无法访问互联网",
+      "count": 1,
+      "sample": "src/pages/remote/RemoteControlPage.tsx:155"
+    },
+    {
+      "text": "代理配置",
+      "count": 1,
+      "sample": "src/pages/remote/RemoteControlPage.tsx:167"
+    },
+    {
+      "text": "目标地址（targetIp）",
+      "count": 1,
+      "sample": "src/pages/remote/RemoteControlPage.tsx:169"
+    },
+    {
+      "text": "如 192.168.1.100",
+      "count": 1,
+      "sample": "src/pages/remote/RemoteControlPage.tsx:173"
+    },
+    {
+      "text": "目标端口（targetPort）",
+      "count": 1,
+      "sample": "src/pages/remote/RemoteControlPage.tsx:178"
+    },
+    {
+      "text": "如 8080",
+      "count": 1,
+      "sample": "src/pages/remote/RemoteControlPage.tsx:182"
+    },
+    {
+      "text": "服务端口（serverPort）",
+      "count": 1,
+      "sample": "src/pages/remote/RemoteControlPage.tsx:186"
+    },
+    {
+      "text": "如 443",
+      "count": 1,
+      "sample": "src/pages/remote/RemoteControlPage.tsx:190"
+    },
+    {
+      "text": "验证密钥（vkey）",
+      "count": 1,
+      "sample": "src/pages/remote/RemoteControlPage.tsx:195"
+    },
+    {
+      "text": "输入验证密钥",
+      "count": 1,
+      "sample": "src/pages/remote/RemoteControlPage.tsx:200"
+    },
+    {
+      "text": "配置生效",
+      "count": 1,
+      "sample": "src/pages/remote/RemoteControlPage.tsx:205"
+    },
+    {
+      "text": "保存配置",
+      "count": 1,
+      "sample": "src/pages/remote/RemoteControlPage.tsx:209"
+    },
+    {
+      "text": "服务状态与控制",
+      "count": 1,
+      "sample": "src/pages/remote/RemoteControlPage.tsx:217"
+    },
+    {
+      "text": "当前状态：",
+      "count": 1,
+      "sample": "src/pages/remote/RemoteControlPage.tsx:219"
+    },
+    {
+      "text": "下载远程客户端",
+      "count": 1,
+      "sample": "src/pages/remote/RemoteControlPage.tsx:237"
+    },
+    {
+      "text": "系统平台",
+      "count": 1,
+      "sample": "src/pages/remote/RemoteControlPage.tsx:240"
+    },
+    {
+      "text": "今天",
+      "count": 1,
+      "sample": "src/pages/logs/OperationLogPage.tsx:48"
+    },
+    {
+      "text": "近7天",
+      "count": 1,
+      "sample": "src/pages/logs/OperationLogPage.tsx:49"
+    },
+    {
+      "text": "近30天",
+      "count": 1,
+      "sample": "src/pages/logs/OperationLogPage.tsx:50"
+    },
+    {
+      "text": "全部",
+      "count": 1,
+      "sample": "src/pages/logs/OperationLogPage.tsx:51"
+    },
+    {
+      "text": "获取操作日志失败",
+      "count": 1,
+      "sample": "src/pages/logs/OperationLogPage.tsx:92"
+    },
+    {
+      "text": "获取清理配置失败",
+      "count": 1,
+      "sample": "src/pages/logs/OperationLogPage.tsx:114"
+    },
+    {
+      "text": "已开始清理日志",
+      "count": 1,
+      "sample": "src/pages/logs/OperationLogPage.tsx:126"
+    },
+    {
+      "text": "清理失败",
+      "count": 1,
+      "sample": "src/pages/logs/OperationLogPage.tsx:128"
+    },
+    {
+      "text": "日志清理",
+      "count": 1,
+      "sample": "src/pages/logs/OperationLogPage.tsx:210"
+    },
+    {
+      "text": "搜索操作内容/人员",
+      "count": 1,
+      "sample": "src/pages/logs/OperationLogPage.tsx:219"
+    },
+    {
+      "text": "日志查询时间（TimeRange）",
+      "count": 1,
+      "sample": "src/pages/logs/OperationLogPage.tsx:276"
+    },
+    {
+      "text": "如 2024-01-01 00:00:00",
+      "count": 1,
+      "sample": "src/pages/logs/OperationLogPage.tsx:279"
+    },
+    {
+      "text": "清理中...",
+      "count": 1,
+      "sample": "src/pages/logs/OperationLogPage.tsx:287"
+    },
+    {
+      "text": "一键清除日志",
+      "count": 1,
+      "sample": "src/pages/logs/OperationLogPage.tsx:287"
+    },
+    {
+      "text": "清理周期配置",
+      "count": 1,
+      "sample": "src/pages/logs/OperationLogPage.tsx:299"
+    },
+    {
+      "text": "周期",
+      "count": 1,
+      "sample": "src/pages/logs/OperationLogPage.tsx:314"
+    },
+    {
+      "text": "${r.cycle ?? '-'}${r.cycle_type === 'minute' ? ' 分钟' : r.cycle_type === 'hour' ? ' 小时' : r.cycle_type === 'day' ? ' 天' : ''}",
+      "count": 1,
+      "sample": "src/pages/logs/OperationLogPage.tsx:316"
+    },
+    {
+      "text": "清理类型",
+      "count": 1,
+      "sample": "src/pages/logs/OperationLogPage.tsx:320"
+    },
+    {
+      "text": "停用",
+      "count": 1,
+      "sample": "src/pages/logs/OperationLogPage.tsx:329"
+    },
+    {
+      "text": "启用",
+      "count": 1,
+      "sample": "src/pages/logs/OperationLogPage.tsx:329"
+    },
+    {
+      "text": "操作日志详情",
+      "count": 1,
+      "sample": "src/pages/logs/OperationLogPage.tsx:361"
+    },
+    {
+      "text": "日志原始数据",
+      "count": 1,
+      "sample": "src/pages/logs/OperationLogPage.tsx:362"
+    },
+    {
+      "text": "修改前（oldData）",
+      "count": 1,
+      "sample": "src/pages/logs/OperationLogPage.tsx:395"
+    },
+    {
+      "text": "修改后（data）",
+      "count": 1,
+      "sample": "src/pages/logs/OperationLogPage.tsx:401"
+    },
+    {
+      "text": "升级管理平台前端",
+      "count": 1,
+      "sample": "src/pages/front/FrontManagePage.tsx:27"
+    },
+    {
+      "text": "上传管理平台前端升级包，升级完成后浏览器刷新即可生效。",
+      "count": 1,
+      "sample": "src/pages/front/FrontManagePage.tsx:28"
+    },
+    {
+      "text": "升级运维平台前端",
+      "count": 1,
+      "sample": "src/pages/front/FrontManagePage.tsx:34"
+    },
+    {
+      "text": "上传运维平台前端升级包，升级完成后浏览器刷新即可生效。",
+      "count": 1,
+      "sample": "src/pages/front/FrontManagePage.tsx:35"
+    },
+    {
+      "text": "请选择 .zip 或 .tar.gz 格式的压缩包",
+      "count": 1,
+      "sample": "src/pages/front/FrontManagePage.tsx:162"
+    },
+    {
+      "text": "升级失败：未获取到安装任务",
+      "count": 1,
+      "sample": "src/pages/front/FrontManagePage.tsx:170"
+    },
+    {
+      "text": "上传前端升级包，升级管理平台 / 运维平台前端",
+      "count": 1,
+      "sample": "src/pages/front/FrontManagePage.tsx:184"
+    },
+    {
+      "text": "请选择前端升级包文件（支持 .zip / .tar.gz）",
+      "count": 1,
+      "sample": "src/pages/front/FrontManagePage.tsx:220"
+    },
+    {
+      "text": "加载首页数据失败",
+      "count": 1,
+      "sample": "src/pages/dashboard/DashboardPage.tsx:55"
+    },
+    {
+      "text": "已是最新版本",
+      "count": 1,
+      "sample": "src/pages/dashboard/DashboardPage.tsx:122"
+    },
+    {
+      "text": "正在升级 ${t.name}...",
+      "count": 1,
+      "sample": "src/pages/dashboard/DashboardPage.tsx:126"
+    },
+    {
+      "text": "在线升级完成",
+      "count": 1,
+      "sample": "src/pages/dashboard/DashboardPage.tsx:138"
+    },
+    {
+      "text": "在线升级失败",
+      "count": 1,
+      "sample": "src/pages/dashboard/DashboardPage.tsx:141"
+    },
+    {
+      "text": "首页",
+      "count": 1,
+      "sample": "src/pages/dashboard/DashboardPage.tsx:150"
+    },
+    {
+      "text": "一键离线升级",
+      "count": 1,
+      "sample": "src/pages/dashboard/DashboardPage.tsx:154"
+    },
+    {
+      "text": "离线升级已提交",
+      "count": 1,
+      "sample": "src/pages/dashboard/DashboardPage.tsx:159"
+    },
+    {
+      "text": "服务总数",
+      "count": 1,
+      "sample": "src/pages/dashboard/DashboardPage.tsx:177"
+    },
+    {
+      "text": "服务状态",
+      "count": 1,
+      "sample": "src/pages/dashboard/DashboardPage.tsx:187"
+    },
+    {
+      "text": "服务状态分布",
+      "count": 1,
+      "sample": "src/pages/dashboard/DashboardPage.tsx:199"
+    },
+    {
+      "text": "当前运行 / 停止服务数",
+      "count": 1,
+      "sample": "src/pages/dashboard/DashboardPage.tsx:200"
+    },
+    {
+      "text": "更新日志",
+      "count": 1,
+      "sample": "src/pages/dashboard/DashboardPage.tsx:209"
+    },
+    {
+      "text": "在线升级",
+      "count": 1,
+      "sample": "src/pages/dashboard/DashboardPage.tsx:220"
+    },
+    {
+      "text": "正在逐个升级可更新的服务与模块，期间请勿进行其他操作。",
+      "count": 1,
+      "sample": "src/pages/dashboard/DashboardPage.tsx:221"
+    },
+    {
+      "text": "准备中...",
+      "count": 1,
+      "sample": "src/pages/dashboard/DashboardPage.tsx:224"
+    },
+    {
+      "text": "更新时间",
+      "count": 1,
+      "sample": "src/pages/dashboard/DashboardPage.tsx:239"
+    },
+    {
+      "text": "更新信息",
+      "count": 1,
+      "sample": "src/pages/dashboard/DashboardPage.tsx:243"
+    },
+    {
+      "text": "版本",
+      "count": 1,
+      "sample": "src/pages/dashboard/DashboardPage.tsx:244"
+    },
+    {
+      "text": "暂无更新日志",
+      "count": 1,
+      "sample": "src/pages/dashboard/DashboardPage.tsx:253"
+    },
+    {
+      "text": "已用 ${v}%",
+      "count": 1,
+      "sample": "src/pages/dashboard/ResourceStatisticsPage.tsx:26"
+    },
+    {
+      "text": "物理内存",
+      "count": 1,
+      "sample": "src/pages/dashboard/ResourceStatisticsPage.tsx:149"
+    },
+    {
+      "text": "交换区",
+      "count": 1,
+      "sample": "src/pages/dashboard/ResourceStatisticsPage.tsx:150"
+    },
+    {
+      "text": "Swap 交换空间",
+      "count": 1,
+      "sample": "src/pages/dashboard/ResourceStatisticsPage.tsx:150"
+    },
+    {
+      "text": "总量",
+      "count": 1,
+      "sample": "src/pages/dashboard/ResourceStatisticsPage.tsx:154"
+    },
+    {
+      "text": "已用",
+      "count": 1,
+      "sample": "src/pages/dashboard/ResourceStatisticsPage.tsx:155"
+    },
+    {
+      "text": "剩余",
+      "count": 1,
+      "sample": "src/pages/dashboard/ResourceStatisticsPage.tsx:156"
+    },
+    {
+      "text": "可用",
+      "count": 1,
+      "sample": "src/pages/dashboard/ResourceStatisticsPage.tsx:157"
+    },
+    {
+      "text": "共享",
+      "count": 1,
+      "sample": "src/pages/dashboard/ResourceStatisticsPage.tsx:158"
+    },
+    {
+      "text": "未知挂载点",
+      "count": 1,
+      "sample": "src/pages/dashboard/ResourceStatisticsPage.tsx:206"
+    },
+    {
+      "text": "获取资源统计失败",
+      "count": 1,
+      "sample": "src/pages/dashboard/ResourceStatisticsPage.tsx:231"
+    },
+    {
+      "text": "服务器 CPU / 内存 / 磁盘实时使用情况",
+      "count": 1,
+      "sample": "src/pages/dashboard/ResourceStatisticsPage.tsx:249"
+    },
+    {
+      "text": "正在获取资源统计...",
+      "count": 1,
+      "sample": "src/pages/dashboard/ResourceStatisticsPage.tsx:261"
+    },
+    {
+      "text": "处理器核心与平均负载",
+      "count": 1,
+      "sample": "src/pages/dashboard/ResourceStatisticsPage.tsx:267"
+    },
+    {
+      "text": "CPU 核数",
+      "count": 1,
+      "sample": "src/pages/dashboard/ResourceStatisticsPage.tsx:272"
+    },
+    {
+      "text": "平均负载（1 分钟）",
+      "count": 1,
+      "sample": "src/pages/dashboard/ResourceStatisticsPage.tsx:283"
+    },
+    {
+      "text": "平均负载（5 分钟）",
+      "count": 1,
+      "sample": "src/pages/dashboard/ResourceStatisticsPage.tsx:294"
+    },
+    {
+      "text": "平均负载（15 分钟）",
+      "count": 1,
+      "sample": "src/pages/dashboard/ResourceStatisticsPage.tsx:305"
+    },
+    {
+      "text": "内存与交换区使用情况",
+      "count": 1,
+      "sample": "src/pages/dashboard/ResourceStatisticsPage.tsx:317"
+    },
+    {
+      "text": "暂无内存数据",
+      "count": 1,
+      "sample": "src/pages/dashboard/ResourceStatisticsPage.tsx:319"
+    },
+    {
+      "text": "磁盘",
+      "count": 1,
+      "sample": "src/pages/dashboard/ResourceStatisticsPage.tsx:331"
+    },
+    {
+      "text": "磁盘分区使用情况",
+      "count": 1,
+      "sample": "src/pages/dashboard/ResourceStatisticsPage.tsx:331"
+    },
+    {
+      "text": "暂无磁盘数据",
+      "count": 1,
+      "sample": "src/pages/dashboard/ResourceStatisticsPage.tsx:333"
+    },
+    {
+      "text": "请输入用户名和密码",
+      "count": 1,
+      "sample": "src/pages/auth/LoginPage.tsx:62"
+    },
+    {
+      "text": "登录成功",
+      "count": 1,
+      "sample": "src/pages/auth/LoginPage.tsx:83"
+    },
+    {
+      "text": "登录失败，请重试",
+      "count": 1,
+      "sample": "src/pages/auth/LoginPage.tsx:85"
+    },
+    {
+      "text": "服务 · 模块 · 容器一站式运维",
+      "count": 1,
+      "sample": "src/pages/auth/LoginPage.tsx:120"
+    },
+    {
+      "text": "欢迎回来",
+      "count": 1,
+      "sample": "src/pages/auth/LoginPage.tsx:127"
+    },
+    {
+      "text": "请登录您的账号以继续",
+      "count": 1,
+      "sample": "src/pages/auth/LoginPage.tsx:128"
+    },
+    {
+      "text": "用户名",
+      "count": 1,
+      "sample": "src/pages/auth/LoginPage.tsx:134"
+    },
+    {
+      "text": "请输入用户名",
+      "count": 1,
+      "sample": "src/pages/auth/LoginPage.tsx:140"
+    },
+    {
+      "text": "密码",
+      "count": 1,
+      "sample": "src/pages/auth/LoginPage.tsx:151"
+    },
+    {
+      "text": "请输入密码",
+      "count": 1,
+      "sample": "src/pages/auth/LoginPage.tsx:159"
+    },
+    {
+      "text": "隐藏密码",
+      "count": 1,
+      "sample": "src/pages/auth/LoginPage.tsx:169"
+    },
+    {
+      "text": "显示密码",
+      "count": 1,
+      "sample": "src/pages/auth/LoginPage.tsx:169"
+    },
+    {
+      "text": "记住我",
+      "count": 1,
+      "sample": "src/pages/auth/LoginPage.tsx:181"
+    },
+    {
+      "text": "[auth] 清除登录信息失败:",
+      "count": 1,
+      "sample": "src/lib/api/authInterceptor.ts:89"
+    },
+    {
+      "text": "请重新登录",
+      "count": 1,
+      "sample": "src/lib/api/authInterceptor.ts:122"
+    },
+    {
+      "text": "[auth] 登出接口调用失败:",
+      "count": 1,
+      "sample": "src/lib/api/authInterceptor.ts:139"
+    },
+    {
+      "text": "长时间未操作，请重新登录",
+      "count": 1,
+      "sample": "src/lib/api/authInterceptor.ts:142"
+    },
+    {
+      "text": "无权限",
+      "count": 1,
+      "sample": "src/lib/api/authInterceptor.ts:158"
+    },
+    {
+      "text": "您没有执行此操作的权限",
+      "count": 1,
+      "sample": "src/lib/api/authInterceptor.ts:158"
+    },
+    {
+      "text": "授权异常",
+      "count": 1,
+      "sample": "src/lib/api/authInterceptor.ts:194"
+    },
+    {
+      "text": "请联系管理员检查授权状态",
+      "count": 1,
+      "sample": "src/lib/api/authInterceptor.ts:194"
+    },
+    {
+      "text": "您没有访问该功能的权限",
+      "count": 1,
+      "sample": "src/lib/api/authInterceptor.ts:197"
+    },
+    {
+      "text": "请求失败，请稍后重试",
+      "count": 1,
+      "sample": "src/lib/api/client.ts:50"
+    },
+    {
+      "text": "上传失败（${res.status}）",
+      "count": 1,
+      "sample": "src/lib/api/upload-api.ts:19"
+    },
+    {
+      "text": "运行中",
+      "count": 1,
+      "sample": "src/i18n/enumMaps.ts:9"
+    },
+    {
+      "text": "已停止",
+      "count": 1,
+      "sample": "src/i18n/enumMaps.ts:10"
+    },
+    {
+      "text": "启动中",
+      "count": 1,
+      "sample": "src/i18n/enumMaps.ts:11"
+    },
+    {
+      "text": "安装中",
+      "count": 1,
+      "sample": "src/i18n/enumMaps.ts:14"
+    },
+    {
+      "text": "已安装",
+      "count": 1,
+      "sample": "src/i18n/enumMaps.ts:16"
+    },
+    {
+      "text": "下载中",
+      "count": 1,
+      "sample": "src/i18n/enumMaps.ts:17"
+    },
+    {
+      "text": "升级中",
+      "count": 1,
+      "sample": "src/i18n/enumMaps.ts:19"
+    },
+    {
+      "text": "创建中",
+      "count": 1,
+      "sample": "src/i18n/enumMaps.ts:22"
+    },
+    {
+      "text": "创建失败",
+      "count": 1,
+      "sample": "src/i18n/enumMaps.ts:23"
+    },
+    {
+      "text": "在使用",
+      "count": 1,
+      "sample": "src/i18n/enumMaps.ts:26"
+    },
+    {
+      "text": "未安装",
+      "count": 1,
+      "sample": "src/i18n/enumMaps.ts:27"
+    },
+    {
+      "text": "正常",
+      "count": 1,
+      "sample": "src/i18n/enumMaps.ts:29"
+    },
+    {
+      "text": "异常",
+      "count": 1,
+      "sample": "src/i18n/enumMaps.ts:30"
+    },
+    {
+      "text": "已连接",
+      "count": 1,
+      "sample": "src/i18n/enumMaps.ts:31"
+    },
+    {
+      "text": "未连接",
+      "count": 1,
+      "sample": "src/i18n/enumMaps.ts:32"
+    },
+    {
+      "text": "简体中文",
+      "count": 1,
+      "sample": "src/i18n/index.ts:24"
+    },
+    {
+      "text": "繁體中文",
+      "count": 1,
+      "sample": "src/i18n/index.ts:26"
+    },
+    {
+      "text": "日本語",
+      "count": 1,
+      "sample": "src/i18n/index.ts:33"
+    },
+    {
+      "text": "正在下载",
+      "count": 1,
+      "sample": "src/hooks/use-install-poll.ts:59"
+    },
+    {
+      "text": "正在启动",
+      "count": 1,
+      "sample": "src/hooks/use-install-poll.ts:61"
+    },
+    {
+      "text": "失败",
+      "count": 1,
+      "sample": "src/hooks/use-install-poll.ts:63"
+    },
+    {
+      "text": "日志管理",
+      "count": 1,
+      "sample": "src/data/menu.tsx:20"
+    },
+    {
+      "text": "亮色",
+      "count": 1,
+      "sample": "src/components/theme-toggle.tsx:13"
+    },
+    {
+      "text": "暗色",
+      "count": 1,
+      "sample": "src/components/theme-toggle.tsx:14"
+    },
+    {
+      "text": "系统跟随",
+      "count": 1,
+      "sample": "src/components/theme-toggle.tsx:15"
+    },
+    {
+      "text": "编辑服务",
+      "count": 1,
+      "sample": "src/components/service/ServiceActionDialog.tsx:21"
+    },
+    {
+      "text": "容器监控",
+      "count": 1,
+      "sample": "src/components/service/ServiceActionDialog.tsx:23"
+    },
+    {
+      "text": "容器检查",
+      "count": 1,
+      "sample": "src/components/service/ServiceActionDialog.tsx:24"
+    },
+    {
+      "text": "控制台",
+      "count": 1,
+      "sample": "src/components/service/ServiceActionDialog.tsx:25"
+    },
+    {
+      "text": "请填写应用名称和命令",
+      "count": 1,
+      "sample": "src/components/service/ServiceForm.tsx:103"
+    },
+    {
+      "text": "请填写应用名称和容器镜像",
+      "count": 1,
+      "sample": "src/components/service/ServiceForm.tsx:124"
+    },
+    {
+      "text": "请填写接口统一路径",
+      "count": 1,
+      "sample": "src/components/service/ServiceForm.tsx:128"
+    },
+    {
+      "text": "环境变量 ${i + 1}",
+      "count": 1,
+      "sample": "src/components/service/ServiceForm.tsx:157"
+    },
+    {
+      "text": "应用名称",
+      "count": 1,
+      "sample": "src/components/service/ServiceForm.tsx:164"
+    },
+    {
+      "text": "具有此值的 app 标签将添加到部署的 Deployment 和 Service",
+      "count": 1,
+      "sample": "src/components/service/ServiceForm.tsx:164"
+    },
+    {
+      "text": "请输入应用名称",
+      "count": 1,
+      "sample": "src/components/service/ServiceForm.tsx:165"
+    },
+    {
+      "text": "容器镜像",
+      "count": 1,
+      "sample": "src/components/service/ServiceForm.tsx:170"
+    },
+    {
+      "text": "格式 xxx:xxx",
+      "count": 1,
+      "sample": "src/components/service/ServiceForm.tsx:170"
+    },
+    {
+      "text": "镜像名:标签",
+      "count": 1,
+      "sample": "src/components/service/ServiceForm.tsx:171"
+    },
+    {
+      "text": "Service 类型",
+      "count": 1,
+      "sample": "src/components/service/ServiceForm.tsx:176"
+    },
+    {
+      "text": "接口统一路径",
+      "count": 1,
+      "sample": "src/components/service/ServiceForm.tsx:191"
+    },
+    {
+      "text": "目录",
+      "count": 1,
+      "sample": "src/components/service/ServiceForm.tsx:198"
+    },
+    {
+      "text": "工作目录",
+      "count": 1,
+      "sample": "src/components/service/ServiceForm.tsx:199"
+    },
+    {
+      "text": "失败重试次数",
+      "count": 1,
+      "sample": "src/components/service/ServiceForm.tsx:201"
+    },
+    {
+      "text": "-1 表示持续不停重试",
+      "count": 1,
+      "sample": "src/components/service/ServiceForm.tsx:201"
+    },
+    {
+      "text": "自动启动",
+      "count": 1,
+      "sample": "src/components/service/ServiceForm.tsx:204"
+    },
+    {
+      "text": "运行命令",
+      "count": 1,
+      "sample": "src/components/service/ServiceForm.tsx:210"
+    },
+    {
+      "text": "每行一条命令",
+      "count": 1,
+      "sample": "src/components/service/ServiceForm.tsx:210"
+    },
+    {
+      "text": "网络",
+      "count": 1,
+      "sample": "src/components/service/ServiceForm.tsx:218"
+    },
+    {
+      "text": "默认网络名",
+      "count": 1,
+      "sample": "src/components/service/ServiceForm.tsx:219"
+    },
+    {
+      "text": "特权模式",
+      "count": 1,
+      "sample": "src/components/service/ServiceForm.tsx:221"
+    },
+    {
+      "text": "环境变量",
+      "count": 1,
+      "sample": "src/components/service/ServiceForm.tsx:226"
+    },
+    {
+      "text": "添加环境变量",
+      "count": 1,
+      "sample": "src/components/service/ServiceForm.tsx:229"
+    },
+    {
+      "text": "值",
+      "count": 1,
+      "sample": "src/components/service/ServiceForm.tsx:242"
+    },
+    {
+      "text": "标签",
+      "count": 1,
+      "sample": "src/components/service/ServiceForm.tsx:256"
+    },
+    {
+      "text": "添加标签",
+      "count": 1,
+      "sample": "src/components/service/ServiceForm.tsx:259"
+    },
+    {
+      "text": "端口",
+      "count": 1,
+      "sample": "src/components/service/ServiceForm.tsx:286"
+    },
+    {
+      "text": "添加端口",
+      "count": 1,
+      "sample": "src/components/service/ServiceForm.tsx:289"
+    },
+    {
+      "text": "数据卷",
+      "count": 1,
+      "sample": "src/components/service/ServiceForm.tsx:332"
+    },
+    {
+      "text": "添加数据卷",
+      "count": 1,
+      "sample": "src/components/service/ServiceForm.tsx:335"
+    },
+    {
+      "text": "返回首页",
+      "count": 1,
+      "sample": "src/components/layout/AppLayout.tsx:157"
+    },
+    {
+      "text": "展开侧边栏",
+      "count": 1,
+      "sample": "src/components/layout/AppLayout.tsx:199"
+    },
+    {
+      "text": "收起侧边栏",
+      "count": 1,
+      "sample": "src/components/layout/AppLayout.tsx:199"
+    },
+    {
+      "text": "暂无数据",
+      "count": 1,
+      "sample": "src/components/common/DataTable.tsx:81"
+    },
+    {
+      "text": "获取日志失败",
+      "count": 1,
+      "sample": "src/components/common/LogViewer.tsx:73"
+    },
+    {
+      "text": "导出失败",
+      "count": 1,
+      "sample": "src/components/common/LogViewer.tsx:129"
+    },
+    {
+      "text": "搜索关键字",
+      "count": 1,
+      "sample": "src/components/common/LogViewer.tsx:195"
+    },
+    {
+      "text": "暂无日志",
+      "count": 1,
+      "sample": "src/components/common/LogViewer.tsx:222"
+    },
+    {
+      "text": "导出日志",
+      "count": 1,
+      "sample": "src/components/common/LogViewer.tsx:233"
+    },
+    {
+      "text": "设置导出时间范围与行数",
+      "count": 1,
+      "sample": "src/components/common/LogViewer.tsx:234"
+    },
+    {
+      "text": "导出",
+      "count": 1,
+      "sample": "src/components/common/LogViewer.tsx:247"
+    },
+    {
+      "text": "返回",
+      "count": 1,
+      "sample": "src/components/common/PageHeader.tsx:40"
+    },
+    {
+      "text": "升级进度",
+      "count": 1,
+      "sample": "src/components/common/ProgressDialog.tsx:18"
+    },
+    {
+      "text": "暂停",
+      "count": 1,
+      "sample": "src/components/common/StatusBadge.tsx:10"
+    },
+    {
+      "text": "启动",
+      "count": 1,
+      "sample": "src/components/common/StatusBadge.tsx:14"
+    },
+    {
+      "text": "等待重试",
+      "count": 1,
+      "sample": "src/components/common/StatusBadge.tsx:17"
+    },
+    {
+      "text": "上传成功",
+      "count": 1,
+      "sample": "src/components/common/UploadDialog.tsx:36"
+    },
+    {
+      "text": "上传失败",
+      "count": 1,
+      "sample": "src/components/common/UploadDialog.tsx:39"
+    }
+  ]
+}

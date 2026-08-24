@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { useAtomValue } from 'jotai'
 import { toast } from 'sonner'
 import { Box, RefreshCw, Rocket, UploadCloud } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import type { EChartsOption } from 'echarts'
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -38,6 +39,7 @@ async function pollInstall(id: string, onProgress: (percent: number) => void) {
 export default function DashboardPage() {
   const serverInfo = useAtomValue(serverInfoAtom)
   const repos = useAtomValue(newVersionsAtom)
+  const { t } = useTranslation()
 
   const [services, setServices] = useState<ServiceItem[]>([])
   const [modulars, setModulars] = useState<ModularItem[]>([])
@@ -52,11 +54,11 @@ export default function DashboardPage() {
       setModulars(mod)
       setLogs(log)
     } catch (e: any) {
-      toast.error(e?.json?._error || e?.message || '加载首页数据失败')
+      toast.error(e?.json?._error || e?.message || t('加载首页数据失败'))
     } finally {
       setLoading(false)
     }
-  }, [])
+  }, [t])
 
   useEffect(() => {
     load()
@@ -75,13 +77,13 @@ export default function DashboardPage() {
           avoidLabelOverlap: false,
           label: { show: true, formatter: '{b}: {c}' },
           data: [
-            { name: '运行', value: running, itemStyle: { color: '#3b82f6' } },
-            { name: '停止', value: services.length - running, itemStyle: { color: '#d4d4d8' } },
+            { name: t('运行'), value: running, itemStyle: { color: '#3b82f6' } },
+            { name: t('停止'), value: services.length - running, itemStyle: { color: '#d4d4d8' } },
           ],
         },
       ],
     }),
-    [running, services.length],
+    [running, services.length, t],
   )
 
   const serviceLogs = useMemo(
@@ -119,15 +121,15 @@ export default function DashboardPage() {
         }
       }
       if (targets.length === 0) {
-        toast.info('已是最新版本')
+        toast.info(t('已是最新版本'))
         return
       }
-      for (const t of targets) {
-        setUpgradeText(`正在升级 ${t.name}...`)
-        if (!t.url) continue
-        const { id } = t.isModular
-          ? await modularOnlineInstall(t.url, t.isMaintain)
-          : await onlineInstall(t.url)
+      for (const target of targets) {
+        setUpgradeText(t('正在升级 {{name}}...', { name: target.name }))
+        if (!target.url) continue
+        const { id } = target.isModular
+          ? await modularOnlineInstall(target.url, target.isMaintain)
+          : await onlineInstall(target.url)
         await pollInstall(id, (p) => {
           const base = (done / targets.length) * 100
           setUpgradePercent(base + p / targets.length)
@@ -135,10 +137,10 @@ export default function DashboardPage() {
         done += 1
         setUpgradePercent((done / targets.length) * 100)
       }
-      toast.success('在线升级完成')
+      toast.success(t('在线升级完成'))
       load()
     } catch (e: any) {
-      toast.error(e?.json?._error || e?.message || '在线升级失败')
+      toast.error(e?.json?._error || e?.message || t('在线升级失败'))
     } finally {
       setUpgrading(false)
     }
@@ -147,23 +149,23 @@ export default function DashboardPage() {
   return (
     <div className="space-y-4">
       <PageHeader
-        title="首页"
+        title={t('首页')}
         extra={
           <>
             <UploadFileButton
-              label="一键离线升级"
+              label={t('一键离线升级')}
               accept=".gz,.zip"
               icon={<UploadCloud className="mr-1 size-4" />}
               onUpload={async (file) => {
                 await batchUpgrade(file)
-                toast.success('离线升级已提交')
+                toast.success(t('离线升级已提交'))
               }}
             />
             <Button onClick={handleOnlineUpgrade} disabled={upgrading}>
               <Rocket className="mr-1 size-4" />
-              一键在线升级
+              {t('一键在线升级')}
             </Button>
-            <Button variant="outline" size="icon" onClick={load} disabled={loading} aria-label="刷新">
+            <Button variant="outline" size="icon" onClick={load} disabled={loading} aria-label={t('刷新')}>
               <RefreshCw className={loading ? 'size-4 animate-spin' : 'size-4'} />
             </Button>
           </>
@@ -174,7 +176,7 @@ export default function DashboardPage() {
         <Link to="/app/model/Service/list" className="block">
           <Card className="transition-shadow hover:shadow-md">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">服务总数</CardTitle>
+              <CardTitle className="text-sm font-medium">{t('服务总数')}</CardTitle>
               <Box className="size-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
@@ -184,7 +186,7 @@ export default function DashboardPage() {
         </Link>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">服务状态</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('服务状态')}</CardTitle>
             <Box className="size-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -196,8 +198,8 @@ export default function DashboardPage() {
       <div className="grid gap-4 lg:grid-cols-3">
         <Card>
           <CardHeader>
-            <CardTitle>服务状态分布</CardTitle>
-            <CardDescription>当前运行 / 停止服务数</CardDescription>
+            <CardTitle>{t('服务状态分布')}</CardTitle>
+            <CardDescription>{t('当前运行 / 停止服务数')}</CardDescription>
           </CardHeader>
           <CardContent>
             <EChart option={pieOption} height={260} />
@@ -206,7 +208,7 @@ export default function DashboardPage() {
 
         <Card className="lg:col-span-2">
           <CardHeader>
-            <CardTitle>更新日志</CardTitle>
+            <CardTitle>{t('更新日志')}</CardTitle>
           </CardHeader>
           <CardContent>
             <LogTable logs={serviceLogs} loading={loading} />
@@ -217,11 +219,11 @@ export default function DashboardPage() {
       <Dialog open={upgradeOpen} onOpenChange={(o) => !upgrading && setUpgradeOpen(o)}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>在线升级</DialogTitle>
-            <DialogDescription>正在逐个升级可更新的服务与模块，期间请勿进行其他操作。</DialogDescription>
+            <DialogTitle>{t('在线升级')}</DialogTitle>
+            <DialogDescription>{t('正在逐个升级可更新的服务与模块，期间请勿进行其他操作。')}</DialogDescription>
           </DialogHeader>
           <div className="space-y-3">
-            <p className="text-sm text-muted-foreground">{upgradeText || '准备中...'}</p>
+            <p className="text-sm text-muted-foreground">{upgradeText || t('准备中...')}</p>
             <Progress value={upgradePercent} />
             <p className="text-right text-sm text-muted-foreground">{upgradePercent.toFixed(0)}%</p>
           </div>
@@ -232,16 +234,17 @@ export default function DashboardPage() {
 }
 
 function LogTable({ logs, loading }: { logs: UpdateLogItem[]; loading: boolean }) {
+  const { t } = useTranslation()
   const columns: Column<UpdateLogItem>[] = [
-    { key: 'name', title: '名称' },
+    { key: 'name', title: t('名称') },
     {
       key: 'time',
-      title: '更新时间',
+      title: t('更新时间'),
       render: (l) =>
         l.time ? new Date(l.time).toLocaleString('zh-CN', { hour12: false }) : '-',
     },
-    { key: 'msg', title: '更新信息', render: (l) => <div className="max-w-40 truncate">{l.msg}</div> },
-    { key: 'version', title: '版本' },
+    { key: 'msg', title: t('更新信息'), render: (l) => <div className="max-w-40 truncate">{l.msg}</div> },
+    { key: 'version', title: t('版本') },
   ]
   return (
     <div className="max-h-72 overflow-hidden rounded-md border">
@@ -250,7 +253,7 @@ function LogTable({ logs, loading }: { logs: UpdateLogItem[]; loading: boolean }
         data={logs}
         rowKey={(l) => `${l.name}-${l.version}-${l.time ?? ''}-${l.msg ?? ''}`}
         loading={loading}
-        emptyText="暂无更新日志"
+        emptyText={t('暂无更新日志')}
       />
     </div>
   )

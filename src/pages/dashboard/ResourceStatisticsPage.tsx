@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { toast } from 'sonner'
+import { useTranslation } from 'react-i18next'
 import type { LucideIcon } from 'lucide-react'
 import {
   Activity,
@@ -18,12 +19,13 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { EChart } from '@/components/common/EChart'
 import { PageHeader } from '@/components/common/PageHeader'
 import { getSystemInfo, type SystemInfo, type SystemMem } from '@/lib/api/server-api'
+import i18n from '@/i18n'
 
 /** 仪表盘：圆弧仪表，按使用率变色 */
 function gaugeOption(rate?: number): EChartsOption {
   const v = Math.round(rate ?? 0)
   return {
-    tooltip: { formatter: () => `已用 ${v}%` },
+    tooltip: { formatter: () => i18n.t('已用 {{value}}%', { value: v }) },
     series: [
       {
         type: 'gauge',
@@ -160,6 +162,7 @@ const MEM_ROWS: Array<{ label: string; dot: string; value: (m?: SystemMem) => st
 ]
 
 function MemoryCard({ title, desc, m }: { title: string; desc: string; m?: SystemMem }) {
+  const { t } = useTranslation()
   return (
     <Card>
       <CardHeader className="pb-0">
@@ -169,8 +172,8 @@ function MemoryCard({ title, desc, m }: { title: string; desc: string; m?: Syste
               <MemoryStick className="size-4" />
             </div>
             <div>
-              <CardTitle className="text-sm">{title}</CardTitle>
-              {desc && <CardDescription className="text-xs">{desc}</CardDescription>}
+              <CardTitle className="text-sm">{t(title)}</CardTitle>
+              {desc && <CardDescription className="text-xs">{t(desc)}</CardDescription>}
             </div>
           </div>
           <UsageBadge rate={m?.rate} />
@@ -183,7 +186,7 @@ function MemoryCard({ title, desc, m }: { title: string; desc: string; m?: Syste
             <div key={row.label} className="flex items-center justify-between gap-2">
               <dt className="flex items-center gap-1.5 text-muted-foreground">
                 <span className={`size-1.5 shrink-0 rounded-full ${row.dot}`} />
-                {row.label}
+                {t(row.label)}
               </dt>
               <dd className="font-medium tabular-nums">{row.value(m)}</dd>
             </div>
@@ -195,6 +198,7 @@ function MemoryCard({ title, desc, m }: { title: string; desc: string; m?: Syste
 }
 
 function DiskCard({ fs }: { fs: SystemMem & { mountpoint?: string } }) {
+  const { t } = useTranslation()
   return (
     <Card>
       <CardHeader className="pb-0">
@@ -203,7 +207,7 @@ function DiskCard({ fs }: { fs: SystemMem & { mountpoint?: string } }) {
             <div className="flex size-7 items-center justify-center rounded-md bg-blue-600/10 text-blue-600">
               <HardDrive className="size-4" />
             </div>
-            <CardTitle className="truncate text-sm font-medium">{fs.mountpoint ?? '未知挂载点'}</CardTitle>
+            <CardTitle className="truncate text-sm font-medium">{fs.mountpoint ?? t('未知挂载点')}</CardTitle>
           </div>
           <UsageBadge rate={fs?.rate} />
         </div>
@@ -211,8 +215,8 @@ function DiskCard({ fs }: { fs: SystemMem & { mountpoint?: string } }) {
       <CardContent>
         <EChart option={gaugeOption(fs?.rate)} height={140} />
         <p className="mt-1 flex items-center justify-between text-xs text-muted-foreground">
-          <span>可用 {fmt(fs?.avail, fs?.unit)}</span>
-          <span>共 {fmt(fs?.size, fs?.unit)}</span>
+          <span>{t('可用')} {fmt(fs?.avail, fs?.unit)}</span>
+          <span>{t('共')} {fmt(fs?.size, fs?.unit)}</span>
         </p>
       </CardContent>
     </Card>
@@ -220,6 +224,7 @@ function DiskCard({ fs }: { fs: SystemMem & { mountpoint?: string } }) {
 }
 
 export default function ResourceStatisticsPage() {
+  const { t } = useTranslation()
   const [info, setInfo] = useState<SystemInfo | null>(null)
   const [loading, setLoading] = useState(true)
 
@@ -228,11 +233,11 @@ export default function ResourceStatisticsPage() {
     try {
       setInfo(await getSystemInfo())
     } catch (e: any) {
-      toast.error(e?.json?._error || e?.message || '获取资源统计失败')
+      toast.error(e?.json?._error || e?.message || t('获取资源统计失败'))
     } finally {
       setLoading(false)
     }
-  }, [])
+  }, [t])
 
   useEffect(() => {
     load()
@@ -245,10 +250,10 @@ export default function ResourceStatisticsPage() {
   return (
     <div className="space-y-4">
       <PageHeader
-        title="资源统计"
-        subtitle="服务器 CPU / 内存 / 磁盘实时使用情况"
+        title={t('资源统计')}
+        subtitle={t('服务器 CPU / 内存 / 磁盘实时使用情况')}
         extra={
-          <Button variant="outline" size="icon" onClick={load} disabled={loading} aria-label="刷新">
+          <Button variant="outline" size="icon" onClick={load} disabled={loading} aria-label={t('刷新')}>
             <RefreshCw className={loading ? 'size-4 animate-spin' : 'size-4'} />
           </Button>
         }
@@ -258,55 +263,55 @@ export default function ResourceStatisticsPage() {
         <Card>
           <CardContent className="flex flex-col items-center justify-center gap-2 py-16">
             <Loader2 className="size-6 animate-spin text-muted-foreground" />
-            <p className="text-sm text-muted-foreground">正在获取资源统计...</p>
+            <p className="text-sm text-muted-foreground">{t('正在获取资源统计...')}</p>
           </CardContent>
         </Card>
       ) : (
         <>
           {/* CPU */}
-          <SectionCard icon={Cpu} title="CPU" desc="处理器核心与平均负载">
+          <SectionCard icon={Cpu} title="CPU" desc={t('处理器核心与平均负载')}>
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               <MetricCard
                 icon={Cpu}
                 tone="blue"
-                label="CPU 核数"
+                label={t('CPU 核数')}
                 value={`${cpu?.num ?? '-'}`}
                 sub={
                   <span>
-                    使用率 <UsageText rate={cpu?.rate} />
+                    {t('使用率')} <UsageText rate={cpu?.rate} />
                   </span>
                 }
               />
               <MetricCard
                 icon={Activity}
                 tone="cyan"
-                label="平均负载（1 分钟）"
+                label={t('平均负载（1 分钟）')}
                 value={fmt(cpu?.load1)}
                 sub={
                   <span>
-                    负载率 <UsageText rate={cpu?.load1Rate} />
+                    {t('负载率')} <UsageText rate={cpu?.load1Rate} />
                   </span>
                 }
               />
               <MetricCard
                 icon={Gauge}
                 tone="amber"
-                label="平均负载（5 分钟）"
+                label={t('平均负载（5 分钟）')}
                 value={fmt(cpu?.load5)}
                 sub={
                   <span>
-                    负载率 <UsageText rate={cpu?.load5Rate} />
+                    {t('负载率')} <UsageText rate={cpu?.load5Rate} />
                   </span>
                 }
               />
               <MetricCard
                 icon={Timer}
                 tone="violet"
-                label="平均负载（15 分钟）"
+                label={t('平均负载（15 分钟）')}
                 value={fmt(cpu?.load15)}
                 sub={
                   <span>
-                    负载率 <UsageText rate={cpu?.load15Rate} />
+                    {t('负载率')} <UsageText rate={cpu?.load15Rate} />
                   </span>
                 }
               />
@@ -314,9 +319,9 @@ export default function ResourceStatisticsPage() {
           </SectionCard>
 
           {/* 内存 */}
-          <SectionCard icon={MemoryStick} title="内存" desc="内存与交换区使用情况">
+          <SectionCard icon={MemoryStick} title={t('内存')} desc={t('内存与交换区使用情况')}>
             {memEntries.length === 0 ? (
-              <p className="py-4 text-sm text-muted-foreground">暂无内存数据</p>
+              <p className="py-4 text-sm text-muted-foreground">{t('暂无内存数据')}</p>
             ) : (
               <div className="grid gap-4 sm:grid-cols-2">
                 {memEntries.map(([key, m]) => {
@@ -328,9 +333,9 @@ export default function ResourceStatisticsPage() {
           </SectionCard>
 
           {/* 磁盘 */}
-          <SectionCard icon={HardDrive} title="磁盘" desc="磁盘分区使用情况">
+          <SectionCard icon={HardDrive} title={t('磁盘')} desc={t('磁盘分区使用情况')}>
             {disks.length === 0 ? (
-              <p className="py-4 text-sm text-muted-foreground">暂无磁盘数据</p>
+              <p className="py-4 text-sm text-muted-foreground">{t('暂无磁盘数据')}</p>
             ) : (
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {disks.map((fs) => (

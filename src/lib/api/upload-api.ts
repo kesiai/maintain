@@ -1,4 +1,5 @@
 import { rawFetch } from './client'
+import i18n from '@/i18n'
 
 /**
  * 通用 multipart 上传：POST /api/{path}，FormData('file', file)，
@@ -16,7 +17,7 @@ export async function upload(
   const res = await rawFetch(`/api/${path}`, { method: 'POST', body: fd, isFormData: true })
   if (!res.ok) {
     const text = await res.text().catch(() => '')
-    const e = new Error(text || `上传失败（${res.status}）`) as Error & { status?: number }
+    const e = new Error(text || i18n.t('上传失败（{{status}}）', { status: res.status })) as Error & { status?: number }
     e.status = res.status
     throw e
   }

@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useLocation, useSearchParams } from 'react-router-dom'
 import { toast } from 'sonner'
+import { useTranslation } from 'react-i18next'
 import type { EChartsOption } from 'echarts'
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -56,6 +57,7 @@ export function ServiceStatsContent({
   isWin: boolean
   back?: boolean
 }) {
+  const { t } = useTranslation()
   const [points, setPoints] = useState<Point[]>([])
   const [intervalSec, setIntervalSec] = useState(5)
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
@@ -94,35 +96,35 @@ export function ServiceStatsContent({
   }, [pod, isWin, intervalSec])
 
   useEffect(() => {
-    if (!pod) toast.warning('缺少 podName 参数')
-  }, [pod])
+    if (!pod) toast.warning(t('缺少 podName 参数'))
+  }, [pod, t])
 
   const times = useMemo(() => points.map((p) => p.t), [points])
 
   const memoryOption = useMemo(() => {
     if (isWin) {
-      return lineOption('内存使用情况', [{ name: '内存', data: points.map((p) => p.memory ?? 0), color: '#3b82f6' }], times, 'MB')
+      return lineOption(t('内存使用情况'), [{ name: t('内存'), data: points.map((p) => p.memory ?? 0), color: '#3b82f6' }], times, 'MB')
     }
     return lineOption(
-      '内存使用情况',
+      t('内存使用情况'),
       [
-        { name: '内存', data: points.map((p) => p.memory ?? 0), color: '#3b82f6' },
-        { name: '缓存', data: points.map((p) => p.cache ?? 0), color: '#f59e0b' },
+        { name: t('内存'), data: points.map((p) => p.memory ?? 0), color: '#3b82f6' },
+        { name: t('缓存'), data: points.map((p) => p.cache ?? 0), color: '#f59e0b' },
       ],
       times,
       'MB',
     )
-  }, [points, times, isWin])
+  }, [points, times, isWin, t])
 
   const cpuOption = useMemo(
-    () => lineOption('CPU 使用情况', [{ name: 'CPU', data: points.map((p) => p.cpu ?? 0), color: '#10b981' }], times, '%'),
-    [points, times],
+    () => lineOption(t('CPU 使用情况'), [{ name: 'CPU', data: points.map((p) => p.cpu ?? 0), color: '#10b981' }], times, '%'),
+    [points, times, t],
   )
 
   const networkOption = useMemo(
     () =>
       lineOption(
-        '网络使用情况',
+        t('网络使用情况'),
         [
           { name: 'RX on eth0', data: points.map((p) => p.rx ?? 0), color: '#8b5cf6' },
           { name: 'TX on eth0', data: points.map((p) => p.tx ?? 0), color: '#ec4899' },
@@ -130,13 +132,13 @@ export function ServiceStatsContent({
         times,
         'MB',
       ),
-    [points, times],
+    [points, times, t],
   )
 
   return (
     <div className="space-y-4">
       <PageHeader
-        title={`容器监控：${pod}`}
+        title={t('容器监控：{{pod}}', { pod })}
         back={back}
         extra={
           <Select value={String(intervalSec)} onValueChange={(v) => setIntervalSec(Number(v))}>
@@ -146,7 +148,7 @@ export function ServiceStatsContent({
             <SelectContent>
               {[1, 3, 5, 10, 30, 60].map((s) => (
                 <SelectItem key={s} value={String(s)}>
-                  刷新：{s}秒
+                  {t('刷新：{{sec}}秒', { sec: s })}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -157,7 +159,7 @@ export function ServiceStatsContent({
       <div className="grid gap-4 lg:grid-cols-2">
         <Card>
           <CardHeader className="pb-0">
-            <CardTitle className="text-sm">内存使用情况</CardTitle>
+            <CardTitle className="text-sm">{t('内存使用情况')}</CardTitle>
           </CardHeader>
           <CardContent>
             <EChart option={memoryOption} height={260} />
@@ -165,7 +167,7 @@ export function ServiceStatsContent({
         </Card>
         <Card>
           <CardHeader className="pb-0">
-            <CardTitle className="text-sm">CPU 使用情况</CardTitle>
+            <CardTitle className="text-sm">{t('CPU 使用情况')}</CardTitle>
           </CardHeader>
           <CardContent>
             <EChart option={cpuOption} height={260} />
@@ -174,7 +176,7 @@ export function ServiceStatsContent({
         {!isWin && (
           <Card className="lg:col-span-2">
             <CardHeader className="pb-0">
-              <CardTitle className="text-sm">网络使用情况</CardTitle>
+              <CardTitle className="text-sm">{t('网络使用情况')}</CardTitle>
             </CardHeader>
             <CardContent>
               <EChart option={networkOption} height={260} />

@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import { toast } from 'sonner'
 import { Eye, RefreshCw, Search, Trash2 } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -52,6 +53,7 @@ const TIME_RANGES = [
 ]
 
 export default function OperationLogPage() {
+  const { t } = useTranslation()
   const [tab, setTab] = useState('log')
 
   /* -------- 操作日志 -------- */
@@ -71,8 +73,8 @@ export default function OperationLogPage() {
     setLoading(true)
     try {
       const where: Record<string, any> = {}
-      const t = TIME_RANGES.find((r) => r.key === range)
-      if (t && t.ms) where.time = { $gte: new Date(Date.now() - t.ms).getTime() }
+      const tr = TIME_RANGES.find((r) => r.key === range)
+      if (tr && tr.ms) where.time = { $gte: new Date(Date.now() - tr.ms).getTime() }
       if (search) where.$or = [
         { message: { $regex: search } },
         { name: { $regex: search } },
@@ -89,11 +91,11 @@ export default function OperationLogPage() {
       const uniq = Array.from(new Set(list.map((i) => i.type).filter(Boolean))) as string[]
       setTypes((prev) => Array.from(new Set([...prev, ...uniq])))
     } catch (e: any) {
-      toast.error(e?.json?._error || e?.message || '获取操作日志失败')
+      toast.error(e?.json?._error || e?.message || t('获取操作日志失败'))
     } finally {
       setLoading(false)
     }
-  }, [page, pageSize, search, type, range])
+  }, [page, pageSize, search, type, range, t])
 
   useEffect(() => {
     load()
@@ -111,9 +113,9 @@ export default function OperationLogPage() {
       setCycles(c)
       setLogQueryTime(user?.logQueryTime || '')
     } catch (e: any) {
-      toast.error(e?.json?._error || e?.message || '获取清理配置失败')
+      toast.error(e?.json?._error || e?.message || t('获取清理配置失败'))
     }
-  }, [])
+  }, [t])
 
   useEffect(() => {
     if (tab === 'clean') loadCycles()
@@ -123,9 +125,9 @@ export default function OperationLogPage() {
     setClearing(true)
     try {
       await execOnceLogClear({})
-      toast.success('已开始清理日志')
+      toast.success(t('已开始清理日志'))
     } catch (e: any) {
-      toast.error(e?.json?._error || e?.message || '清理失败')
+      toast.error(e?.json?._error || e?.message || t('清理失败'))
     } finally {
       setClearing(false)
     }
@@ -135,27 +137,27 @@ export default function OperationLogPage() {
     if (!cycleDelete?.id) return
     try {
       await removeLogCycle(cycleDelete.id)
-      toast.success('删除成功')
+      toast.success(t('删除成功'))
       setCycleDelete(null)
       loadCycles()
     } catch (e: any) {
-      toast.error(e?.json?._error || e?.message || '删除失败')
+      toast.error(e?.json?._error || e?.message || t('删除失败'))
     }
   }
 
   const handleSaveQueryTime = async () => {
     try {
       await updateUser({ logQueryTime })
-      toast.success('保存成功')
+      toast.success(t('保存成功'))
     } catch (e: any) {
-      toast.error(e?.json?._error || e?.message || '保存失败')
+      toast.error(e?.json?._error || e?.message || t('保存失败'))
     }
   }
 
   const columns: Column<OpsLogItem>[] = [
     {
       key: 'time',
-      title: '时间',
+      title: t('时间'),
       width: 180,
       render: (r) => {
         const v = typeof r.time === 'string' ? r.time : r.time ? new Date(r.time).toLocaleString('zh-CN', { hour12: false }) : '-'
@@ -164,19 +166,19 @@ export default function OperationLogPage() {
     },
     {
       key: 'name',
-      title: '操作人员',
+      title: t('操作人员'),
       width: 120,
       render: (r) => r.name || r.operator || r.user || '-',
     },
     {
       key: 'type',
-      title: '类型',
+      title: t('类型'),
       width: 140,
       render: (r) => (r.type ? <Badge variant="outline">{r.type}</Badge> : '-'),
     },
     {
       key: 'message',
-      title: '操作内容',
+      title: t('操作内容'),
       width: 360,
       render: (r) => <span className="line-clamp-1 text-muted-foreground">{r.message || r.msg || '-'}</span>,
     },
@@ -188,13 +190,13 @@ export default function OperationLogPage() {
     },
     {
       key: 'actions',
-      title: '操作',
+      title: t('操作'),
       width: 90,
       pinned: 'right',
       render: (r) => (
         <Button variant="ghost" size="sm" className="h-7 px-2" onClick={() => setDetail(r)}>
           <Eye className="mr-1 size-3.5" />
-          详情
+          {t('详情')}
         </Button>
       ),
     },
@@ -202,12 +204,12 @@ export default function OperationLogPage() {
 
   return (
     <div className="space-y-4">
-      <PageHeader title="操作日志" />
+      <PageHeader title={t('操作日志')} />
 
       <Tabs value={tab} onValueChange={setTab}>
         <TabsList>
-          <TabsTrigger value="log">操作日志</TabsTrigger>
-          <TabsTrigger value="clean">日志清理</TabsTrigger>
+          <TabsTrigger value="log">{t('操作日志')}</TabsTrigger>
+          <TabsTrigger value="clean">{t('日志清理')}</TabsTrigger>
         </TabsList>
 
         <TabsContent value="log" className="space-y-3">
@@ -216,7 +218,7 @@ export default function OperationLogPage() {
               <Search className="absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
               <Input
                 className="pl-8"
-                placeholder="搜索操作内容/人员"
+                placeholder={t('搜索操作内容/人员')}
                 value={search}
                 onChange={(e) => {
                   setSearch(e.target.value)
@@ -226,12 +228,12 @@ export default function OperationLogPage() {
             </div>
             <Select value={type} onValueChange={(v) => { setType(v); setPage(1) }}>
               <SelectTrigger className="w-40">
-                <SelectValue placeholder="全部类型" />
+                <SelectValue placeholder={t('全部类型')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">全部类型</SelectItem>
-                {types.map((t) => (
-                  <SelectItem key={t} value={t}>{t}</SelectItem>
+                <SelectItem value="all">{t('全部类型')}</SelectItem>
+                {types.map((ty) => (
+                  <SelectItem key={ty} value={ty}>{ty}</SelectItem>
                 ))}
               </SelectContent>
             </Select>
@@ -241,11 +243,11 @@ export default function OperationLogPage() {
               </SelectTrigger>
               <SelectContent>
                 {TIME_RANGES.map((r) => (
-                  <SelectItem key={r.key} value={r.key}>{r.label}</SelectItem>
+                  <SelectItem key={r.key} value={r.key}>{t(r.label)}</SelectItem>
                 ))}
               </SelectContent>
             </Select>
-            <Button variant="outline" size="icon" onClick={load} disabled={loading} aria-label="刷新">
+            <Button variant="outline" size="icon" onClick={load} disabled={loading} aria-label={t('刷新')}>
               <RefreshCw className={loading ? 'size-4 animate-spin' : 'size-4'} />
             </Button>
           </div>
@@ -273,22 +275,22 @@ export default function OperationLogPage() {
             <CardContent className="space-y-4 pt-6">
               <div className="flex flex-wrap items-end gap-2">
                 <div className="space-y-1.5">
-                  <p className="text-sm text-muted-foreground">日志查询时间（TimeRange）</p>
+                  <p className="text-sm text-muted-foreground">{t('日志查询时间（TimeRange）')}</p>
                   <Input
                     className="w-80 font-mono text-xs"
-                    placeholder="如 2024-01-01 00:00:00"
+                    placeholder={t('如 2024-01-01 00:00:00')}
                     value={logQueryTime}
                     onChange={(e) => setLogQueryTime(e.target.value)}
                   />
                 </div>
-                <Button onClick={handleSaveQueryTime}>保存</Button>
+                <Button onClick={handleSaveQueryTime}>{t('保存')}</Button>
                 <Button variant="outline" className="ml-auto text-destructive" onClick={handleClear} disabled={clearing}>
                   <Trash2 className="mr-1 size-4" />
-                  {clearing ? '清理中...' : '一键清除日志'}
+                  {clearing ? t('清理中...') : t('一键清除日志')}
                 </Button>
               </div>
               <p className="text-xs text-muted-foreground">
-                日志清理会按照下面配置的清理周期定时执行；一键清除会立即清理当前周期之前的日志。
+                {t('日志清理会按照下面配置的清理周期定时执行；一键清除会立即清理当前周期之前的日志。')}
               </p>
             </CardContent>
           </Card>
@@ -296,42 +298,45 @@ export default function OperationLogPage() {
           <Card>
             <CardContent className="space-y-3 pt-4">
               <div className="flex items-center justify-between">
-                <h3 className="text-sm font-medium">清理周期配置</h3>
+                <h3 className="text-sm font-medium">{t('清理周期配置')}</h3>
                 <Button variant="outline" size="sm" onClick={loadCycles}>
                   <RefreshCw className="mr-1 size-3.5" />
-                  刷新
+                  {t('刷新')}
                 </Button>
               </div>
               <DataTable
                 columns={[
                   {
                     key: 'name',
-                    title: '名称',
+                    title: t('名称'),
                     render: (r) => r.name || '-',
                   },
                   {
                     key: 'cycle',
-                    title: '周期',
+                    title: t('周期'),
                     width: 140,
-                    render: (r) => `${r.cycle ?? '-'}${r.cycle_type === 'minute' ? ' 分钟' : r.cycle_type === 'hour' ? ' 小时' : r.cycle_type === 'day' ? ' 天' : ''}`,
+                    render: (r) => {
+                      const unit = r.cycle_type === 'minute' ? t('分钟') : r.cycle_type === 'hour' ? t('小时') : r.cycle_type === 'day' ? t('天') : ''
+                      return unit ? t('{{cycle}} {{unit}}', { cycle: r.cycle ?? '-', unit }) : (r.cycle ?? '-')
+                    },
                   },
                   {
                     key: 'type',
-                    title: '清理类型',
+                    title: t('清理类型'),
                     width: 140,
                     render: (r) => r.type || '-',
                   },
                   {
                     key: 'disabled',
-                    title: '状态',
+                    title: t('状态'),
                     width: 100,
                     render: (r) => (
-                      <Badge variant={r.disabled ? 'secondary' : 'default'}>{r.disabled ? '停用' : '启用'}</Badge>
+                      <Badge variant={r.disabled ? 'secondary' : 'default'}>{r.disabled ? t('停用') : t('启用')}</Badge>
                     ),
                   },
                   {
                     key: 'actions',
-                    title: '操作',
+                    title: t('操作'),
                     width: 90,
                     render: (r) => (
                       <Button
@@ -341,7 +346,7 @@ export default function OperationLogPage() {
                         onClick={() => setCycleDelete(r)}
                       >
                         <Trash2 className="mr-1 size-3.5" />
-                        删除
+                        {t('删除')}
                       </Button>
                     ),
                   },
@@ -358,17 +363,17 @@ export default function OperationLogPage() {
       <Dialog open={detail !== null} onOpenChange={(o) => !o && setDetail(null)}>
         <DialogContent className="max-w-2xl">
           <DialogHeader>
-            <DialogTitle>操作日志详情</DialogTitle>
-            <DialogDescription>日志原始数据</DialogDescription>
+            <DialogTitle>{t('操作日志详情')}</DialogTitle>
+            <DialogDescription>{t('日志原始数据')}</DialogDescription>
           </DialogHeader>
           <div className="space-y-3 text-sm">
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <p className="text-muted-foreground">操作人员</p>
+                <p className="text-muted-foreground">{t('操作人员')}</p>
                 <p>{detail?.name || detail?.operator || '-'}</p>
               </div>
               <div>
-                <p className="text-muted-foreground">时间</p>
+                <p className="text-muted-foreground">{t('时间')}</p>
                 <p>
                   {detail?.time
                     ? new Date(detail.time).toLocaleString('zh-CN', { hour12: false })
@@ -376,7 +381,7 @@ export default function OperationLogPage() {
                 </p>
               </div>
               <div>
-                <p className="text-muted-foreground">类型</p>
+                <p className="text-muted-foreground">{t('类型')}</p>
                 <p>{detail?.type || '-'}</p>
               </div>
               <div>
@@ -385,20 +390,20 @@ export default function OperationLogPage() {
               </div>
             </div>
             <div>
-              <p className="text-muted-foreground">操作内容</p>
+              <p className="text-muted-foreground">{t('操作内容')}</p>
               <p className="whitespace-pre-wrap">{detail?.message || detail?.msg || '-'}</p>
             </div>
             {(detail?.data || detail?.oldData) && (
               <div className="max-h-72 space-y-2 overflow-auto">
                 {detail?.oldData && (
                   <div>
-                    <p className="text-muted-foreground">修改前（oldData）</p>
+                    <p className="text-muted-foreground">{t('修改前（oldData）')}</p>
                     <pre className="rounded bg-muted/40 p-2 text-xs">{JSON.stringify(detail.oldData, null, 2)}</pre>
                   </div>
                 )}
                 {detail?.data && (
                   <div>
-                    <p className="text-muted-foreground">修改后（data）</p>
+                    <p className="text-muted-foreground">{t('修改后（data）')}</p>
                     <pre className="rounded bg-muted/40 p-2 text-xs">{JSON.stringify(detail.data, null, 2)}</pre>
                   </div>
                 )}
@@ -411,12 +416,12 @@ export default function OperationLogPage() {
       <AlertDialog open={cycleDelete !== null} onOpenChange={(o) => !o && setCycleDelete(null)}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>确认删除</AlertDialogTitle>
-            <AlertDialogDescription>确认删除清理周期 {cycleDelete?.name}？</AlertDialogDescription>
+            <AlertDialogTitle>{t('确认删除')}</AlertDialogTitle>
+            <AlertDialogDescription>{t('确认删除清理周期 {{name}}？', { name: cycleDelete?.name })}</AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>取消</AlertDialogCancel>
-            <AlertDialogAction onClick={handleRemoveCycle}>确定删除</AlertDialogAction>
+            <AlertDialogCancel>{t('取消')}</AlertDialogCancel>
+            <AlertDialogAction onClick={handleRemoveCycle}>{t('确定删除')}</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>

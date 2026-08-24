@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 import { useAtomValue } from 'jotai'
 import { AlertCircle } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 
 import { LogViewer, type LogQuery } from '@/components/common/LogViewer'
 import { PageHeader } from '@/components/common/PageHeader'
@@ -10,6 +11,7 @@ import { serverInfoAtom } from '@/stores/platform'
 
 /** 服务管理日志（pm2）：GET api/win/logs/pm2，仅 Windows 服务器提供该接口 */
 export default function Pm2LogPage() {
+  const { t } = useTranslation()
   const serverInfo = useAtomValue(serverInfoAtom)
   const isWindows = serverInfo?.serverType === 'windows'
 
@@ -19,16 +21,18 @@ export default function Pm2LogPage() {
   if (!isWindows) {
     return (
       <div className="space-y-4">
-        <PageHeader title="服务管理日志" />
+        <PageHeader title={t('服务管理日志')} />
         <Card>
           <CardContent className="flex items-center gap-2 py-8 text-sm text-muted-foreground">
             <AlertCircle className="size-4 shrink-0" />
-            服务管理日志（PM2）仅支持 Windows 服务器，当前服务器类型：{serverInfo?.serverType ?? '未知'}
+            {t('服务管理日志（PM2）仅支持 Windows 服务器，当前服务器类型：{{type}}', {
+              type: serverInfo?.serverType ?? t('未知'),
+            })}
           </CardContent>
         </Card>
       </div>
     )
   }
 
-  return <LogViewer title="服务管理日志" fetchLogs={fetchLogs} showAdvanced={false} />
+  return <LogViewer title={t('服务管理日志')} fetchLogs={fetchLogs} showAdvanced={false} />
 }

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { toast } from 'sonner'
 import { Eye, EyeOff } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -27,6 +28,7 @@ export function ChangePasswordDialog({
   const [newPassword2, setNewPassword2] = useState('')
   const [show, setShow] = useState(false)
   const [saving, setSaving] = useState(false)
+  const { t } = useTranslation()
 
   const reset = () => {
     setOldPassword('')
@@ -38,25 +40,25 @@ export function ChangePasswordDialog({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!oldPassword || !newPassword || !newPassword2) {
-      toast.warning('请填写完整')
+      toast.warning(t('请填写完整'))
       return
     }
     if (newPassword !== newPassword2) {
-      toast.error('两次输入的新密码不一致')
+      toast.error(t('两次输入的新密码不一致'))
       return
     }
     if (newPassword.length < 6) {
-      toast.warning('新密码长度至少 6 位')
+      toast.warning(t('新密码长度至少 6 位'))
       return
     }
     setSaving(true)
     try {
       await changePassword({ oldPassword, newPassword, newPassword2 })
-      toast.success('密码修改成功')
+      toast.success(t('密码修改成功'))
       onOpenChange(false)
       reset()
     } catch (err: any) {
-      toast.error(err?.json?._error || err?.json?.message || err?.message || '修改失败')
+      toast.error(err?.json?._error || err?.json?.message || err?.message || t('修改失败'))
     } finally {
       setSaving(false)
     }
@@ -72,29 +74,29 @@ export function ChangePasswordDialog({
     >
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>修改密码</DialogTitle>
-          <DialogDescription>修改后需使用新密码重新登录</DialogDescription>
+          <DialogTitle>{t('修改密码')}</DialogTitle>
+          <DialogDescription>{t('修改后需使用新密码重新登录')}</DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-1.5">
-            <Label>旧密码</Label>
+            <Label>{t('旧密码')}</Label>
             <Input
               type={show ? 'text' : 'password'}
               value={oldPassword}
               onChange={(e) => setOldPassword(e.target.value)}
               autoComplete="current-password"
-              placeholder="请输入旧密码"
+              placeholder={t('请输入旧密码')}
             />
           </div>
           <div className="space-y-1.5">
-            <Label>新密码</Label>
+            <Label>{t('新密码')}</Label>
             <div className="relative">
               <Input
                 type={show ? 'text' : 'password'}
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
                 autoComplete="new-password"
-                placeholder="至少 6 位"
+                placeholder={t('至少 6 位')}
               />
               <button
                 type="button"
@@ -107,13 +109,13 @@ export function ChangePasswordDialog({
             </div>
           </div>
           <div className="space-y-1.5">
-            <Label>确认新密码</Label>
+            <Label>{t('确认新密码')}</Label>
             <Input
               type={show ? 'text' : 'password'}
               value={newPassword2}
               onChange={(e) => setNewPassword2(e.target.value)}
               autoComplete="new-password"
-              placeholder="再次输入新密码"
+              placeholder={t('再次输入新密码')}
             />
           </div>
           <DialogFooter>
@@ -123,10 +125,10 @@ export function ChangePasswordDialog({
               onClick={() => onOpenChange(false)}
               disabled={saving}
             >
-              取消
+              {t('取消')}
             </Button>
             <Button type="submit" disabled={saving}>
-              {saving ? '提交中...' : '确认修改'}
+              {saving ? t('提交中...') : t('确认修改')}
             </Button>
           </DialogFooter>
         </form>

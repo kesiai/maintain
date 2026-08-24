@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { toast } from 'sonner'
 import { RefreshCw } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 
 import { Button } from '@/components/ui/button'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
@@ -11,6 +12,7 @@ import { containerInspect } from '@/lib/api/service-api'
 
 /** 容器检查内容（供页面 / 操作对话框复用）。 */
 export function ServiceInspectContent({ pod, back = false }: { pod: string; back?: boolean }) {
+  const { t } = useTranslation()
   const [data, setData] = useState<any>(null)
   const [loading, setLoading] = useState(true)
   const [view, setView] = useState<'tree' | 'doc'>('tree')
@@ -20,7 +22,7 @@ export function ServiceInspectContent({ pod, back = false }: { pod: string; back
     try {
       setData(await containerInspect(pod))
     } catch (e: any) {
-      toast.error(e?.json?._error || e?.message || '获取容器信息失败')
+      toast.error(e?.json?._error || e?.message || t('获取容器信息失败'))
     } finally {
       setLoading(false)
     }
@@ -34,10 +36,10 @@ export function ServiceInspectContent({ pod, back = false }: { pod: string; back
   return (
     <div className="space-y-4">
       <PageHeader
-        title={`容器检查：${pod}`}
+        title={t('容器检查：{{pod}}', { pod })}
         back={back}
         extra={
-          <Button variant="outline" size="icon" onClick={load} disabled={loading} aria-label="刷新">
+          <Button variant="outline" size="icon" onClick={load} disabled={loading} aria-label={t('刷新')}>
             <RefreshCw className={loading ? 'size-4 animate-spin' : 'size-4'} />
           </Button>
         }
@@ -47,14 +49,14 @@ export function ServiceInspectContent({ pod, back = false }: { pod: string; back
         <CardContent className="pt-4">
           <Tabs value={view} onValueChange={(v) => setView(v as 'tree' | 'doc')}>
             <TabsList>
-              <TabsTrigger value="tree">树状形式</TabsTrigger>
-              <TabsTrigger value="doc">文档形式</TabsTrigger>
+              <TabsTrigger value="tree">{t('树状形式')}</TabsTrigger>
+              <TabsTrigger value="doc">{t('文档形式')}</TabsTrigger>
             </TabsList>
           </Tabs>
 
           <div className="mt-4 max-h-[60vh] overflow-auto rounded-md bg-muted/40 p-4">
             {loading ? (
-              <p className="text-muted-foreground">加载中...</p>
+              <p className="text-muted-foreground">{t('加载中...')}</p>
             ) : view === 'tree' ? (
               <TreeView data={data} />
             ) : (
