@@ -9,6 +9,8 @@
     "build": "tsc -b && vite build",
     "preview": "vite preview",
     "typecheck": "tsc -b --noEmit",
+    "pack": "node scripts/pack.js",
+    "deploy": "node scripts/deploy.js",
     "i18n:check": "node scripts/i18n-check.mjs --strict",
     "i18n:extract": "node scripts/i18n-extract.mjs --write"
   },
@@ -44,11 +46,17 @@
     "tailwind-merge": "^3.4.0"
   },
   "devDependencies": {
+    "@npmcli/arborist": "^10.0.2",
     "@tailwindcss/vite": "^4.1.18",
     "@types/node": "^24.0.0",
     "@types/react": "^19.2.0",
     "@types/react-dom": "^19.2.0",
     "@vitejs/plugin-react": "^5.1.1",
+    "chalk": "^6.0.0",
+    "form-data": "^4.0.6",
+    "inquirer": "^14.1.0",
+    "node-fetch": "^3.3.2",
+    "pacote": "^22.0.0",
     "tailwindcss": "^4.1.18",
     "tw-animate-css": "^1.4.0",
     "typescript": "^7.0.2",

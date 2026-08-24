@@ -78,7 +78,7 @@ export function UserMenu() {
                 size="lg"
                 className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
               >
-                <Avatar size="sm" className="size-8 rounded-lg border">
+                <Avatar className="size-8 rounded-lg border">
                   <AvatarFallback className="rounded-lg bg-primary/10 text-primary">
                     {getInitials(displayName)}
                   </AvatarFallback>
