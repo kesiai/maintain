@@ -5,6 +5,8 @@ import { useUser } from '@kesi/client'
 import { Skeleton } from '@/components/ui/skeleton'
 import AppLayout from '@/components/layout/AppLayout'
 import LoginPage from '@/pages/auth/LoginPage'
+import InitAdminPage from '@/pages/auth/InitAdminPage'
+import { redirectToInitIfNoAdmin } from '@/lib/api/auth-api'
 
 const DashboardPage = lazy(() => import('@/pages/dashboard/DashboardPage'))
 const ResourceStatisticsPage = lazy(() => import('@/pages/dashboard/ResourceStatisticsPage'))
@@ -23,11 +25,13 @@ const ServiceDiagnosisPage = lazy(() => import('@/pages/serviceDiagnosis/Service
 const FrontManagePage = lazy(() => import('@/pages/front/FrontManagePage'))
 const ChangePasswordPage = lazy(() => import('@/pages/auth/ChangePasswordPage'))
 
-/** 应用启动：恢复登录态、移除启动加载动画 */
+/** 应用启动：恢复登录态、检查管理员初始化、移除启动加载动画 */
 function Bootstrap() {
   const { loadUser } = useUser()
   useEffect(() => {
     loadUser()
+    // 系统未初始化管理员时跳转初始化页 /init（对齐旧版 /user/admin/check 404 → /regest）
+    void redirectToInitIfNoAdmin()
     const loader = document.getElementById('loader-wrapper')
     if (loader) {
       loader.style.transition = 'opacity 0.3s'
@@ -63,6 +67,7 @@ export default function App() {
       <Suspense fallback={<PageFallback />}>
         <Routes>
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/init" element={<InitAdminPage />} />
           <Route path="/" element={<Navigate to="/app/dashboard" replace />} />
 
           <Route element={<ProtectedRoute />}>

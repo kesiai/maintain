@@ -11,7 +11,6 @@ import { DataTable, type Column } from '@/components/common/DataTable'
 import { EChart } from '@/components/common/EChart'
 import { PageHeader } from '@/components/common/PageHeader'
 import { listServices, type ServiceItem } from '@/lib/api/service-api'
-import { listModulars, type ModularItem } from '@/lib/api/modular-api'
 import { getUpdateLogs, type UpdateLogItem } from '@/lib/api/log-api'
 
 
@@ -19,16 +18,14 @@ export default function DashboardPage() {
   const { t } = useTranslation()
 
   const [services, setServices] = useState<ServiceItem[]>([])
-  const [modulars, setModulars] = useState<ModularItem[]>([])
   const [logs, setLogs] = useState<UpdateLogItem[]>([])
   const [loading, setLoading] = useState(true)
 
   const load = useCallback(async () => {
     setLoading(true)
     try {
-      const [svc, mod, log] = await Promise.all([listServices(), listModulars(), getUpdateLogs()])
+      const [svc, log] = await Promise.all([listServices(), getUpdateLogs()])
       setServices(svc)
-      setModulars(mod)
       setLogs(log)
     } catch (e: any) {
       toast.error(e?.json?._error || e?.message || t('加载首页数据失败'))
