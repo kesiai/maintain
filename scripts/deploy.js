@@ -1,11 +1,10 @@
 import chalk from "chalk";
 import inquirer from "inquirer";
-import pacote from "pacote";
-import Arborist from '@npmcli/arborist';
 import os from "os";
 import fs from "fs";
 import fetch from "node-fetch";
 import FormData from "form-data";
+import { packDirectoryToZip } from "./pack.js";
 
 const appDirectory = fs.realpathSync(process.cwd());
 const jsonData = fs.readFileSync(appDirectory + '/package.json', 'utf-8');
@@ -102,12 +101,14 @@ inquirer
       }
       const token = `Bearer ${json.accessToken}`;
 
-      const data = await pacote.tarball("file:" + appDirectory, { Arborist });
-
       const form = new FormData();
 
       const fileKey = Math.ceil(Math.random() * 10000);
-      const fileName = os.tmpdir() + "/package_" + fileKey + ".tgz";
+      const fileName = os.tmpdir() + "/package_" + fileKey + ".zip";
+
+      console.log(chalk.yellow("[iot:install] 打包 dist 目录 ...... "));
+
+      const data = packDirectoryToZip(appDirectory + "/dist");
       fs.writeFileSync(fileName, data);
 
       form.append("file", fs.createReadStream(fileName));

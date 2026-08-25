@@ -11,7 +11,7 @@ interface UploadFileButtonProps {
 }
 
 /** 隐藏 file input 的通用上传按钮 */
-export function UploadFileButton({ label, accept = '.gz,.zip', icon, disabled, onUpload }: UploadFileButtonProps) {
+export function UploadFileButton({ label, accept = '.tar.gz,.tgz,.zip', icon, disabled, onUpload }: UploadFileButtonProps) {
   const inputRef = useRef<HTMLInputElement>(null)
 
   const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {

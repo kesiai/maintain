@@ -41,7 +41,7 @@ const TARGETS: Array<{
 
 /** 校验前端升级包后缀（zip / tar.gz） */
 function isSupportedArchive(name: string) {
-  return /\.(tar\.gz|zip)$/i.test(name)
+  return /\.(tar\.gz|tgz|zip)$/i.test(name)
 }
 
 type FrontStage = 'installing' | 'done' | 'error'
@@ -220,12 +220,12 @@ export default function FrontManagePage() {
             <DialogTitle>
               {picker ? t(TARGETS.find((tg) => tg.key === picker)?.title ?? '前端升级') : t('前端升级')}
             </DialogTitle>
-            <DialogDescription>{t('请选择前端升级包文件（支持 .zip / .tar.gz）')}</DialogDescription>
+            <DialogDescription>{t('请选择前端升级包文件（支持 .zip / .tar.gz / .tgz）')}</DialogDescription>
           </DialogHeader>
           <div className="flex justify-center py-2">
             <UploadFileButton
               label={t('选择文件并上传')}
-              accept=".zip,.tar.gz,.gz"
+              accept=".zip,.tar.gz,.tgz"
               disabled={submitting}
               onUpload={(file) => {
                 if (picker) return handleUpload(picker, file)
