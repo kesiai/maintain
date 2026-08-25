@@ -9,6 +9,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { ThemeToggle } from '@/components/theme-toggle'
 import { LanguageSwitcher } from '@/components/layout/LanguageSwitcher'
+import { OpsTechBg } from '@/components/common/OpsTechBg'
 import { checkAdmin, registerAdmin } from '@/lib/api/auth-api'
 
 /**
@@ -95,10 +96,9 @@ export default function InitAdminPage() {
 
       <div className="relative w-full max-w-md">
         <div className="overflow-hidden rounded-3xl border border-border/60 bg-card/85 shadow-2xl shadow-blue-900/10 backdrop-blur-xl dark:shadow-black/40">
-          {/* 顶部品牌区 */}
-          <div className="relative overflow-hidden bg-linear-to-br from-blue-600 to-purple-600 p-8 text-white sm:p-9">
-            <div className="absolute -right-10 -top-10 size-32 rounded-full bg-white/10 blur-2xl" />
-            <div className="absolute -bottom-14 -left-8 size-24 rounded-full bg-white/10 blur-2xl" />
+          {/* 顶部品牌区：纯色 + 运维科技底图 */}
+          <div className="relative overflow-hidden bg-blue-600 p-8 text-white sm:p-9">
+            <OpsTechBg className="pointer-events-none absolute inset-0 size-full text-white/25" />
             <div className="relative flex flex-col items-center">
               <div className="mb-5 flex size-16 items-center justify-center rounded-2xl bg-white/20 font-bold text-3xl shadow-lg ring-1 ring-white/30 backdrop-blur">
                 <img src="/logo.svg" alt="Logo" className="size-10" />
@@ -178,7 +178,7 @@ export default function InitAdminPage() {
                   <Button
                     type="submit"
                     disabled={submitting}
-                    className="h-11 w-full rounded-xl bg-linear-to-r from-blue-600 to-purple-600 text-base font-medium text-white shadow-lg shadow-blue-600/25 transition-all hover:from-blue-700 hover:to-purple-700 hover:shadow-xl hover:shadow-blue-600/30"
+                    className="h-11 w-full rounded-xl bg-blue-600 text-base font-medium text-white transition-colors hover:bg-blue-700 disabled:opacity-60"
                   >
                     {submitting ? (
                       <>
