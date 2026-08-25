@@ -131,10 +131,10 @@ export default function AppLayout() {
       </Sidebar>
 
       <SidebarInset className="overflow-auto">
-        {/* 移动端侧栏开关（浮动在内容左上角；RTL 时自动镜像到右侧） */}
-        <SidebarTrigger className="md:hidden fixed top-3 z-40 ltr:left-3 rtl:right-3" />
-        {/* 内容区 */}
-        <div className="flex min-h-full flex-col p-6">
+        {/* 移动端侧栏开关（浮动在内容左下角的圆形按钮） */}
+        <SidebarTrigger variant="default" className="md:hidden fixed bottom-3 z-40 ltr:left-3 rtl:right-3 size-12 rounded-full shadow-lg [&_svg]:size-6!" />
+        {/* 内容区：手机 / pad / 桌面 使用不同内边距 */}
+        <div className="flex min-h-full flex-col p-2 sm:p-4 lg:p-6">
           <Outlet />
         </div>
       </SidebarInset>

@@ -1,44 +1,21 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { useAtomValue } from 'jotai'
 import { toast } from 'sonner'
-import { Box, RefreshCw, Rocket, UploadCloud } from 'lucide-react'
+import { Box, RefreshCw } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import type { EChartsOption } from 'echarts'
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Progress } from '@/components/ui/progress'
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { DataTable, type Column } from '@/components/common/DataTable'
 import { EChart } from '@/components/common/EChart'
 import { PageHeader } from '@/components/common/PageHeader'
-import { serverInfoAtom, newVersionsAtom, findRelease, getPackageUrl } from '@/stores/platform'
 import { listServices, type ServiceItem } from '@/lib/api/service-api'
 import { listModulars, type ModularItem } from '@/lib/api/modular-api'
 import { getUpdateLogs, type UpdateLogItem } from '@/lib/api/log-api'
-import { onlineInstall, installInfo } from '@/lib/api/service-api'
-import { modularOnlineInstall } from '@/lib/api/modular-api'
-import { batchUpgrade } from '@/lib/api/upload-api'
-import { UploadFileButton } from '@/components/common/UploadFileButton'
 
-const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms))
-
-async function pollInstall(id: string, onProgress: (percent: number) => void) {
-  for (;;) {
-    const info = await installInfo(id)
-    const err = (['run', 'install', 'download'] as const).map((k) => info[k]?.err).find(Boolean)
-    if (err) throw new Error(err)
-    const p = info.run?.progress ?? info.install?.progress ?? info.download?.progress ?? 0
-    onProgress(p)
-    if (info.run?.progress === 100) return
-    await sleep(2000)
-  }
-}
 
 export default function DashboardPage() {
-  const serverInfo = useAtomValue(serverInfoAtom)
-  const repos = useAtomValue(newVersionsAtom)
   const { t } = useTranslation()
 
   const [services, setServices] = useState<ServiceItem[]>([])
@@ -91,80 +68,12 @@ export default function DashboardPage() {
     [logs],
   )
 
-  const [upgrading, setUpgrading] = useState(false)
-  const [upgradeOpen, setUpgradeOpen] = useState(false)
-  const [upgradePercent, setUpgradePercent] = useState(0)
-  const [upgradeText, setUpgradeText] = useState('')
-
-  const handleOnlineUpgrade = async () => {
-    setUpgradeOpen(true)
-    setUpgrading(true)
-    setUpgradePercent(0)
-    try {
-      let done = 0
-      const targets: Array<{ name: string; url?: string; isModular?: boolean; isMaintain?: boolean }> = []
-      for (const svc of services) {
-        const rel = findRelease(repos, svc.repo) || findRelease(repos, svc.repo, 'server') || findRelease(repos, svc.repo, 'driver')
-        if (rel && rel.tag_name !== svc.version) {
-          targets.push({ name: svc.name || '', url: getPackageUrl(serverInfo, rel) })
-        }
-      }
-      for (const mod of modulars) {
-        const rel = findRelease(repos, mod.id)
-        if (rel && rel.tag_name !== `v${mod.version}`) {
-          targets.push({
-            name: mod.name || mod.id || '',
-            url: rel.assets?.[0]?.url,
-            isModular: true,
-            isMaintain: (mod.id || '').includes('iot-maintain'),
-          })
-        }
-      }
-      if (targets.length === 0) {
-        toast.info(t('已是最新版本'))
-        return
-      }
-      for (const target of targets) {
-        setUpgradeText(t('正在升级 {{name}}...', { name: target.name }))
-        if (!target.url) continue
-        const { id } = target.isModular
-          ? await modularOnlineInstall(target.url, target.isMaintain)
-          : await onlineInstall(target.url)
-        await pollInstall(id, (p) => {
-          const base = (done / targets.length) * 100
-          setUpgradePercent(base + p / targets.length)
-        })
-        done += 1
-        setUpgradePercent((done / targets.length) * 100)
-      }
-      toast.success(t('在线升级完成'))
-      load()
-    } catch (e: any) {
-      toast.error(e?.json?._error || e?.message || t('在线升级失败'))
-    } finally {
-      setUpgrading(false)
-    }
-  }
-
   return (
-    <div className="space-y-4">
+    <div className="space-y-2 sm:space-y-4">
       <PageHeader
         title={t('首页')}
         extra={
           <>
-            <UploadFileButton
-              label={t('一键离线升级')}
-              accept=".gz,.zip"
-              icon={<UploadCloud className="mr-1 size-4" />}
-              onUpload={async (file) => {
-                await batchUpgrade(file)
-                toast.success(t('离线升级已提交'))
-              }}
-            />
-            <Button onClick={handleOnlineUpgrade} disabled={upgrading}>
-              <Rocket className="mr-1 size-4" />
-              {t('一键在线升级')}
-            </Button>
             <Button variant="outline" size="icon" onClick={load} disabled={loading} aria-label={t('刷新')}>
               <RefreshCw className={loading ? 'size-4 animate-spin' : 'size-4'} />
             </Button>
@@ -172,7 +81,7 @@ export default function DashboardPage() {
         }
       />
 
-      <div className="grid gap-4 sm:grid-cols-2">
+      <div className="grid gap-2 sm:gap-4 sm:grid-cols-2">
         <Link to="/app/model/Service/list" className="block">
           <Card className="transition-shadow hover:shadow-md">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -195,7 +104,7 @@ export default function DashboardPage() {
         </Card>
       </div>
 
-      <div className="grid gap-4 lg:grid-cols-3">
+      <div className="grid gap-2 sm:gap-4 lg:grid-cols-3">
         <Card>
           <CardHeader>
             <CardTitle>{t('服务状态分布')}</CardTitle>
@@ -216,19 +125,6 @@ export default function DashboardPage() {
         </Card>
       </div>
 
-      <Dialog open={upgradeOpen} onOpenChange={(o) => !upgrading && setUpgradeOpen(o)}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle>{t('在线升级')}</DialogTitle>
-            <DialogDescription>{t('正在逐个升级可更新的服务与模块，期间请勿进行其他操作。')}</DialogDescription>
-          </DialogHeader>
-          <div className="space-y-3">
-            <p className="text-sm text-muted-foreground">{upgradeText || t('准备中...')}</p>
-            <Progress value={upgradePercent} />
-            <p className="text-right text-sm text-muted-foreground">{upgradePercent.toFixed(0)}%</p>
-          </div>
-        </DialogContent>
-      </Dialog>
     </div>
   )
 }

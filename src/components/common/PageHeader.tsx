@@ -31,8 +31,8 @@ export function PageHeader({
   const navigate = useNavigate()
   const { t } = useTranslation()
   return (
-    <div className="sticky top-0 z-10 w-full -mt-6 border-b bg-background/95 px-2 backdrop-blur supports-backdrop-filter:bg-background/60">
-      <div className="flex h-16 items-center justify-between">
+    <div className="sticky top-0 z-10 w-full -mt-2 sm:-mt-4 lg:-mt-6 border-b bg-background/95 px-2 backdrop-blur supports-backdrop-filter:bg-background/60">
+      <div className="flex h-14 items-center justify-between sm:h-16">
         <div className="flex min-w-0 items-center gap-3">
           {back && (
             <Button
@@ -47,7 +47,7 @@ export function PageHeader({
           <div className="min-w-0">
             <h1
               className={cn(
-                'truncate text-xl font-bold',
+                'truncate text-lg font-bold sm:text-xl',
                 gradient ||
                   'bg-linear-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent',
                 titleClassName,
