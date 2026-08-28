@@ -1,4 +1,4 @@
-import { setConfig } from '@kesi/client'
+import { setConfig, useUser } from '@kesi/client'
 import { toast } from 'sonner'
 import { getStoredLocale } from '@/i18n'
 
@@ -21,4 +21,8 @@ export function initConfig() {
       warning: (msg) => toast.warning(msg),
     },
   })
+  // 渲染前同步恢复持久化登录态（对齐 kesi initKesiConfig 的 loadUser 调用）。
+  // 必须在首帧渲染前完成，否则 ProtectedRoute 首帧读不到 user 会先跳登录页。
+  // useUser 内部无 React hooks，可在模块级安全调用。
+  useUser().loadUser()
 }

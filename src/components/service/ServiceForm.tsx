@@ -37,6 +37,35 @@ export interface VolumeItem {
   Mode: string
 }
 
+/**
+ * 归一化命令文本：数组按行拼接，字符串原样。
+ * （Windows 后端 command 可能返回字符串而非数组）
+ */
+function toCommandText(cmd: unknown): string {
+  if (Array.isArray(cmd)) return cmd.filter((c) => c != null).join('\n')
+  if (typeof cmd === 'string') return cmd
+  return ''
+}
+
+/** 归一化网络名：数组取首项，字符串原样 */
+function toNetworkText(networks: unknown): string {
+  if (Array.isArray(networks)) return String(networks[0] ?? '')
+  if (typeof networks === 'string') return networks
+  return ''
+}
+
+/** 归一化 K=V 键值列表：数组逐项拆分，字符串按行拆分；keyName 指定键字段（env 用 name，label 用 key） */
+function toKVList<K extends 'name' | 'key'>(
+  list: unknown,
+  keyName: K,
+): Array<{ [P in K]: string } & { value: string }> {
+  const items = Array.isArray(list) ? list : typeof list === 'string' ? list.split('\n') : []
+  return items.map((e) => {
+    const [n, ...rest] = String(e).split('=')
+    return { [keyName]: n, value: rest.join('=') } as { [P in K]: string } & { value: string }
+  })
+}
+
 /** 服务高级编辑 / 添加表单：`initial` 有值时视为编辑模式（隐藏应用名称输入）。 */
 export function ServiceForm({
   isWin,
@@ -74,23 +103,14 @@ export function ServiceForm({
     setName(initial.name || '')
     setService(initial.service || 'None')
     setPath(initial.path || '')
-    setCommand((initial.command || []).join('\n'))
-    setNetworks((initial.networks?.[0] || '').toString())
+    // Windows 后端 command 可能返回字符串而非数组，做兼容归一化
+    setCommand(toCommandText(initial.command))
+    setNetworks(toNetworkText(initial.networks))
     setPrivileged(!!initial.privileged)
-    setEnvironment(
-      (initial.environment || []).map((e: string) => {
-        const [n, ...rest] = String(e).split('=')
-        return { name: n, value: rest.join('=') }
-      }),
-    )
-    setLabels(
-      (initial.labels || []).map((l: string) => {
-        const [k, ...rest] = String(l).split('=')
-        return { key: k, value: rest.join('=') }
-      }),
-    )
-    setPorts(initial.ports || [])
-    setVolumes(initial.volumes || [])
+    setEnvironment(toKVList(initial.environment, 'name'))
+    setLabels(toKVList(initial.labels, 'key'))
+    setPorts(Array.isArray(initial.ports) ? initial.ports : [])
+    setVolumes(Array.isArray(initial.volumes) ? initial.volumes : [])
     setDirectory(initial.directory || '')
     setStartRetries(String(initial.startRetries ?? 3))
     setStartAuto(!!initial.startAuto)
@@ -197,6 +217,14 @@ export function ServiceForm({
 
           {isWin ? (
             <>
+              <Field label={t('命令')} required>
+                <Textarea
+                  rows={3}
+                  value={command}
+                  onChange={(e) => setCommand(e.target.value)}
+                  placeholder="cmd /c ..."
+                />
+              </Field>
               <Field label={t('目录')}>
                 <Input value={directory} onChange={(e) => setDirectory(e.target.value)} placeholder={t('工作目录')} />
               </Field>

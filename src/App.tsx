@@ -25,11 +25,9 @@ const ServiceDiagnosisPage = lazy(() => import('@/pages/serviceDiagnosis/Service
 const FrontManagePage = lazy(() => import('@/pages/front/FrontManagePage'))
 const ChangePasswordPage = lazy(() => import('@/pages/auth/ChangePasswordPage'))
 
-/** 应用启动：恢复登录态、检查管理员初始化、移除启动加载动画 */
+/** 应用启动：检查管理员初始化、移除启动加载动画（登录态恢复已在 initConfig 渲染前完成） */
 function Bootstrap() {
-  const { loadUser } = useUser()
   useEffect(() => {
-    loadUser()
     // 系统未初始化管理员时跳转初始化页 /init（对齐旧版 /user/admin/check 404 → /regest）
     void redirectToInitIfNoAdmin()
     const loader = document.getElementById('loader-wrapper')
@@ -38,7 +36,7 @@ function Bootstrap() {
       loader.style.opacity = '0'
       setTimeout(() => loader.remove(), 350)
     }
-  }, [loadUser])
+  }, [])
   return null
 }
 

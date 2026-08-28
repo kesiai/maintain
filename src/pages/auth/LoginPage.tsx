@@ -81,7 +81,13 @@ export default function LoginPage() {
       const user = normalizeUser(res as Record<string, any>, name)
 
       setUser(user)
-      localStorage.setItem(storageKey, JSON.stringify(user))
+      // 记住我（对齐 kesi useLogin）：勾选 → localStorage 持久（刷新/重开可恢复）；
+      // 未勾选 → sessionStorage 仅当前会话（关闭标签页即失效）。切换时先清理两个存储。
+      localStorage.removeItem(storageKey)
+      sessionStorage.removeItem(storageKey)
+      const storage = remember ? localStorage : sessionStorage
+      // time 为 unix 秒，@kesi/client 的 loadUser 据此做 7 天有效期校验后恢复登录态
+      storage.setItem(storageKey, JSON.stringify({ ...user, time: Math.floor(Date.now() / 1000) }))
 
       navigate(getLoginRedirect(), { replace: true })
       toast.success(t('登录成功'))
